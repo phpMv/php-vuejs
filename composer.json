@@ -10,8 +10,8 @@
 	],
 	"require": {
 		"php": "^7.4",
-		"phpmv/php-ui-common":"dev-master",
-		"phpmv/php-ajax":"dev-master"
+		"phpmv/php-ui-common":"dev-main",
+		"phpmv/php-ajax":"dev-main"
 	},
 	"suggest": {
 	},
