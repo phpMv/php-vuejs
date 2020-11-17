@@ -1,6 +1,9 @@
 <?php
 namespace PHPMV;
 
+use PHPMV\js\JavascriptUtils;
+
+
 /**
  * PHPMV$VueJS
  * This class is part of php-vuejs
@@ -11,8 +14,6 @@ namespace PHPMV;
  */
 class VueJS extends AbstractVueJS{
 	protected $app="#app"; //this is the default identifier the vue wrapper
-	
-	
 	
 	/**
 	 * @return string
@@ -34,6 +35,10 @@ class VueJS extends AbstractVueJS{
                 ".$this->methods."
 		});
 		</script>";
-	}
-	
+	}	
 }
+
+$vue=new VueJS();
+$vue->addData("testData","Ceci est une donnee"); //erreur si un accent est présent
+$vue->addMethod("test","let self=this;this.testData='moi'");
+$vue->addMethod("testParam","this.testData=i","i");

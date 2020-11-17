@@ -1,6 +1,5 @@
 <?php
 namespace PHPMV\parts;
-require "vueMethod.php";
 
 /**
  * PHPMV$VueJS
@@ -13,20 +12,13 @@ require "vueMethod.php";
 class VueMethods extends VuePart {
     
     public function add(string $name, string $body, string $params=null){
-        if($params == null){
-        parent::put($name,$body);
-        }else{
-        
-            $test = new VueMethod($body, $params);
-            
+        $test = new VueMethod($body,explode(",",$params));   
         parent::put($name,$test->__toString());
-        }
     }
+    
 	public function __toString():string{
 	    $datas=parent::__toString();
-	    return "methods: {".$datas."},";
+	    return ",methods: ".$datas;
 	}
-
-
 }
 

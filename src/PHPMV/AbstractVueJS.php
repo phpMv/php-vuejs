@@ -1,7 +1,10 @@
 <?php
 namespace PHPMV;
+
 use PHPMV\parts\VueData;
 use PHPMV\parts\VueMethods;
+
+use PHPMV\js\JavascriptUtils;
 
 /**
  * Created by PhpStorm.
@@ -31,9 +34,6 @@ class AbstractVueJS {
 	    $this->data->put($name, $value);
 	}
 
-
-
-
 	/**
 	 * @param string $method
 	 */
@@ -41,7 +41,6 @@ class AbstractVueJS {
 	    $this->methods->add($name, $body, $params);
 	}
 	
-
 	/**
 	 * @return string
 	 */
@@ -56,15 +55,12 @@ class AbstractVueJS {
 		$this->computed = $computed;
 	}
 
-
-
 	/**
 	 * @param string $watcher
 	 */
 	public function setWatcher(string $watcher) {
 		$this->watcher = $watcher;
 	}
-	
 	
 	/**
 	 * @return array
@@ -86,6 +82,4 @@ class AbstractVueJS {
 	public function getWatcher():string {
 	    return $this->watcher;
 	}
-
-
 }

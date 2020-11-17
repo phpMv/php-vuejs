@@ -1,6 +1,7 @@
 <?php
 namespace PHPMV\parts;
 
+use PHPMV\js\JavascriptUtils;
 /**
  * PHPMV$VueJS
  * This class is part of php-vuejs
@@ -10,15 +11,20 @@ namespace PHPMV\parts;
  *
  */
 class VuePart {
+    
 	protected $elements;
 
-	
-	
 	public function __construct() {
 	    $this->elements=array();
 	}
 
-
+	/**
+	 * @return array
+	 */
+	public function getElements():array {
+	    return $this->elements;
+	}
+	
 	/**
 	 * @param string $name
 	 * @param string $value
@@ -28,15 +34,14 @@ class VuePart {
 	}
 
 	public function __toString():string{
-		return str_replace(array('=','&','+'), array(':"','"\n',' '), http_build_query($this->getElements(), null, '",')).'"';
+	    if(empty($this->getElements())){
+	        return "";
+	    }
+	    else{
+	        $retour=json_encode(JavascriptUtils::toJson($this->getElements()));
+	        $retour=str_replace(['"!!#','!!#"'],"",json_decode($retour));
+	        return $retour;
+	    }
 	}
-
-	/**
-	 * @return array
-	 */
-	public function getElements():array {
-	    return $this->elements;
-	}
-
 }
 

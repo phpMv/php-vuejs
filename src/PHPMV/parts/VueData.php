@@ -1,6 +1,5 @@
 <?php
 namespace PHPMV\parts;
-require "VuePart.php";
 
 /**
  * PHPMV$VueJS
@@ -13,10 +12,10 @@ require "VuePart.php";
 class VueData extends VuePart {
 
 	public function __toString():string{
-	    $datas=parent::__toString();
-	    return "data: function() {return {".$datas." };},";
+	    $data=parent::__toString();
+	    if(!is_null($data)){
+	       return "data: function() {return ".$data."}";
+	    }
+	    return "";
 	}
-
-
 }
-

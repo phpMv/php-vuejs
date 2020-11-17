@@ -1,34 +1,34 @@
 {
-	"name": "phpmv/php-vuejs",
-	"description": "VueJS integration for PHP frameworks",
-	"type": "library",
-	"keywords": [
+	"name" : "phpmv/php-vuejs",
+	"description" : "VueJS integration for PHP frameworks",
+	"type" : "library",
+	"keywords" : [
 		"php",
 		"vuejs",
 		"framework",
 		"library"
 	],
-	"require": {
-		"php": "^7.4",
-		"phpmv/php-ui-common":"dev-main",
-		"phpmv/php-ajax":"dev-main"
+	"require" : {
+		"php" : "^7.4",
+		"phpmv/php-ui-common" : "dev-main",
+		"phpmv/php-ajax" : "dev-main"
 	},
-	"suggest": {
+	"autoload" : {
+		"psr-4" : {
+			"PHPMV\\" : "src/PHPMV/",
+			"UTILS\\" : "vendor/phpmv/"
+		}
 	},
-	"autoload": {
-		"psr-4": { "PHPMV\\": "src/PHPMV/" }
-	},
-	"license": "Apache-2.0",
-	"authors": [
-		{
-			"name": "Jean-Christophe HERON",
-			"email": "myaddressmail@gmail.com",
-			"role": "Lead developer"
+	"license" : "Apache-2.0",
+	"authors" : [{
+			"name" : "Jean-Christophe HERON",
+			"email" : "myaddressmail@gmail.com",
+			"role" : "Lead developer"
 		}
 	],
-	"extra": {
-        "branch-alias": {
-            "dev-master": "1.0.0-dev"
-        }
-    }
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "1.0.0-dev"
+		}
+	}
 }
