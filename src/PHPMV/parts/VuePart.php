@@ -29,7 +29,7 @@ class VuePart {
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function put(string $name,string $value):void {
+	public function put(string $name,$value):void {
 		$this->elements[$name]=$value;
 	}
 

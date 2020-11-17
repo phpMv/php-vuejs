@@ -8,7 +8,7 @@ require "src/PHPMV/VueJS.php";
 <html lang="fr">
 <head>
   	<meta charset="utf-8">
-  	<title>Test Page</title>
+  	<title>Test</title>
   	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">

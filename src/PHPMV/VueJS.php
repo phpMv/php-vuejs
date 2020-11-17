@@ -39,6 +39,7 @@ class VueJS extends AbstractVueJS{
 }
 
 $vue=new VueJS();
-$vue->addData("testData","Ceci est une donnee"); //erreur si un accent est présent
-$vue->addMethod("test","let self=this;this.testData='moi'");
+$vue->addData("testData",array("1","2"));
+$vue->addDataRaw("testRaw","[]");
+$vue->addMethod("test","let self=this;this.testData='test'");
 $vue->addMethod("testParam","this.testData=i","i");

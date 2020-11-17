@@ -17,68 +17,53 @@ class AbstractVueJS {
 	protected $methods;
 	protected $computed;
 	protected $watcher;
+	protected $directives;
+	protected $filters;
+	protected $hooks;
 	
 	
 	public function __construct() {
 	    $this->data= new VueData();
 	    $this->methods= new VueMethods();
+	    $this->computed=null; // à implémenter
+	    $this->watcher=null; // à implémenter
+	    $this->directives=null; // à implémenter
+	    $this->filters=null; // à implémenter
+	    $this->hooks=array(); // à implémenter
 	}
 
-
-	/**
-	 * Adds a data
-	 * @param key the name of the data
-	 * @param value the value
-	 */
-	public function addData(string $name,string $value):void {
+	public function addData(string $name,$value):void {
 	    $this->data->put($name, $value);
 	}
 
-	/**
-	 * @param string $method
-	 */
+	public function addDataRaw(string $name,string $value):void {
+	    $this->data->put($name,$value."");
+	}
+	
 	public function addMethod(string $name,string $body, string $params = null) {
 	    $this->methods->add($name, $body, $params);
 	}
 	
-	/**
-	 * @return string
-	 */
 	public function getComputed():string {
 		return $this->computed;
 	}
 
-	/**
-	 * @param string $computed
-	 */
 	public function setComputed(string $computed) {
 		$this->computed = $computed;
 	}
 
-	/**
-	 * @param string $watcher
-	 */
 	public function setWatcher(string $watcher) {
 		$this->watcher = $watcher;
 	}
 	
-	/**
-	 * @return array
-	 */
 	public function getData():array {
 	    return $this->data;
 	}
 	
-	/**
-	 * @return string
-	 */
 	public function getMethod():string {
 	    return $this->method;
 	}
 	
-	/**
-	 * @return string
-	 */
 	public function getWatcher():string {
 	    return $this->watcher;
 	}
