@@ -13,7 +13,9 @@ use PHPMV\js\JavascriptUtils;
  *
  */
 class VueJS extends AbstractVueJS{
-	protected $app="#app"; //this is the default identifier the vue wrapper
+	protected $app="'#app'"; //this is the default identifier the vue wrapper
+	protected $useAxios;
+	protected $vuetify;
 	
 	/**
 	 * @return string
@@ -26,15 +28,11 @@ class VueJS extends AbstractVueJS{
 	 * @return string
 	 */
 	public function __toString():string{
-		return "
-		<script>
-		const app = new Vue({
-			el:'".$this->getApp()."',
-			vuetify: new Vuetify(),
-				".$this->data."
-                ".$this->methods."
-		});
-		</script>";
+	    $variables=['!app'=>$this->getApp(),'!vuetify'=>'new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods]; //liste des variables à remplacé dans le fichier template
+	    $script=file_get_contents("template_vuejs");
+	    $script=str_replace(array_keys($variables),$variables,$script);
+	    $script=JavascriptUtils::wrapScript($script);
+	    return $script;
 	}	
 }
 
