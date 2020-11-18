@@ -18,17 +18,10 @@ class VuePart {
 	    $this->elements=array();
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getElements():array {
 	    return $this->elements;
 	}
 	
-	/**
-	 * @param string $name
-	 * @param string $value
-	 */
 	public function put(string $name,$value):void {
 		$this->elements[$name]=$value;
 	}

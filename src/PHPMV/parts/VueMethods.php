@@ -17,8 +17,11 @@ class VueMethods extends VuePart {
     }
     
 	public function __toString():string{
-	    $datas=parent::__toString();
-	    return ",methods: ".$datas;
+	    $data=parent::__toString();
+	    $variables=['!data'=>$data];
+	    $script=file_get_contents("template/methods",true);
+	    $script=str_replace(array_keys($variables),$variables,$script);
+	    return $script;
 	}
 }
 

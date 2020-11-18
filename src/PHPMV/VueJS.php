@@ -28,8 +28,8 @@ class VueJS extends AbstractVueJS{
 	 * @return string
 	 */
 	public function __toString():string{
-	    $variables=['!app'=>$this->getApp(),'!vuetify'=>'new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods]; //liste des variables à remplacé dans le fichier template
-	    $script=file_get_contents("template_vuejs");
+	    $variables=['!app'=>$this->getApp(),'!vuetify'=>'new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods];
+	    $script=file_get_contents("template/vuejs",true);
 	    $script=str_replace(array_keys($variables),$variables,$script);
 	    $script=JavascriptUtils::wrapScript($script);
 	    return $script;

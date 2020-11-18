@@ -25,11 +25,11 @@ class AbstractVueJS {
 	public function __construct() {
 	    $this->data= new VueData();
 	    $this->methods= new VueMethods();
-	    $this->computed=null; // à implémenter
-	    $this->watcher=null; // à implémenter
-	    $this->directives=null; // à implémenter
-	    $this->filters=null; // à implémenter
-	    $this->hooks=array(); // à implémenter
+	    $this->computed=null;
+	    $this->watcher=null;
+	    $this->directives=null;
+	    $this->filters=null;
+	    $this->hooks=array();
 	}
 
 	public function addData(string $name,$value):void {
