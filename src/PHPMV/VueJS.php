@@ -28,7 +28,7 @@ class VueJS extends AbstractVueJS{
 	 * @return string
 	 */
 	public function __toString():string{
-	    $variables=['!app'=>$this->getApp(),'!vuetify'=>'new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods];
+	    $variables=['!app'=>$this->getApp(),'!vuetify'=>'new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods,'!computeds'=>$this->computeds];
 	    $script=file_get_contents("template/vuejs",true);
 	    $script=str_replace(array_keys($variables),$variables,$script);
 	    $script=JavascriptUtils::wrapScript($script);
@@ -41,3 +41,4 @@ $vue->addData("testData",array("1","2"));
 $vue->addDataRaw("testRaw","[]");
 $vue->addMethod("test","let self=this;this.testData='test'");
 $vue->addMethod("testParam","this.testData=i","i");
+$vue->addComputed("testComputed","a");

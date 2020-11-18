@@ -11,12 +11,8 @@ class VueComputeds extends VuePart {
         parent::put($name, $setComputed);
     }
     
-    public function __toString(){
-        $data=parent::__toString();
-        if($data!=null) {
-            return $data;
-        }
-        return "";
+    public function __toString():string{
+        return parent::__toString();
     }
     
 }

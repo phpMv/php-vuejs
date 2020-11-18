@@ -5,6 +5,7 @@ use PHPMV\parts\VueData;
 use PHPMV\parts\VueMethods;
 
 use PHPMV\js\JavascriptUtils;
+use PHPMV\parts\VueComputeds;
 
 /**
  * Created by PhpStorm.
@@ -25,7 +26,7 @@ class AbstractVueJS {
 	public function __construct() {
 	    $this->data= new VueData();
 	    $this->methods= new VueMethods();
-	    $this->computed=null;
+	    $this->computeds=new VueComputeds();
 	    $this->watcher=null;
 	    $this->directives=null;
 	    $this->filters=null;
@@ -44,12 +45,16 @@ class AbstractVueJS {
 	    $this->methods->add($name, $body, $params);
 	}
 	
-	public function getComputed():string {
-		return $this->computed;
+	public function addComputed(string $name,string $get,string $set=null) {
+	    $this->computeds->add($name, $get, $set);
+	}
+	
+	public function getComputeds():string {
+		return $this->computeds;
 	}
 
-	public function setComputed(string $computed) {
-		$this->computed = $computed;
+	public function setComputeds(string $computeds) {
+		$this->computeds = $computeds;
 	}
 
 	public function setWatcher(string $watcher) {

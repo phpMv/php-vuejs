@@ -1,6 +1,7 @@
 const app = new Vue({
 			el: !app ,
 			vuetify: !vuetify ,
-				!data
-                !methods
+				data: function() {return !data }
+                ,methods: !methods
+                ,computed: !computeds
 		});
