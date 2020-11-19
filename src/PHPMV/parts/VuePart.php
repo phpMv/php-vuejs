@@ -32,7 +32,7 @@ class VuePart {
 	    }
 	    else{
 	        $retour=json_encode(JavascriptUtils::toJson($this->getElements()));
-	        $retour=str_replace(['"!!#','!!#"'],"",json_decode($retour));
+	        $retour=json_decode($retour);
 	        return $retour;
 	    }
 	}

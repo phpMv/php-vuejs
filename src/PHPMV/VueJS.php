@@ -27,9 +27,10 @@ class VueJS extends AbstractVueJS{
 	 * @return string
 	 */
 	public function __toString():string{
-	    $variables=['!app'=>$this->getApp(),'!vuetify'=>',vuetify: new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods,'!computeds'=>$this->computeds];
+		$variables=['!app'=>$this->getApp(),'!vuetify'=>',vuetify: new Vuetify()','!data'=>$this->data,'!hooks'=>$this->hooks,'!methods'=>$this->methods,'!computeds'=>$this->computeds];
 	    $script=file_get_contents("template/vuejs",true);
 	    $script=str_replace(array_keys($variables),$variables,$script);
+	    $script=str_replace(['!!#{','}!!#','"!!#','!!#"'],"",$script);
 	    $script=JavascriptUtils::wrapScript($script);
 	    return $script;
 	}	
@@ -37,3 +38,4 @@ class VueJS extends AbstractVueJS{
 $vue=new VueJS();
 $vue->addData("testData","value");
 $vue->addMethod("testMethod","console.log('ok')");
+$vue->onBeforeMount("alert('Before mount ok');");

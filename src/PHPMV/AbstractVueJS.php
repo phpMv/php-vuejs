@@ -3,15 +3,17 @@ namespace PHPMV;
 
 use PHPMV\parts\VueData;
 use PHPMV\parts\VueMethods;
+use PHPMV\parts\VueHooks;
+use PHPMV\parts\VueHook;
 
 use PHPMV\js\JavascriptUtils;
 use PHPMV\parts\VueComputeds;
 
 /**
  * Created by PhpStorm.
- * User: Guillaume
- * Date: 13/11/2020
- * Time: 22:25
+ * User: qgorak
+ * Date: 19/11/2020
+ * Time: 14:20
  */
 class AbstractVueJS {
 	protected $data;
@@ -23,6 +25,8 @@ class AbstractVueJS {
 	protected $hooks;
 	
 	
+
+
 	public function __construct() {
 	    $this->data= new VueData();
 	    $this->methods= new VueMethods();
@@ -30,7 +34,84 @@ class AbstractVueJS {
 	    $this->watcher=null;
 	    $this->directives=null;
 	    $this->filters=null;
-	    $this->hooks=array();
+	    $this->hooks=new VueHooks();
+	}
+	
+	public function addHook(string $name,string $body) {
+		$this->hooks->add($name,$body);
+	}
+	
+	/**
+	 * Adds code (body) for the beforeCreate hook
+	 * @param body the code to execute
+	 */
+	public function onBeforeCreate(string $body) {
+		$this->addHook("beforeCreate", $body);
+	}
+	
+	/**
+	 * Adds code (body) for the created hook
+	 * @param body the code to execute
+	 */
+	public function onCreated(string $body) {
+		$this->addHook("created", $body);
+	}
+	
+	/**
+	 * Adds code (body) for the beforeMount hook
+	 * @param body the code to execute
+	 */
+	public function onBeforeMount(string $body) {
+		$this->addHook("beforeMount", $body);
+	}
+	
+	/**
+	 * Adds code (body) for the mounted hook
+	 * @param body the code to execute
+	 */
+	public function onMounted(string $body) {
+		$this->addHook("mounted", body);
+	}
+	
+	/**
+	 * Adds code (body) for the beforeUpdate hook
+	 * @param body the code to execute
+	 */
+	public function onBeforeUpdate(string $body) {
+		$this->addHook("beforeUpdate", $body);
+	}
+	
+	/**
+	 * Adds code (body) for the updated hook
+	 * @param body the code to execute
+	 */
+	public function onUpdated(string $body) {
+		$this->addHook("updated", $body);
+	}
+	
+	/**
+	 * Adds code (body) for the updated hook
+	 * wait until the entire view has been re-rendered with $nextTick
+	 * @param body the code to execute
+	 */
+	public function onUpdatedNextTick(string $body) {
+		$this->addHook("updated", "this.\$nextTick(function () {".body."})");
+	}
+	
+	/**
+	 * Adds code (body) for the beforeDestroy hook
+	 * @param body the code to execute
+	 */
+	public function onBeforeDestroy(string $body) {
+		$this->addHook("beforeDestroy", body);
+	}
+	
+	/**
+	 * Adds code (body) for the destroyed hook
+	 * @param body the code to execute
+	 */
+	public function onDestroyed(string $body) {
+		$this->addHook("destroyed", body);
 	}
 
 	public function addData(string $name,$value):void {
@@ -72,4 +153,13 @@ class AbstractVueJS {
 	public function getWatcher():string {
 	    return $this->watcher;
 	}
+	
+	public function getHooks() {
+		return $this->hooks;
+	}
+	
+	public function setHooks($hooks) {
+		$this->hooks = $hooks;
+	}
+	
 }

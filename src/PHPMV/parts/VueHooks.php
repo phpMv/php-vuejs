@@ -1,6 +1,7 @@
 <?php
 namespace PHPMV\parts;
 
+
 /**
  * PHPMV$VueJS
  * This class is part of php-vuejs
@@ -9,22 +10,21 @@ namespace PHPMV\parts;
  * @version 1.0.0
  *
  */
-class VueMethods extends VuePart {
-    
-    public function add(string $name, string $body, string $params=null){
-        $vm = new VueMethod($body,explode(",",$params));   
-        parent::put($name,$vm->__toString());
-    }
-    
+class VueHooks extends VuePart {
+	
+	public function add(string $name, string $body){
+		$vh = new VueHook($body);
+		parent::put($name,$vh->__toString());
+	}
+	
 	public function __toString():string{
 		$data=parent::__toString();
 		if($data!=""){
 			$variables=['!data'=>$data];
-			$script=file_get_contents(__DIR__ . '/../template/methods',true);
+			$script=file_get_contents(__DIR__ . '/../template/hooks',true);
 			$script=str_replace(array_keys($variables),$variables,$script);
 			return $script;
 		}
 		return "";
 	}
 }
-

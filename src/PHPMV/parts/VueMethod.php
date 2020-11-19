@@ -51,7 +51,7 @@ class VueMethod {
     }
     
 	public function __toString():string{
-	    return "!!#function(".implode(",",$this->getParams())."){".$this->getBody()."}!!#";
+	    return "!!#function(".implode(",",$this->getParams())."){".$this->getBody()."} !!#";
 	}
 }
 
