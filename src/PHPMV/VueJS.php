@@ -28,7 +28,7 @@ class VueJS extends AbstractVueJS{
 	 * @return string
 	 */
 	public function __toString():string{
-	    $variables=['!app'=>$this->getApp(),'!vuetify'=>'new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods,'!computeds'=>$this->computeds];
+	    $variables=['!app'=>$this->getApp(),'!vuetify'=>',vuetify: new Vuetify()','!data'=>$this->data,'!methods'=>$this->methods,'!computeds'=>$this->computeds];
 	    $script=file_get_contents("template/vuejs",true);
 	    $script=str_replace(array_keys($variables),$variables,$script);
 	    $script=JavascriptUtils::wrapScript($script);

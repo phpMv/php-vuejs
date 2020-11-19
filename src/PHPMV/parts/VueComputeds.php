@@ -12,7 +12,12 @@ class VueComputeds extends VuePart {
     }
     
     public function __toString():string{
-        return parent::__toString();
+    	$data=parent::__toString();
+    	if($data!=""){
+    		$variables=['!data'=>$data];
+    		$script=file_get_contents("template/computeds",true);
+    		$script=str_replace(array_keys($variables),$variables,$script);
+    		return $script;
     }
     
 }
