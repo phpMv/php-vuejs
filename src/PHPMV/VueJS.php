@@ -9,9 +9,8 @@ namespace PHPMV;
  * @version 1.0.0
  *
  */
-<<<<<<< Updated upstream
-class VueJS {
-=======
+use PHPMV\js\JavascriptUtils;
+
 class VueJS extends AbstractVueJS{
 	protected $app="'#app'"; //this is the default identifier the vue wrapper
 	protected $useAxios;
@@ -34,6 +33,7 @@ class VueJS extends AbstractVueJS{
 	    $script=JavascriptUtils::wrapScript($script);
 	    return $script;
 	}	
->>>>>>> Stashed changes
 }
-
+$vue=new VueJS();
+$vue->addData("testData","value");
+$vue->addMethod("testMethod","console.log('ok')");

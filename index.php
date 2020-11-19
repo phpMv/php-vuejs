@@ -21,7 +21,7 @@ require "src/PHPMV/VueJS.php";
 <v-app>
 <template>
   <v-btn 
-  v-on:click="test"
+  v-on:click="testMethod"
   block>
     {{testData}}
   </v-btn>
