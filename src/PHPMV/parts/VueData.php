@@ -1,6 +1,9 @@
 <?php
 namespace PHPMV\parts;
 
+use PHPMV\core\VueLibrary;
+use PHPMV\core\TemplateParser;
+
 /**
  * PHPMV$VueJS
  * This class is part of php-vuejs
@@ -14,10 +17,10 @@ class VueData extends VuePart {
 	public function __toString():string{
 		$data=parent::__toString();
 		if($data!=""){
-			$variables=['!data'=>$data];
-			$script=file_get_contents(__DIR__ . '/../template/data',true);
-			$script=str_replace(array_keys($variables),$variables,$script);
-			return $script;
+		    $this->renderTemplate = new TemplateParser(); //load the template file
+		    $this->renderTemplate->loadTemplatefile(VueLibrary::getTemplateFolder() . '/data'); //parse the template with some variables
+		    $result=$this->renderTemplate->parse(['data'=>$data]);
+		    return $result;
 		}
 		return "";
 	}

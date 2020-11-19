@@ -9,6 +9,8 @@ namespace PHPMV;
  * @version 1.0.0
  *
  */
+use PHPMV\core\TemplateParser;
+use PHPMV\core\VueLibrary;
 use PHPMV\js\JavascriptUtils;
 
 class VueJS extends AbstractVueJS{
@@ -27,12 +29,19 @@ class VueJS extends AbstractVueJS{
 	 * @return string
 	 */
 	public function __toString():string{
-		$variables=['!app'=>$this->getApp(),'!vuetify'=>',vuetify: new Vuetify()','!data'=>$this->data,'!hooks'=>$this->hooks,'!methods'=>$this->methods,'!computeds'=>$this->computeds];
-	    $script=file_get_contents("template/vuejs",true);
-	    $script=str_replace(array_keys($variables),$variables,$script);
-	    $script=str_replace(['!!#{','}!!#','"!!#','!!#"'],"",$script);
-	    $script=JavascriptUtils::wrapScript($script);
-	    return $script;
+	    $this->renderTemplate = new TemplateParser(); //load the template file
+	    $this->renderTemplate->loadTemplatefile(VueLibrary::getTemplateFolder() . '/vuejs'); //parse the template with some variables
+	    $result=$this->renderTemplate->parse([
+	        'app'=>$this->getApp(),
+	        'vuetify'=>',vuetify: new Vuetify()',
+	        'data'=>$this->data,
+	        'hooks'=>$this->hooks,
+	        'methods'=>$this->methods,
+	        'computeds'=>$this->computeds]);
+	    $result=str_replace(['!!#{','}!!#','"!!#','!!#"'],"",$result);
+	    $result=JavascriptUtils::wrapScript($result);
+	    return $result;
+	    
 	}	
 }
 $vue=new VueJS();

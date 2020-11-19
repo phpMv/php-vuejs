@@ -1,6 +1,10 @@
 <?php
 namespace PHPMV\parts;
 
+use PHPMV\core\VueLibrary;
+use PHPMV\core\TemplateParser;
+use PHPMV\js\JavascriptUtils;
+
 
 /**
  * PHPMV$VueJS
@@ -20,10 +24,10 @@ class VueHooks extends VuePart {
 	public function __toString():string{
 		$data=parent::__toString();
 		if($data!=""){
-			$variables=['!data'=>$data];
-			$script=file_get_contents(__DIR__ . '/../template/hooks',true);
-			$script=str_replace(array_keys($variables),$variables,$script);
-			return $script;
+		    $this->renderTemplate = new TemplateParser(); //load the template file
+		    $this->renderTemplate->loadTemplatefile(VueLibrary::getTemplateFolder() . '/hooks'); //parse the template with some variables
+		    $result=$this->renderTemplate->parse(['data'=>$data]);
+		    return $result;
 		}
 		return "";
 	}

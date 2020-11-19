@@ -33,6 +33,6 @@ class VueHook {
 	}
 	
 	public function __toString():string{
-		return "!!#function(){".$this->getBody()."} !!#";
+		return "!!# function(){".$this->getBody()."} !!#";
 	}
 }
