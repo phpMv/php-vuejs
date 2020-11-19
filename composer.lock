@@ -1,19 +1,142 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92883dc0a9a0ebd7ddae8a935b450909",
-    "packages": [],
+    "content-hash": "4823aa0d0164d590a2da681923fd6100",
+    "packages": [
+        {
+            "name": "phpmv/php-ajax",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpMv/php-ajax.git",
+                "reference": "3e981921c393e2bc0c4e9a7ecacd85485a2e43b9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpMv/php-ajax/zipball/3e981921c393e2bc0c4e9a7ecacd85485a2e43b9",
+                "reference": "3e981921c393e2bc0c4e9a7ecacd85485a2e43b9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4",
+                "phpmv/php-ui-common": "dev-main"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1",
+                "codeception/module-asserts": "^1.0.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPMV\\": "src/PHPMV/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Jean-Christophe HERON",
+                    "email": "myaddressmail@gmail.com",
+                    "role": "Lead developer"
+                }
+            ],
+            "description": "Ajax requests with PHP using Axios",
+            "keywords": [
+                "axios",
+                "framework",
+                "library",
+                "php",
+                "reactjs",
+                "vuejs"
+            ],
+            "support": {
+                "issues": "https://github.com/phpMv/php-ajax/issues",
+                "source": "https://github.com/phpMv/php-ajax/tree/main"
+            },
+            "time": "2020-11-13T22:50:18+00:00"
+        },
+        {
+            "name": "phpmv/php-ui-common",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpMv/php-ui-common.git",
+                "reference": "c3aa2d538dd197b842aef01e75b15112b4231673"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpMv/php-ui-common/zipball/c3aa2d538dd197b842aef01e75b15112b4231673",
+                "reference": "c3aa2d538dd197b842aef01e75b15112b4231673",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1",
+                "codeception/module-asserts": "^1.0.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPMV\\": "src/PHPMV/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Jean-Christophe HERON",
+                    "email": "myaddressmail@gmail.com",
+                    "role": "Lead developer"
+                }
+            ],
+            "description": "Common classes for php-ui libraries",
+            "keywords": [
+                "framework",
+                "library",
+                "php",
+                "reactjs",
+                "vuejs"
+            ],
+            "support": {
+                "issues": "https://github.com/phpMv/php-ui-common/issues",
+                "source": "https://github.com/phpMv/php-ui-common/tree/main"
+            },
+            "time": "2020-11-13T22:49:52+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "phpmv/php-ui-common": 20,
+        "phpmv/php-ajax": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.4"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
