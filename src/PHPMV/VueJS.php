@@ -40,4 +40,5 @@ $vue=new VueJS();
 $vue->addData("testData","'value'");
 $vue->addData("testData1", "'valueModified'");
 $vue->addMethod("testMethod","this.testData=this.testData1");
+$vue->addComputed("testComputed","this.testData1='newdata'","var names = v");
 $vue->onBeforeMount("alert('Before mount ok');");

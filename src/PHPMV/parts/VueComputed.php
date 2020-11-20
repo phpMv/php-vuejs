@@ -34,7 +34,7 @@ class VueComputed extends VuePart {
         $this->set = $set;
     }
 
-    public function __construct(string $get,string $set) {
+    public function __construct(string $get,string $set=null) {
         $this->setGet($get);
         $this->setSet($set);
     }
@@ -43,6 +43,6 @@ class VueComputed extends VuePart {
         if(is_null($this->set)){
             return "!!#function(){".$this->get."}!!#";
         }
-        return "!!#function(){".$this->get."}!!#, set: !!#function(v){".$this->set."}}!!#";
+        return "!!#function(){".$this->get."}!!#, set: !!#function(v){".$this->set."}!!#";
     }
 }

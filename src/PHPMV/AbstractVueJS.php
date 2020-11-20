@@ -16,7 +16,7 @@ use PHPMV\parts\VueHook;
 class AbstractVueJS {
 	protected $data;
 	protected $methods;
-	protected $computed;
+	protected $computeds;
 	protected $watcher;
 	protected $directives;
 	protected $filters;
