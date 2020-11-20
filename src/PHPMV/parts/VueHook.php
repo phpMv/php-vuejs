@@ -14,7 +14,6 @@ class VueHook {
 	
 	protected $body;
 	
-
 	public function getBody():string
 	{
 		return $this->body;
@@ -33,6 +32,6 @@ class VueHook {
 	}
 	
 	public function __toString():string{
-		return "!!# function(){".$this->getBody()."} !!#";
+	    return "!!# function(){".$this->getBody()."} !!#";
 	}
 }

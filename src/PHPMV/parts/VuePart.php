@@ -2,6 +2,7 @@
 namespace PHPMV\parts;
 
 use PHPMV\js\JavascriptUtils;
+
 /**
  * PHPMV$VueJS
  * This class is part of php-vuejs
@@ -31,9 +32,7 @@ class VuePart {
 	        return "";
 	    }
 	    else{
-	        $retour=json_encode(JavascriptUtils::toJson($this->getElements()));
-	        $retour=json_decode($retour);
-	        return $retour;
+	        return JavascriptUtils::arrayToJsObject($this->elements);
 	    }
 	}
 }

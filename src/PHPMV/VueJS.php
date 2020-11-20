@@ -1,6 +1,8 @@
 <?php
 namespace PHPMV;
 
+use PHPMV\js\JavascriptUtils;
+
 /**
  * PHPMV$VueJS
  * This class is part of php-vuejs
@@ -9,10 +11,6 @@ namespace PHPMV;
  * @version 1.0.0
  *
  */
-use PHPMV\core\TemplateParser;
-use PHPMV\core\VueLibrary;
-use PHPMV\js\JavascriptUtils;
-
 class VueJS extends AbstractVueJS{
 	protected $app="'#app'"; //this is the default identifier the vue wrapper
 	protected $useAxios;
@@ -29,22 +27,17 @@ class VueJS extends AbstractVueJS{
 	 * @return string
 	 */
 	public function __toString():string{
-	    $this->renderTemplate = new TemplateParser(); //load the template file
-	    $this->renderTemplate->loadTemplatefile(VueLibrary::getTemplateFolder() . '/vuejs'); //parse the template with some variables
-	    $result=$this->renderTemplate->parse([
-	        'app'=>$this->getApp(),
-	        'vuetify'=>',vuetify: new Vuetify()',
-	        'data'=>$this->data,
-	        'hooks'=>$this->hooks,
-	        'methods'=>$this->methods,
-	        'computeds'=>$this->computeds]);
-	    $result=str_replace(['!!#{','}!!#','"!!#','!!#"'],"",$result);
-	    $result=JavascriptUtils::wrapScript($result);
-	    return $result;
-	    
+	    $this->script['el']=$this->getApp();
+	    $script="const app=new Vue(";
+	    $script.=JavascriptUtils::arrayToJsObject($this->script);
+	    $script=str_replace("!!#","",$script);
+	    $script.=")";
+	    $script=JavascriptUtils::wrapScript($script);
+	    return $script;
 	}	
 }
 $vue=new VueJS();
-$vue->addData("testData","value");
-$vue->addMethod("testMethod","console.log('ok')");
+$vue->addData("testData","'value'");
+$vue->addData("testData1", "'valueModified'");
+$vue->addMethod("testMethod","this.testData=this.testData1");
 $vue->onBeforeMount("alert('Before mount ok');");
