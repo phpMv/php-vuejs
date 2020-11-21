@@ -1,10 +1,9 @@
 <?php
 namespace PHPMV;
 
-use PHPMV\parts\VueData;
 use PHPMV\parts\VueMethods;
 use PHPMV\parts\VueComputeds;
-use PHPMV\parts\VueHook;
+use PHPMV\js\JavascriptUtils;
 
 /**
  * Created by PhpStorm.
@@ -13,6 +12,7 @@ use PHPMV\parts\VueHook;
  * Time: 14:20
  */
 class AbstractVueJS {
+	protected $data;
 	protected $methods;
 	protected $computeds;
 	protected $watcher;
@@ -22,13 +22,14 @@ class AbstractVueJS {
 	protected $script;
 	
 	public function __construct() {
+	    $this->data=array();
 	    $this->methods= new VueMethods();
 	    $this->computeds=new VueComputeds();
 	    $this->watcher=null;
 	    $this->directives=null;
 	    $this->filters=null;
 	    $this->hooks=array();
-	    $this->script=array("el"=>null,"vuetify"=>"new Vuetify()","data"=>"{}");
+	    $this->script=array();
 	}
 	
 	public function addHook(string $name,string $body) {
@@ -109,13 +110,21 @@ class AbstractVueJS {
 	}
 
 	public function addData(string $name,$value):void {
-	    $this->data[$name]= $value;
-	    $this->script['data']=$this->data;
+	    if(!empty($this->data)){
+	        $this->data["data"][$name]=$value;
+	    }
+	    else{
+	        $this->data["data"]=array($name=>$value);
+	    }
 	}
 
 	public function addDataRaw(string $name,string $value):void {
-	    $this->data[$name]="!!%$value%!!";
-	    $this->script['data']=$this->data;
+	    if(!empty($this->data)){
+	       $this->data["data"][$name]="!!%$value%!!";
+	    }
+	    else{
+	        $this->data["data"]=array($name=>"!!%$value%!!");
+	    }
 	}
 	
 	public function addMethod(string $name,string $body, string $params = null) {

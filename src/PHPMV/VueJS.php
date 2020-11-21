@@ -13,34 +13,34 @@ use PHPMV\utils\JsUtils;
  *
  */
 class VueJS extends AbstractVueJS{
-	protected $app="'#app'"; //this is the default identifier the vue wrapper
 	protected $useAxios;
-	protected $vuetify;
-	
-	/**
-	 * @return string
-	 */
-	public function getApp():string{
-		return $this->app;
-	}
+	protected $configuration=array();
 	
 	/**
 	 * @return string
 	 */
 	public function __toString():string{
-	    $this->script['el']=$this->getApp();
-	    $script="const app=new Vue(";
-	    $script.=JavascriptUtils::arrayToJsObject(array_merge($this->script,$this->hooks));
+	    $script="";
+	    if($this->useAxios){$script.="Vue.prototype.\$http = axios;\n";}
+	    $script.="const app=new Vue(";
+	    $script.=JavascriptUtils::arrayToJsObject(array_merge($this->configuration,$this->data,$this->script,$this->hooks));
 	    $script=JsUtils::cleanJSONFunctions($script);
 	    $script.=")";
 	    $script=JavascriptUtils::wrapScript($script);
 	    return $script;
 	}	
+	
+	public function __construct(string $app="#app",bool $vuetify=false,bool $useAxios=false){
+	    parent::__construct();
+	    $this->configuration['el']='"'.$app.'"';
+	    if($vuetify){$this->configuration['vuetify']="new Vuetify()";}; 
+	    $this->useAxios=$useAxios;
+	}
 }
-$vue=new VueJS();
+$vue=new VueJS("#app",true,false);
 $vue->addData("testData",array(0,1,2));
 $vue->addDataRaw("testData1","[3,4,5]");
 $vue->addMethod("testMethod","this.testData=this.testData1");
 $vue->addMethod("testMethod1","this.testData=1");
 $vue->addComputed("testComputed","this.testData1='newdata'","var names = v");
-//$vue->onBeforeMount("alert('Before mount ok');");
+$vue->onBeforeMount("alert('Before mount ok');");
