@@ -1,10 +1,6 @@
 <?php
 namespace PHPMV;
 
-use PHPMV\parts\VueMethod;
-use PHPMV\parts\VueComputed;
-use PHPMV\parts\VueWatcher;
-
 /**
  * Created by PhpStorm.
  * User: qgorak
@@ -31,7 +27,7 @@ class AbstractVueJS {
 	}
 	
 	public function addHook(string $name,string $body):void {
-	    $this->hooks[$name] = "%!! function(){ $body } !!%";;
+	    $this->hooks[$name] = "%!! function(){ $body } !!%";
 	}
 	
 	/**
@@ -126,32 +122,30 @@ class AbstractVueJS {
 	}
 	
 	public function addMethod(string $name,string $body, array $params = []):void {
-	    $vm=new VueMethod($body, $params);
 	    if(!empty($this->methods)){
-	        $this->methods["methods"][$name]=$vm->__toString();
+	        $this->methods["methods"][$name]="!!%function(".implode(",",$params)."){".$body."}%!!";
 	    }
 	    else{
-	        $this->methods["methods"]=[$name=>$vm->__toString()];
+	        $this->methods["methods"]=[$name=>"!!%function(".implode(",",$params)."){".$body."}%!!"];
 	    }
 	}
 	
 	public function addComputed(string $name,string $get,string $set=null):void {
-	    $vc=new VueComputed($name, $get, $set);
+	    $vc=(is_null($set)) ? "!!%function(){".$get."}%!!" : "!!%function(){".$get."}, set: function(v){".$set."}%!!";
 	    if(!empty($this->computeds)){
-	        $this->computeds["computeds"][$name]=$vc->__toString();
+	        $this->computeds["computeds"][$name]=$vc;
 	    }
 	    else{
-	        $this->computeds["computeds"]=[$name=>$vc->__toString()];
+	        $this->computeds["computeds"]=[$name=>$vc];
 	    }
 	}
 	
 	public function addWatcher(string $var,string $body,array $params=[]):void {
-	    $vw=new VueWatcher($var,$body,$params);
 	    if(!empty($this->watchers)){
-	        $this->watchers["watch"][$var]=$vw->__toString();
+	        $this->watchers["watch"][$var]="!!%function(".implode(',',$params)."){".$body."}%!!";
 	    }
 	    else{
-	        $this->watchers["watch"]=[$var=>$vw->__toString()];
+	        $this->watchers["watch"]=[$var=>"!!%function(".implode(',',$params)."){".$body."}%!!"];
 	    }
 	}
 	

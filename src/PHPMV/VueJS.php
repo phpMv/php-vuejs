@@ -65,4 +65,5 @@ $vue->addData("checkbox",false);
 $vue->addMethod("validate","this.\$refs.form.validate()");
 $vue->addMethod("reset","this.\$refs.form.reset()");
 $vue->addWatcher("name","if(this.name=='Guillaume'){console.log('watcher succeed')}");
+$vue->addComputed("testComputed","console.log('ok')");
 $vue->onMounted("alert('The page is created');");
