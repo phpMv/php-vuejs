@@ -24,11 +24,8 @@ class VueHook {
 		$this->body = $body;
 	}
 	
-
-	
 	public function __construct(string $body) {
 		$this->setBody($body);
-
 	}
 	
 	public function __toString():string{

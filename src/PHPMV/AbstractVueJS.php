@@ -3,7 +3,6 @@ namespace PHPMV;
 
 use PHPMV\parts\VueData;
 use PHPMV\parts\VueMethods;
-use PHPMV\parts\VueHooks;
 use PHPMV\parts\VueComputeds;
 use PHPMV\parts\VueHook;
 
@@ -30,12 +29,13 @@ class AbstractVueJS {
 	    $this->watcher=null;
 	    $this->directives=null;
 	    $this->filters=null;
-	    $this->hooks=new VueHooks();
+	    $this->hooks=array();
 	    $this->script=array("el"=>null,"vuetify"=>"new Vuetify()");
 	}
 	
 	public function addHook(string $name,string $body) {
-		$this->hooks->add($name,$body);
+	    $vh=new VueHook($body);
+	    $this->hooks[$name] = $vh->__toString();
 	}
 	
 	/**
@@ -43,9 +43,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onBeforeCreate(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("beforeCreate", $body);
-		$this->script['beforeCreate']=$vh->__toString();
 	}
 	
 	/**
@@ -53,9 +51,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onCreated(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("created", $body);
-		$this->script['created']=$vh->__toString();
 	}
 	
 	/**
@@ -63,9 +59,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onBeforeMount(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("beforeMount", $body);
-		$this->script['beforeMount']=$vh->__toString();
 	}
 	
 	/**
@@ -73,9 +67,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onMounted(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("mounted", body);
-		$this->script['mounted']=$vh->__toString();
 	}
 	
 	/**
@@ -83,9 +75,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onBeforeUpdate(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("beforeUpdate", $body);
-		$this->script['beforeUpdate']=$vh->__toString();
 	}
 	
 	/**
@@ -93,9 +83,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onUpdated(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("updated", $body);
-		$this->script['updated']=$vh->__toString();
 	}
 	
 	/**
@@ -112,9 +100,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onBeforeDestroy(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("beforeDestroy", $body);
-		$this->script['beforeDestroy']= $vh->__toString();
 	}
 	
 	/**
@@ -122,9 +108,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onDestroyed(string $body) {
-	    $vh=new VueHook($body);
 		$this->addHook("destroyed", body);
-		$this->script['destroyed']=$vh->__toString();
 	}
 
 	public function addData(string $name,$value):void {

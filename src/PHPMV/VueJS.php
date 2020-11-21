@@ -29,7 +29,7 @@ class VueJS extends AbstractVueJS{
 	public function __toString():string{
 	    $this->script['el']=$this->getApp();
 	    $script="const app=new Vue(";
-	    $script.=JavascriptUtils::arrayToJsObject($this->script);
+	    $script.=JavascriptUtils::arrayToJsObject(array_merge($this->script,$this->hooks));
 	    $script=str_replace("!!#","",$script);
 	    $script.=")";
 	    $script=JavascriptUtils::wrapScript($script);
