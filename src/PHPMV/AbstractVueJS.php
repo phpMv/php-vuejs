@@ -3,6 +3,7 @@ namespace PHPMV;
 
 use PHPMV\parts\VueMethod;
 use PHPMV\parts\VueComputed;
+use PHPMV\parts\VueWatcher;
 
 /**
  * Created by PhpStorm.
@@ -14,7 +15,7 @@ class AbstractVueJS {
 	protected $data;
 	protected $methods;
 	protected $computeds;
-	protected $watcher;
+	protected $watchers;
 	protected $directives;
 	protected $filters;
 	protected $hooks;
@@ -23,7 +24,7 @@ class AbstractVueJS {
 	    $this->data=[];
 	    $this->methods=[];
 	    $this->computeds=[];
-	    $this->watcher=[];
+	    $this->watchers=[];
 	    $this->directives=[];
 	    $this->filters=[];
 	    $this->hooks=[];
@@ -62,7 +63,7 @@ class AbstractVueJS {
 	 * @param body the code to execute
 	 */
 	public function onMounted(string $body) {
-		$this->addHook("mounted", body);
+		$this->addHook("mounted", $body);
 	}
 	
 	/**
@@ -144,6 +145,16 @@ class AbstractVueJS {
 	    }
 	}
 	
+	public function addWatcher(string $var,string $body,array $params=[]):void{
+	    $vw=new VueWatcher($var,$body,$params);
+	    if(!empty($this->watchers)){
+	        $this->watchers["watch"][$var]=$vw->__toString();
+	    }
+	    else{
+	        $this->watchers["watch"]=[$var=>$vw->__toString()];
+	    }
+	}
+	
 	public function getComputeds():string {
 		return $this->computeds;
 	}
@@ -152,8 +163,8 @@ class AbstractVueJS {
 		$this->computeds = $computeds;
 	}
 
-	public function setWatcher(string $watcher) {
-		$this->watcher = $watcher;
+	public function setWatchers(string $watchers) {
+		$this->watchers = $watchers;
 	}
 	
 	public function getData():array {
@@ -164,8 +175,8 @@ class AbstractVueJS {
 	    return $this->method;
 	}
 	
-	public function getWatcher():string {
-	    return $this->watcher;
+	public function getWatchers():string {
+	    return $this->watchers;
 	}
 	
 	public function getHooks() {

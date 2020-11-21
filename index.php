@@ -5,7 +5,7 @@ require "src/PHPMV/VueJS.php";
 
 ?>
 <!doctype html>
-<html lang="fr">
+<html lang="fr" style="overflow-y:hidden;">
 <head>
   	<meta charset="utf-8">
   	<title>Test</title>
@@ -17,14 +17,60 @@ require "src/PHPMV/VueJS.php";
   	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <body>
-<div id="app">
+<div id="app" style="width:80%;margin:50px auto;">
 <v-app>
 <template>
-  <v-btn 
-  v-on:click="testMethod"
-  block>
-    {{testData}}
-  </v-btn>
+  <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+  >
+    <v-text-field
+      v-model="name"
+      :counter="10"
+      :rules="nameRules"
+      label="What's your name ?"
+      required
+    ></v-text-field>
+
+    <v-text-field
+      v-model="email"
+      label="Give us your E-mail"
+      required
+    ></v-text-field>
+
+    <v-select
+      v-model="select"
+      :items="items"
+      :rules="[v => !!v || 'Item is required']"
+      label="How fun is this form ?"
+      required
+    ></v-select>
+
+    <v-checkbox
+      v-model="checkbox"
+      :rules="[v => !!v || 'You must agree to continue!']"
+      label="Do you agree?"
+      required
+    ></v-checkbox>
+
+    <v-btn
+      :disabled="!valid"
+      color="primary"
+      class="mr-4"
+      @click="validate"
+    >
+      Validate
+    </v-btn>
+
+    <v-btn
+      color="error"
+      class="mr-4"
+      @click="reset"
+    >
+      Reset Form
+    </v-btn>
+  </v-form>
 </template>
 <v-app>
 </div>

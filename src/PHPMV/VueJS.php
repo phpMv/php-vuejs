@@ -23,7 +23,7 @@ class VueJS extends AbstractVueJS{
 	    $script="";
 	    if($this->useAxios){$script.="Vue.prototype.\$http = axios;\n";}
 	    $script.="const app=new Vue(";
-	    $script.=JavascriptUtils::arrayToJsObject(array_merge($this->configuration,$this->data,$this->methods,$this->computeds,$this->hooks));
+	    $script.=JavascriptUtils::arrayToJsObject(array_merge($this->configuration,$this->data,$this->methods,$this->watchers,$this->computeds,$this->hooks));
 	    $script=JsUtils::cleanJSONFunctions($script);
 	    $script.=")";
 	    $script=JavascriptUtils::wrapScript($script);
@@ -37,10 +37,16 @@ class VueJS extends AbstractVueJS{
 	    $this->useAxios=$useAxios;
 	}
 }
-$vue=new VueJS("#app",true,false);
-$vue->addData("testData",[0,1,2]);
-$vue->addDataRaw("testData1","[3,4,5]");
-$vue->addMethod("testMethod","this.testData=this.testData1");
-$vue->addMethod("testMethod1","this.testData=1");
-$vue->addComputed("testComputed","this.testData1='newdata'","var names = v");
-$vue->onBeforeMount("alert('Before mount ok');");
+
+$vue=new VueJS("v-app",true,false);
+$vue->addData("valid",true);
+$vue->addDataRaw("name","''");
+$vue->addDataRaw("nameRules","[v => !!v || 'Name is required',v => (v && v.length <= 10) || 'Name must be less than 10 characters']");
+$vue->addDataRaw("email","''");
+$vue->addData("select",null);
+$vue->addData("items",['It is great fun','Fun enough to enjoy my day','It wasn\'t, was it ?']);
+$vue->addData("checkbox",false);
+$vue->addMethod("validate","this.\$refs.form.validate()");
+$vue->addMethod("reset","this.\$refs.form.reset()");
+$vue->addWatcher("name","if(this.name=='Guillaume'){console.log('watcher succeed')}");
+$vue->onMounted("alert('The page is created');");
