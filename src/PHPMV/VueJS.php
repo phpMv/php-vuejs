@@ -16,10 +16,17 @@ class VueJS extends AbstractVueJS{
 	protected $useAxios;
 	protected $configuration=[];
 	
+	public function __construct(string $app="#app",bool $vuetify=false,bool $useAxios=false) {
+	    parent::__construct();
+	    $this->configuration['el']='"'.$app.'"';
+	    if($vuetify){$this->configuration['vuetify']="new Vuetify()";};
+	    $this->useAxios=$useAxios;
+	}
+	
 	/**
 	 * @return string
 	 */
-	public function __toString():string{
+	public function __toString():string {
 	    $script="";
 	    if($this->useAxios){$script.="Vue.prototype.\$http = axios;\n";}
 	    $script.="const app=new Vue(";
@@ -30,11 +37,20 @@ class VueJS extends AbstractVueJS{
 	    return $script;
 	}	
 	
-	public function __construct(string $app="#app",bool $vuetify=false,bool $useAxios=false){
-	    parent::__construct();
-	    $this->configuration['el']='"'.$app.'"';
-	    if($vuetify){$this->configuration['vuetify']="new Vuetify()";}; 
+	public function getUseAxios():bool {
+	    return $this->useAxios;
+	}
+	
+	public function setUseAxios(bool $useAxios):void {
 	    $this->useAxios=$useAxios;
+	}
+	
+	public function getConfiguration():array {
+	    return $this->configuration;
+	}
+	
+	public function setConfiguration(array $configuration):void {
+	    $this->configuration=$configuration;
 	}
 }
 

@@ -30,7 +30,7 @@ class AbstractVueJS {
 	    $this->hooks=[];
 	}
 	
-	public function addHook(string $name,string $body) {
+	public function addHook(string $name,string $body):void {
 	    $this->hooks[$name] = "%!! function(){ $body } !!%";;
 	}
 	
@@ -38,7 +38,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the beforeCreate hook
 	 * @param body the code to execute
 	 */
-	public function onBeforeCreate(string $body) {
+	public function onBeforeCreate(string $body):void {
 		$this->addHook("beforeCreate", $body);
 	}
 	
@@ -46,7 +46,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the created hook
 	 * @param body the code to execute
 	 */
-	public function onCreated(string $body) {
+	public function onCreated(string $body):void {
 		$this->addHook("created", $body);
 	}
 	
@@ -54,7 +54,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the beforeMount hook
 	 * @param body the code to execute
 	 */
-	public function onBeforeMount(string $body) {
+	public function onBeforeMount(string $body):void {
 		$this->addHook("beforeMount", $body);
 	}
 	
@@ -62,7 +62,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the mounted hook
 	 * @param body the code to execute
 	 */
-	public function onMounted(string $body) {
+	public function onMounted(string $body):void {
 		$this->addHook("mounted", $body);
 	}
 	
@@ -70,7 +70,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the beforeUpdate hook
 	 * @param body the code to execute
 	 */
-	public function onBeforeUpdate(string $body) {
+	public function onBeforeUpdate(string $body):void {
 		$this->addHook("beforeUpdate", $body);
 	}
 	
@@ -78,7 +78,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the updated hook
 	 * @param body the code to execute
 	 */
-	public function onUpdated(string $body) {
+	public function onUpdated(string $body):void {
 		$this->addHook("updated", $body);
 	}
 	
@@ -87,7 +87,7 @@ class AbstractVueJS {
 	 * wait until the entire view has been re-rendered with $nextTick
 	 * @param body the code to execute
 	 */
-	public function onUpdatedNextTick(string $body) {
+	public function onUpdatedNextTick(string $body):void {
 		$this->addHook("updated", "this.\$nextTick(function () {".body."})");
 	}
 	
@@ -95,7 +95,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the beforeDestroy hook
 	 * @param body the code to execute
 	 */
-	public function onBeforeDestroy(string $body) {
+	public function onBeforeDestroy(string $body):void {
 		$this->addHook("beforeDestroy", $body);
 	}
 	
@@ -103,7 +103,7 @@ class AbstractVueJS {
 	 * Adds code (body) for the destroyed hook
 	 * @param body the code to execute
 	 */
-	public function onDestroyed(string $body) {
+	public function onDestroyed(string $body):void {
 		$this->addHook("destroyed", body);
 	}
 
@@ -125,7 +125,7 @@ class AbstractVueJS {
 	    }
 	}
 	
-	public function addMethod(string $name,string $body, array $params = []) {
+	public function addMethod(string $name,string $body, array $params = []):void {
 	    $vm=new VueMethod($body, $params);
 	    if(!empty($this->methods)){
 	        $this->methods["methods"][$name]=$vm->__toString();
@@ -135,7 +135,7 @@ class AbstractVueJS {
 	    }
 	}
 	
-	public function addComputed(string $name,string $get,string $set=null) {
+	public function addComputed(string $name,string $get,string $set=null):void {
 	    $vc=new VueComputed($name, $get, $set);
 	    if(!empty($this->computeds)){
 	        $this->computeds["computeds"][$name]=$vc->__toString();
@@ -145,7 +145,7 @@ class AbstractVueJS {
 	    }
 	}
 	
-	public function addWatcher(string $var,string $body,array $params=[]):void{
+	public function addWatcher(string $var,string $body,array $params=[]):void {
 	    $vw=new VueWatcher($var,$body,$params);
 	    if(!empty($this->watchers)){
 	        $this->watchers["watch"][$var]=$vw->__toString();
@@ -155,35 +155,43 @@ class AbstractVueJS {
 	    }
 	}
 	
-	public function getComputeds():string {
-		return $this->computeds;
-	}
-
-	public function setComputeds(string $computeds) {
-		$this->computeds = $computeds;
-	}
-
-	public function setWatchers(string $watchers) {
-		$this->watchers = $watchers;
-	}
-	
 	public function getData():array {
 	    return $this->data;
 	}
 	
-	public function getMethod():string {
-	    return $this->method;
+	public function setData(array $data):void {
+	    $this->data=$data;
 	}
 	
-	public function getWatchers():string {
+	public function getMethods():array {
+	    return $this->methods;
+	}
+	
+	public function setMethods(array $methods):void {
+	    $this->methods=$methods;
+	}
+	
+	public function getComputeds():array {
+		return $this->computeds;
+	}
+
+	public function setComputeds(array $computeds):void {
+		$this->computeds = $computeds;
+	}
+
+	public function getWatchers():array {
 	    return $this->watchers;
 	}
 	
-	public function getHooks() {
+	public function setWatchers(array $watchers):void {
+		$this->watchers = $watchers;
+	}
+	
+	public function getHooks():array {
 		return $this->hooks;
 	}
 	
-	public function setHooks($hooks) {
+	public function setHooks(array $hooks):void {
 		$this->hooks = $hooks;
 	}
 }

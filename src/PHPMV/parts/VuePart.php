@@ -19,21 +19,25 @@ class VuePart {
 	    $this->elements=[];
 	}
 
-	public function getElements():array {
-	    return $this->elements;
+	public function put(string $name,$value):void {
+	    $this->elements[$name]=$value;
 	}
 	
-	public function put(string $name,$value):void {
-		$this->elements[$name]=$value;
-	}
-
-	public function __toString():string{
+	public function __toString():string {
 	    if(empty($this->getElements())){
 	        return "";
 	    }
 	    else{
 	        return JavascriptUtils::arrayToJsObject($this->elements);
 	    }
+	}
+	
+	public function getElements():array {
+	    return $this->elements;
+	}
+	
+	public function setElement(array $elements):void {
+	    return $this->elements=$elements;
 	}
 }
 

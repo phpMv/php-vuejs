@@ -7,7 +7,7 @@ class VueLibrary
     
     public const VERSION = '0.0.0';
     
-    public static function getTemplateFolder() {
+    public static function getTemplateFolder():string {
         return \dirname(__FILE__) . '/templates/rev' . self::$revision;
     }
 }
