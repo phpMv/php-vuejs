@@ -4,6 +4,8 @@ namespace PHPMV;
 use PHPMV\parts\VueMethods;
 use PHPMV\parts\VueComputeds;
 use PHPMV\js\JavascriptUtils;
+use PHPMV\parts\VueMethod;
+use PHPMV\parts\VueComputed;
 
 /**
  * Created by PhpStorm.
@@ -19,17 +21,15 @@ class AbstractVueJS {
 	protected $directives;
 	protected $filters;
 	protected $hooks;
-	protected $script;
 	
 	public function __construct() {
 	    $this->data=array();
-	    $this->methods= new VueMethods();
-	    $this->computeds=new VueComputeds();
+	    $this->methods=array();
+	    $this->computeds=array();
 	    $this->watcher=null;
 	    $this->directives=null;
 	    $this->filters=null;
 	    $this->hooks=array();
-	    $this->script=array();
 	}
 	
 	public function addHook(string $name,string $body) {
@@ -127,14 +127,24 @@ class AbstractVueJS {
 	    }
 	}
 	
-	public function addMethod(string $name,string $body, string $params = null) {
-	    $this->methods->add($name, $body, $params);
-	    $this->script['methods']=$this->methods->__toString();
+	public function addMethod(string $name,string $body, array $params = array()) {
+	    $vm=new VueMethod($body, $params);
+	    if(!empty($this->methods)){
+	        $this->methods["methods"][$name]=$vm->__toString();
+	    }
+	    else{
+	        $this->methods["methods"]=array($name=>$vm->__toString());
+	    }
 	}
 	
 	public function addComputed(string $name,string $get,string $set=null) {
-	    $this->computeds->add($name, $get, $set);
-	    $this->script['computeds']=$this->computeds->__toString();
+	    $vc=new VueComputed($name, $get, $set);
+	    if(!empty($this->computeds)){
+	        $this->computeds["computeds"][$name]=$vc->__toString();
+	    }
+	    else{
+	        $this->computeds["computeds"]=array($name=>$vc->__toString());
+	    }
 	}
 	
 	public function getComputeds():string {

@@ -41,8 +41,8 @@ class VueComputed extends VuePart {
     
     public function __toString():string{
         if(is_null($this->set)){
-            return "%!!function(){".$this->get."}!!%";
+            return "!!%function(){".$this->get."}%!!";
         }
-        return "%!! function(){".$this->get."}, set: function(v){".$this->set."} !!%";
+        return "!!%function(){".$this->get."}, set: function(v){".$this->set."}%!!";
     }
 }
