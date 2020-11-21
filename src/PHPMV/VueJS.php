@@ -14,7 +14,7 @@ use PHPMV\utils\JsUtils;
  */
 class VueJS extends AbstractVueJS{
 	protected $useAxios;
-	protected $configuration=array();
+	protected $configuration=[];
 	
 	/**
 	 * @return string
@@ -38,7 +38,7 @@ class VueJS extends AbstractVueJS{
 	}
 }
 $vue=new VueJS("#app",true,false);
-$vue->addData("testData",array(0,1,2));
+$vue->addData("testData",[0,1,2]);
 $vue->addDataRaw("testData1","[3,4,5]");
 $vue->addMethod("testMethod","this.testData=this.testData1");
 $vue->addMethod("testMethod1","this.testData=1");

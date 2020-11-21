@@ -1,9 +1,6 @@
 <?php
 namespace PHPMV;
 
-use PHPMV\parts\VueMethods;
-use PHPMV\parts\VueComputeds;
-use PHPMV\js\JavascriptUtils;
 use PHPMV\parts\VueMethod;
 use PHPMV\parts\VueComputed;
 
@@ -23,13 +20,13 @@ class AbstractVueJS {
 	protected $hooks;
 	
 	public function __construct() {
-	    $this->data=array();
-	    $this->methods=array();
-	    $this->computeds=array();
-	    $this->watcher=null;
-	    $this->directives=null;
-	    $this->filters=null;
-	    $this->hooks=array();
+	    $this->data=[];
+	    $this->methods=[];
+	    $this->computeds=[];
+	    $this->watcher=[];
+	    $this->directives=[];
+	    $this->filters=[];
+	    $this->hooks=[];
 	}
 	
 	public function addHook(string $name,string $body) {
@@ -114,7 +111,7 @@ class AbstractVueJS {
 	        $this->data["data"][$name]=$value;
 	    }
 	    else{
-	        $this->data["data"]=array($name=>$value);
+	        $this->data["data"]=[$name=>$value];
 	    }
 	}
 
@@ -123,17 +120,17 @@ class AbstractVueJS {
 	       $this->data["data"][$name]="!!%$value%!!";
 	    }
 	    else{
-	        $this->data["data"]=array($name=>"!!%$value%!!");
+	        $this->data["data"]=[$name=>"!!%$value%!!"];
 	    }
 	}
 	
-	public function addMethod(string $name,string $body, array $params = array()) {
+	public function addMethod(string $name,string $body, array $params = []) {
 	    $vm=new VueMethod($body, $params);
 	    if(!empty($this->methods)){
 	        $this->methods["methods"][$name]=$vm->__toString();
 	    }
 	    else{
-	        $this->methods["methods"]=array($name=>$vm->__toString());
+	        $this->methods["methods"]=[$name=>$vm->__toString()];
 	    }
 	}
 	
@@ -143,7 +140,7 @@ class AbstractVueJS {
 	        $this->computeds["computeds"][$name]=$vc->__toString();
 	    }
 	    else{
-	        $this->computeds["computeds"]=array($name=>$vc->__toString());
+	        $this->computeds["computeds"]=[$name=>$vc->__toString()];
 	    }
 	}
 	

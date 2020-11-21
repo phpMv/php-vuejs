@@ -16,7 +16,7 @@ class VuePart {
 	protected $elements;
 
 	public function __construct() {
-	    $this->elements=array();
+	    $this->elements=[];
 	}
 
 	public function getElements():array {
