@@ -13,7 +13,6 @@ use PHPMV\parts\VueHook;
  * Time: 14:20
  */
 class AbstractVueJS {
-	protected $data;
 	protected $methods;
 	protected $computeds;
 	protected $watcher;
@@ -23,19 +22,17 @@ class AbstractVueJS {
 	protected $script;
 	
 	public function __construct() {
-	    $this->data= new VueData();
 	    $this->methods= new VueMethods();
 	    $this->computeds=new VueComputeds();
 	    $this->watcher=null;
 	    $this->directives=null;
 	    $this->filters=null;
 	    $this->hooks=array();
-	    $this->script=array("el"=>null,"vuetify"=>"new Vuetify()");
+	    $this->script=array("el"=>null,"vuetify"=>"new Vuetify()","data"=>"{}");
 	}
 	
 	public function addHook(string $name,string $body) {
-	    $vh=new VueHook($body);
-	    $this->hooks[$name] = $vh->__toString();
+	    $this->hooks[$name] = "%!! function(){ $body } !!%";;
 	}
 	
 	/**
@@ -112,13 +109,13 @@ class AbstractVueJS {
 	}
 
 	public function addData(string $name,$value):void {
-	    $this->data->put($name, $value);
-	    $this->script['data']=$this->data->__toString();
+	    $this->data[$name]= $value;
+	    $this->script['data']=$this->data;
 	}
 
 	public function addDataRaw(string $name,string $value):void {
-	    $this->data->put($name,$value."");
-	    $this->script['data']=$this->data->__toString();
+	    $this->data[$name]="!!%$value%!!";
+	    $this->script['data']=$this->data;
 	}
 	
 	public function addMethod(string $name,string $body, string $params = null) {

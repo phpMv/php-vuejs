@@ -2,6 +2,7 @@
 namespace PHPMV;
 
 use PHPMV\js\JavascriptUtils;
+use PHPMV\utils\JsUtils;
 
 /**
  * PHPMV$VueJS
@@ -30,15 +31,16 @@ class VueJS extends AbstractVueJS{
 	    $this->script['el']=$this->getApp();
 	    $script="const app=new Vue(";
 	    $script.=JavascriptUtils::arrayToJsObject(array_merge($this->script,$this->hooks));
-	    $script=str_replace("!!#","",$script);
+	    $script=JsUtils::cleanJSONFunctions($script);
 	    $script.=")";
 	    $script=JavascriptUtils::wrapScript($script);
 	    return $script;
 	}	
 }
 $vue=new VueJS();
-$vue->addData("testData","'value'");
-$vue->addData("testData1", "'valueModified'");
+$vue->addData("testData",array(0,1,2));
+$vue->addDataRaw("testData1","[3,4,5]");
 $vue->addMethod("testMethod","this.testData=this.testData1");
+$vue->addMethod("testMethod1","this.testData=1");
 $vue->addComputed("testComputed","this.testData1='newdata'","var names = v");
-$vue->onBeforeMount("alert('Before mount ok');");
+//$vue->onBeforeMount("alert('Before mount ok');");
