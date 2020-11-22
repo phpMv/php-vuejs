@@ -104,49 +104,24 @@ class AbstractVueJS {
 	}
 
 	public function addData(string $name,$value):void {
-	    if(!empty($this->data)){
-	        $this->data["data"][$name]=$value;
-	    }
-	    else{
-	        $this->data["data"]=[$name=>$value];
-	    }
+        $this->data["data"][$name]=$value;
 	}
 
 	public function addDataRaw(string $name,string $value):void {
-	    if(!empty($this->data)){
-	       $this->data["data"][$name]="!!%$value%!!";
-	    }
-	    else{
-	        $this->data["data"]=[$name=>"!!%$value%!!"];
-	    }
+        $this->data["data"][$name]="!!%$value%!!";
 	}
 	
 	public function addMethod(string $name,string $body, array $params = []):void {
-	    if(!empty($this->methods)){
-	        $this->methods["methods"][$name]="!!%function(".implode(",",$params)."){".$body."}%!!";
-	    }
-	    else{
-	        $this->methods["methods"]=[$name=>"!!%function(".implode(",",$params)."){".$body."}%!!"];
-	    }
+        $this->methods["methods"][$name]="!!%function(".implode(",",$params)."){".$body."}%!!";
 	}
 	
 	public function addComputed(string $name,string $get,string $set=null):void {
 	    $vc=(is_null($set)) ? "!!%function(){".$get."}%!!" : "!!%function(){".$get."}, set: function(v){".$set."}%!!";
-	    if(!empty($this->computeds)){
-	        $this->computeds["computeds"][$name]=$vc;
-	    }
-	    else{
-	        $this->computeds["computeds"]=[$name=>$vc];
-	    }
+	    $this->computeds["computeds"][$name]=$vc;
 	}
 	
 	public function addWatcher(string $var,string $body,array $params=[]):void {
-	    if(!empty($this->watchers)){
-	        $this->watchers["watch"][$var]="!!%function(".implode(',',$params)."){".$body."}%!!";
-	    }
-	    else{
-	        $this->watchers["watch"]=[$var=>"!!%function(".implode(',',$params)."){".$body."}%!!"];
-	    }
+	    $this->watchers["watch"][$var]="!!%function(".implode(',',$params)."){".$body."}%!!";
 	}
 	
 	public function getData():array {
