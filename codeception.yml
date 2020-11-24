@@ -1,8 +1,11 @@
-namespace: test
 suites:
     unit:
         path: .
-
+coverage:
+    enabled: true
+    remote: false
+    include:
+        - src/PHPMV/*.php
 settings:
     shuffle: true
     lint: true
@@ -11,4 +14,7 @@ paths:
     output: tests/_output
     support: tests/_support
     data: tests
-     
+reporters:
+    xml: Codeception\PHPUnit\Log\JUnit
+    html: Codeception\PHPUnit\ResultPrinter\HTML
+    report: Codeception\PHPUnit\ResultPrinter\Report

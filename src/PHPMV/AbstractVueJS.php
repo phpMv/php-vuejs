@@ -27,7 +27,7 @@ class AbstractVueJS {
 	}
 	
 	public function addHook(string $name,string $body):void {
-	    $this->hooks[$name] = "%!! function(){ $body } !!%";
+	    $this->hooks[$name] = "%!!function(){ $body }!!%";
 	}
 	
 	/**
