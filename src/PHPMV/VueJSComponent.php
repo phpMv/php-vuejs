@@ -11,7 +11,7 @@ class VueJSComponent extends AbstractVueJS{
     
     public function __construct(string $template) {
         parent::__construct();
-        $this->template["template"]="'".str_replace(["\n","\r","\t"]," ",(file_get_contents($template.'.html',FILE_USE_INCLUDE_PATH))."'");
+        $this->template["template"]="'".\str_replace(["\n","\r","\t"]," ",(\file_get_contents($template.'.html',FILE_USE_INCLUDE_PATH))."'");
         $this->name=$template;
     }
     
@@ -24,7 +24,7 @@ class VueJSComponent extends AbstractVueJS{
         $script.=JavascriptUtils::arrayToJsObject($this->props + $this->data + $this->methods + $this->computeds + $this->watchers + $this->hooks + $this->template);
         $script=JsUtils::cleanJSONFunctions($script);
         $script.=")";
-        file_put_contents($this->name.".js", $script);
+        \file_put_contents($this->name.".js", $script);
         return $script;
     }
 }
