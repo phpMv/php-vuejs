@@ -9,7 +9,7 @@ class VueJSTest extends \Codeception\Test\Unit{
     private $component;
     
     protected function assertEqualsIgnoreNewLines($expected, $actual){
-        $this->assertEquals(str_replace("'",'"',preg_replace('/\s+/', '',trim(preg_replace('/\R+/', '', $expected)))),str_replace("'",'"',preg_replace('/\s+/', '',trim(preg_replace('/\R+/', '', $actual)))));
+        $this->assertEquals(\str_replace("'",'"',\preg_replace('/\s+/', '',\trim(\preg_replace('/\R+/', '', $expected)))),\str_replace("'",'"',\preg_replace('/\s+/', '',\trim(\preg_replace('/\R+/', '', $actual)))));
     }
     
     protected function _before(){

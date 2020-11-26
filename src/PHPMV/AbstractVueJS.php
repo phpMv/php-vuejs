@@ -55,7 +55,7 @@ class AbstractVueJS {
 	}
 	
 	public function onUpdatedNextTick(string $body):void {
-		$this->addHook("updated", "this.\$nextTick(function () {".body."})");
+		$this->addHook("updated", "this.\$nextTick(function () {".$body."})");
 	}
 	
 	public function onBeforeDestroy(string $body):void {
@@ -63,7 +63,7 @@ class AbstractVueJS {
 	}
 	
 	public function onDestroyed(string $body):void {
-		$this->addHook("destroyed", body);
+		$this->addHook("destroyed", $body);
 	}
 
 	public function addData(string $name,$value):void {
