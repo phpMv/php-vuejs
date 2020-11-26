@@ -3,6 +3,7 @@ namespace test;
 
 use PHPMV\VueJS;
 use PHPMV\VueJSComponent;
+use PHPMV\js\JavascriptUtils;
 
 class VueJSTest extends \Codeception\Test\Unit{
     private $vue;
