@@ -2,20 +2,30 @@
 namespace test;
 
 use PHPMV\VueJS;
+use PHPMV\VueJSComponent;
 
 class VueJSTest extends \Codeception\Test\Unit{
     private $vue;
+    private $component;
     
     protected function assertEqualsIgnoreNewLines($expected, $actual){
         $this->assertEquals(str_replace("'",'"',preg_replace('/\s+/', '',trim(preg_replace('/\R+/', '', $expected)))),str_replace("'",'"',preg_replace('/\s+/', '',trim(preg_replace('/\R+/', '', $actual)))));
     }
     
     protected function _before(){
+        $template='<form method="post">
+        <input type="text" placeholder="test"/>
+        <input type="submit" value="Send"/>
+        </form>';
+        file_put_contents("test.html",$template);
+        $this->component=new VueJSComponent("test");
         $this->vue=new VueJS("v-app",true,false);
     }
 
     protected function _after(){
         $this->vue=null;
+        $this->component=null;
+        unlink("test.html");
     }
 
     public function testAddData(){
@@ -62,5 +72,14 @@ class VueJSTest extends \Codeception\Test\Unit{
         computeds: {"testComputed": function(){console.log("ok")}},
         mounted:  function(){ alert("The page is created"); } })</script>';
         $this->assertEqualsIgnoreNewLines($script,$this->vue->__toString());
+    }
+    
+    public function testVueJSComponent(){
+        $this->component->addMethod("methodTest","console.log('ok')");
+        $script="Vue.component('test',{props: [],methods: {
+        'methodTest': function(){console.log('ok')}
+        },template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
+        $this->assertEqualsIgnoreNewLines($script,$this->component->create());
+        unlink("test.js");
     }
 }

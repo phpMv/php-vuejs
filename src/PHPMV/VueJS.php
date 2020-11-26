@@ -14,7 +14,7 @@ use PHPMV\utils\JsUtils;
  */
 class VueJS extends AbstractVueJS{
 	protected $useAxios;
-	protected $configuration=[];
+	protected $configuration;
 	
 	public function __construct(string $app="#app",bool $vuetify=false,bool $useAxios=false) {
 	    parent::__construct();
