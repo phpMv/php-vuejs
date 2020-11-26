@@ -23,9 +23,6 @@ class VueJS extends AbstractVueJS{
 	    $this->useAxios=$useAxios;
 	}
 	
-	/**
-	 * @return string
-	 */
 	public function __toString():string {
 	    $script="";
 	    if($this->useAxios){$script.="Vue.prototype.\$http = axios;\n";}

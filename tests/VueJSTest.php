@@ -3,7 +3,6 @@ namespace test;
 
 use PHPMV\VueJS;
 use PHPMV\VueJSComponent;
-use PHPMV\js\JavascriptUtils;
 
 class VueJSTest extends \Codeception\Test\Unit{
     private $vue;
@@ -14,19 +13,11 @@ class VueJSTest extends \Codeception\Test\Unit{
     }
     
     protected function _before(){
-        $template='<form method="post">
-        <input type="text" placeholder="test"/>
-        <input type="submit" value="Send"/>
-        </form>';
-        file_put_contents("test.html",$template);
-        $this->component=new VueJSComponent("test");
         $this->vue=new VueJS("v-app",true,false);
     }
 
     protected function _after(){
         $this->vue=null;
-        $this->component=null;
-        unlink("test.html");
     }
 
     public function testAddData(){
@@ -76,11 +67,18 @@ class VueJSTest extends \Codeception\Test\Unit{
     }
     
     public function testVueJSComponent(){
+    	$template='<form method="post">
+        <input type="text" placeholder="test"/>
+        <input type="submit" value="Send"/>
+        </form>';
+    	file_put_contents("test.html",$template);
+    	$this->component=new VueJSComponent("test");
         $this->component->addMethod("methodTest","console.log('ok')");
         $script="Vue.component('test',{props: [],methods: {
         'methodTest': function(){console.log('ok')}
         },template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
         $this->assertEqualsIgnoreNewLines($script,$this->component->create());
         unlink("test.js");
+        unlink("test.html");
     }
 }

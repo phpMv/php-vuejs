@@ -30,75 +30,38 @@ class AbstractVueJS {
 	    $this->hooks[$name] = "%!!function(){ $body }!!%";
 	}
 	
-	/**
-	 * Adds code (body) for the beforeCreate hook
-	 * @param body the code to execute
-	 */
 	public function onBeforeCreate(string $body):void {
 		$this->addHook("beforeCreate", $body);
 	}
 	
-	/**
-	 * Adds code (body) for the created hook
-	 * @param body the code to execute
-	 */
 	public function onCreated(string $body):void {
 		$this->addHook("created", $body);
 	}
 	
-	/**
-	 * Adds code (body) for the beforeMount hook
-	 * @param body the code to execute
-	 */
 	public function onBeforeMount(string $body):void {
 		$this->addHook("beforeMount", $body);
 	}
 	
-	/**
-	 * Adds code (body) for the mounted hook
-	 * @param body the code to execute
-	 */
 	public function onMounted(string $body):void {
 		$this->addHook("mounted", $body);
 	}
 	
-	/**
-	 * Adds code (body) for the beforeUpdate hook
-	 * @param body the code to execute
-	 */
 	public function onBeforeUpdate(string $body):void {
 		$this->addHook("beforeUpdate", $body);
 	}
 	
-	/**
-	 * Adds code (body) for the updated hook
-	 * @param body the code to execute
-	 */
 	public function onUpdated(string $body):void {
 		$this->addHook("updated", $body);
 	}
 	
-	/**
-	 * Adds code (body) for the updated hook
-	 * wait until the entire view has been re-rendered with $nextTick
-	 * @param body the code to execute
-	 */
 	public function onUpdatedNextTick(string $body):void {
 		$this->addHook("updated", "this.\$nextTick(function () {".body."})");
 	}
 	
-	/**
-	 * Adds code (body) for the beforeDestroy hook
-	 * @param body the code to execute
-	 */
 	public function onBeforeDestroy(string $body):void {
 		$this->addHook("beforeDestroy", $body);
 	}
 	
-	/**
-	 * Adds code (body) for the destroyed hook
-	 * @param body the code to execute
-	 */
 	public function onDestroyed(string $body):void {
 		$this->addHook("destroyed", body);
 	}
