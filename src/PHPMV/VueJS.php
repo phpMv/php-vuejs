@@ -57,3 +57,13 @@ class VueJS extends AbstractVueJS {
 		$this->configuration = $configuration;
 	}
 }
+$vue=new VueJS("v-app",true,false);
+$vue->onBeforeMount("alert('The page is created')");
+$vue->onMounted("alert('The page is created')");
+$vue->onBeforeCreate("alert('The page is created')");
+$vue->onCreated("alert('The page is created')");
+$vue->onBeforeUpdate("alert('The page is created')");
+$vue->onUpdated("alert('The page is created')");
+$vue->onUpdatedNextTick("alert('The page is created')");
+$vue->onBeforeDestroy("alert('The page is created')");
+$vue->onDestroyed("alert('The page is created')");

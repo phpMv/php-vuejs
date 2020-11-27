@@ -11,4 +11,3 @@ class VueLibrary
         return \dirname(__FILE__) . '/templates/rev' . self::$revision;
     }
 }
-?>

@@ -13,7 +13,7 @@ class VueJSTest extends \Codeception\Test\Unit{
     }
     
     protected function _before(){
-        $this->vue=new VueJS("v-app",true,false);
+        $this->vue=new VueJS('v-app',true,false);
     }
 
     protected function _after(){
@@ -46,11 +46,33 @@ class VueJSTest extends \Codeception\Test\Unit{
     }
     
     public function testAddHook(){
+        $this->vue->onBeforeMount("alert('The page is created')");
         $this->vue->onMounted("alert('The page is created')");
-        $script=["mounted"=>"%!!function(){ alert('The page is created') }!!%"];
+        $this->vue->onBeforeCreate("alert('The page is created')");
+        $this->vue->onCreated("alert('The page is created')");
+        $this->vue->onBeforeUpdate("alert('The page is created')");
+        $this->vue->onUpdated("alert('The page is created')");
+        $this->vue->onUpdatedNextTick("alert('The page is created')");
+        $this->vue->onBeforeDestroy("alert('The page is created')");
+        $this->vue->onDestroyed("alert('The page is created')");
+        $script=[
+            "beforeMount"=>"%!!function(){ alert('The page is created') }!!%",
+            "mounted"=>"%!!function(){ alert('The page is created') }!!%",
+            "beforeCreate"=>"%!!function(){ alert('The page is created') }!!%",
+            "created"=>"%!!function(){ alert('The page is created') }!!%",
+            "beforeUpdate"=>"%!!function(){ alert('The page is created') }!!%",
+            "updated"=>"%!!function(){ this.\$nextTick(function () {alert('The page is created')}) }!!%",
+            "beforeDestroy"=>"%!!function(){ alert('The page is created') }!!%",
+            "destroyed"=>"%!!function(){ alert('The page is created') }!!%"
+        ];
         $this->assertEquals($script,$this->vue->getHooks());
     }
    
+    public function testVueJSGetters(){
+        $this->assertEquals(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"],$this->vue->getConfiguration());
+        $this->assertEquals(false,$this->vue->getUseAxios());
+    }
+    
     public function testVueJSToString() {
         $this->vue->addDataRaw("email","''");
         $this->vue->addData("select",null);
@@ -64,6 +86,17 @@ class VueJSTest extends \Codeception\Test\Unit{
         computeds: {"testComputed": function(){console.log("ok")}},
         mounted:  function(){ alert("The page is created"); } })</script>';
         $this->assertEqualsIgnoreNewLines($script,$this->vue->__toString());
+    }
+    
+    public function testAbstractVueJSGetters(){
+        $this->vue->addData("select",null);
+        $this->vue->addMethod("validate","this.\$refs.form.validate()");
+        $this->vue->addComputed("testComputed","console.log('ok')");
+        $this->vue->addWatcher("name","if(this.name=='MyName'){console.log('watcher succeed')}");
+        $this->assertEquals(["data"=>["select"=>NULL]],$this->vue->getData());
+        $this->assertEquals(["methods"=>["validate"=>"!!%function(){this.\$refs.form.validate()}%!!"]],$this->vue->getMethods());
+        $this->assertEquals(["computeds"=>["testComputed"=>"!!%function(){console.log('ok')}%!!"]],$this->vue->getComputeds());
+        $this->assertEquals(["watch"=>["name"=>"!!%function(){if(this.name=='MyName'){console.log('watcher succeed')}}%!!"]],$this->vue->getWatchers());     
     }
     
     public function testVueJSComponent(){
