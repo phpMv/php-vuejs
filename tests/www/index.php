@@ -19,7 +19,9 @@ if ($inc != '') {
 	echo "Hello VueJS !";
 }
 ?>
+<v-app>
 {{hello}}
+</v-app>
 <?php echo $vueAcceptance; ?>
 </body>
 </html>
