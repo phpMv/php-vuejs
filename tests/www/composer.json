@@ -1,7 +1,7 @@
 {
     "require": {
         "php": "^7.4",
-		"phpmv/php-reactjs": "dev-main"
+		"phpmv/php-vuejs": "dev-main"
     },
 	"minimum-stability": "dev",
 	"prefer-stable": true
