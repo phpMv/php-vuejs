@@ -4,5 +4,8 @@
 		"phpmv/php-vuejs" : "dev-main"
 	},
 	"minimum-stability" : "dev",
-	"prefer-stable" : true
+	"prefer-stable" : true,
+	"require-dev": {
+		"codeception/module-webdriver": "^1.1"
+	}
 }
