@@ -19,7 +19,7 @@
 $inc = $_GET['c'] ?? '';
 if ($inc != '') {
 	include ROOT . 'include/' . $inc . '.php';
-	{{hello}}
+	?>{{hello}}<?php
 } else {
 	echo "Hello VueJS !";
 }
