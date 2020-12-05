@@ -7,6 +7,25 @@ build:
       environment:
         php:
           version: 7.4
+          pecl_extensions:
+            - zip
+        hosts:
+          dev.local: '127.0.0.1'
+        apache2:
+          modules: ['rewrite']
+          sites:
+            local:
+              host: 'dev.local'
+              web_root: 'tests/www/'
+        selenium: true
+        google_chrome:
+          use_latest: true
+      services:
+      tests:
+        before:
+          - composer require codeception/module-webdriver --dev
+          - (cd tests/www/ && composer install)
+          - sudo curl -v http://dev.local/index.php
       tests:
         override:
           - php-scrutinizer-run

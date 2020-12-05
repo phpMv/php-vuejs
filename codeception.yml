@@ -1,6 +1,3 @@
-suites:
-    unit:
-        path: .
 coverage:
     enabled: true
     remote: false
