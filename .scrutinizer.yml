@@ -7,6 +7,13 @@ build:
       environment:
         php:
           version: 7.4
+      tests:
+        override:
+          - php-scrutinizer-run
+    coverage:
+      environment:
+        php:
+          version: 7.4
           pecl_extensions:
             - zip
         hosts:
@@ -26,16 +33,7 @@ build:
           - composer require codeception/module-webdriver --dev
           - (cd tests/www/ && composer install)
           - sudo curl -v http://dev.local/index.php
-      tests:
-        override:
-          - php-scrutinizer-run
-    coverage:
-      environment:
-        php:
-          version: 7.4
-      services:
-      tests:
-        before:
+
         override:
           - command: (./vendor/bin/codecept build && ./vendor/bin/codecept run --coverage-xml -v)
             coverage:
