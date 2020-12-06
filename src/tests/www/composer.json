@@ -1,0 +1,16 @@
+{
+	"require" : {
+		"php" : "^7.4",
+		"codeception/c3" : "^2.6",
+		"codeception/codeception" : "^4.1",
+		"phpmv/php-ui-common" : "dev-main",
+		"phpmv/php-ajax" : "dev-main"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"PHPMV\\" : "PHPMV/"
+		}
+	},
+	"minimum-stability" : "dev",
+	"prefer-stable" : true
+}

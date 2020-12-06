@@ -1,8 +1,0 @@
-{
-    "require": {
-        "php": "^7.4",
-		"phpmv/php-vuejs": "dev-main"
-    },
-	"minimum-stability": "dev",
-	"prefer-stable": true
-}

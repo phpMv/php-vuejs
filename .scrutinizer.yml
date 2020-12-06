@@ -23,21 +23,20 @@ build:
           sites:
             local:
               host: 'dev.local'
-              web_root: 'tests/www/'
+              web_root: 'src/'
         selenium: true
         google_chrome:
           use_latest: true
       services:
       tests:
         before:
-          - composer require codeception/module-webdriver --dev
-          - (cd tests/www/ && composer install)
-          - sudo curl -v http://dev.local/index.php
+          - cp -rT src/tests/www src/
+          - (cd src/ && composer require codeception/module-webdriver codeception/module-asserts --dev)
 
         override:
-          - command: (./vendor/bin/codecept build && ./vendor/bin/codecept run --coverage-xml -v)
+          - command: (cd src/ && ./vendor/bin/codecept build && ./vendor/bin/codecept run --coverage-xml -v)
             coverage:
-              file: tests/_output/coverage.xml
+              file: src/tests/_output/coverage.xml
               format: clover
 
 filter:
