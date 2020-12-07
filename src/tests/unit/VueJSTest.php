@@ -3,6 +3,7 @@ use PHPMV\VueJS;
 use PHPMV\VueJSComponent;
 use function PHPUnit\Framework\assertEquals;
 use PHPMV\core\VueLibrary;
+use PHPMV\AbstractVueJS;
 
 if (! class_exists('\\VueJS')) {
 
@@ -126,6 +127,20 @@ if (! class_exists('\\VueJS')) {
             $this->assertEqualsIgnoreNewLines($script,$this->component->create());
             unlink("test.js");
             unlink("test.html");
+        }
+        
+        public function testAbstractVueJSSetters(){
+            $abstract=new AbstractVueJS();
+            $abstract->setData(['test']);
+            $abstract->setMethods(['test']);
+            $abstract->setComputeds(['test']);
+            $abstract->setHooks(['test']);
+            $abstract->setWatchers(['test']);
+            $this->assertEquals(['test'],$abstract->getData());
+            $this->assertEquals(['test'],$abstract->getMethods());
+            $this->assertEquals(['test'],$abstract->getComputeds());
+            $this->assertEquals(['test'],$abstract->getHooks());
+            $this->assertEquals(['test'],$abstract->getWatchers());
         }
     }
 }
