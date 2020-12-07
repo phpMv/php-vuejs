@@ -118,8 +118,9 @@ if (! class_exists('\\VueJS')) {
             </form>';
         	file_put_contents("test.html",$template);
         	$this->component=new VueJSComponent("test");
+        	$this->component->setProps('test','test1');
             $this->component->addMethod("methodTest","console.log('ok')");
-            $script="Vue.component('test',{props: [],methods: {
+            $script="Vue.component('test',{props: ['test','test1'],methods: {
             'methodTest': function(){console.log('ok')}
             },template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
             $this->assertEqualsIgnoreNewLines($script,$this->component->create());
