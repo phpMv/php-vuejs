@@ -84,7 +84,7 @@ if (! class_exists('\\VueJS')) {
             $this->vue->addWatcher("name","if(this.name=='MyName'){console.log('watcher succeed')}");
             $this->vue->addComputed("testComputed","console.log('ok')");
             $this->vue->onMounted("alert('The page is created');");
-            $script='<script>const app=new Vue({el: "v-app",vuetify: new Vuetify(),data:{"email": "","select": null},
+            $script='<script>Vue.prototype.$http = axios;const app=new Vue({el: "v-app",vuetify: new Vuetify(),data:{"email": "","select": null},
             methods: {"validate": function(){this.$refs.form.validate()}},
             watch: {"name": function(){if(this.name=="MyName"){console.log("watcher succeed")}}},
             computeds: {"testComputed": function(){console.log("ok")}},

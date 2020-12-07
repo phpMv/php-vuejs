@@ -57,4 +57,3 @@ class VueJS extends AbstractVueJS {
 		$this->configuration = $configuration;
 	}
 }
-$vue=new VueJS("#app",false,false);
