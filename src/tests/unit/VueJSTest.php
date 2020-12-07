@@ -25,7 +25,7 @@ if (! class_exists('\\VueJS')) {
         public function testVueLibrary(){
             $library=new VueLibrary();
             $library=explode('\\',$library->getTemplateFolder());
-            $this->assertEquals('core/templates/rev1',$library[6]);
+            $this->assertEquals('core/templates/rev1',end($library));
         }
         
         public function testAddData(){
