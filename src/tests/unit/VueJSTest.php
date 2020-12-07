@@ -20,7 +20,7 @@ if (! class_exists('\\VueJS')) {
         protected function _after(){
             $this->vue=null;
         }
-
+        
         public function testAddData(){
             $this->vue->addData("testData",[0,1,2]);
             $script=["data"=>["testData"=>[0,1,2]]];
@@ -70,8 +70,11 @@ if (! class_exists('\\VueJS')) {
         }
        
         public function testVueJSGetters(){
-            $this->assertEquals(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"],$this->vue->getConfiguration());
-            $this->assertEquals(false,$this->vue->getUseAxios());
+            $newVue=new VueJS();
+            $this->vue->setUseAxios(true);
+            $this->setConfiguration(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"]);
+            $this->assertEquals(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"],$newVue->getConfiguration());
+            $this->assertEquals(true,$newVue->getUseAxios());
         }
         
         public function testVueJSToString() {
