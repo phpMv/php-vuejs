@@ -78,6 +78,7 @@ if (! class_exists('\\VueJS')) {
         }
         
         public function testVueJSToString() {
+            $this->vue->setUseAxios(true);
             $this->vue->addDataRaw("email","''");
             $this->vue->addData("select",null);
             $this->vue->addMethod("validate","this.\$refs.form.validate()");

@@ -10,7 +10,6 @@ require "src/PHPMV/VueJS.php";
   	<meta charset="utf-8">
   	<title>Test</title>
   	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script src="test.js"></script>
   	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <body>
