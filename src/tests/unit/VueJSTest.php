@@ -71,8 +71,8 @@ if (! class_exists('\\VueJS')) {
        
         public function testVueJSGetters(){
             $newVue=new VueJS();
-            $this->vue->setUseAxios(true);
-            $this->setConfiguration(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"]);
+            $newVue->setUseAxios(true);
+            $newVue->setConfiguration(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"]);
             $this->assertEquals(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"],$newVue->getConfiguration());
             $this->assertEquals(true,$newVue->getUseAxios());
         }
