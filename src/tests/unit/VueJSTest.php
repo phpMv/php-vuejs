@@ -2,6 +2,7 @@
 use PHPMV\VueJS;
 use PHPMV\VueJSComponent;
 use function PHPUnit\Framework\assertEquals;
+use PHPMV\core\VueLibrary;
 
 if (! class_exists('\\VueJS')) {
 
@@ -19,6 +20,12 @@ if (! class_exists('\\VueJS')) {
 
         protected function _after(){
             $this->vue=null;
+        }
+        
+        public function testVueLibrary(){
+            $library=new VueLibrary();
+            $library=explode('\\',$library->getTemplateFolder());
+            $this->assetEquals('core/templates/rev1',$library[6]);
         }
         
         public function testAddData(){
