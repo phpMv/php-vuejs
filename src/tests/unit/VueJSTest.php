@@ -125,6 +125,8 @@ if (! class_exists('\\VueJS')) {
             'methodTest': function(){console.log('ok')}
             },template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
             $this->assertEqualsIgnoreNewLines($script,$this->component->create());
+            $this->assertEqualsIgnoreNewLines($script,$this->component->createGlobal());
+            $this->assertEqualsIgnoreNewLines($script,$this->component->createGlobal());
             unlink("test.js");
             unlink("test.html");
         }
