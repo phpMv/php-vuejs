@@ -4,12 +4,12 @@
     "type": "library",
     "keywords": [
         "php",
-        "reactjs",
+        "vueJS",
         "framework",
         "library"
     ],
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "phpmv/php-ui-common": "dev-main",
         "phpmv/php-ajax": "dev-main"
     },
@@ -24,7 +24,17 @@
         {
             "name": "Jean-Christophe HERON",
             "email": "myaddressmail@gmail.com",
+            "role": "Project creator"
+        },
+        {
+            "name": "Guillaume JACOPIN",
+            "email": "guillaume.jacopin@sts-sio-caen.info",
             "role": "Lead developer"
+        },
+        {
+            "name": "Quentin GORAK",
+            "email": "quentin.gorak@sts-sio-caen.info",
+            "role": "developer"
         }
     ],
     "extra": {
