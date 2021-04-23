@@ -1,6 +1,8 @@
 <?php
 namespace PHPMV;
 
+use PHPMV\js\JavascriptUtils;
+
 /**
  * Created by PhpStorm.
  * User: qgorak
@@ -93,8 +95,12 @@ class AbstractVueJS {
         $this->methods["filters"][self::$removeQuote["start"].$name.self::$removeQuote["end"]]=self::generateFunction($body,$params);
     }
 
-    static function addGlobalFilter(string $name,string $body, array $params = []):void {
+    public static function addGlobalFilter(string $name,string $body, array $params = []):void {
         self::$global[]=self::$removeQuote["start"]."Vue.filter('".$name."',".self::generateFunction($body,$params).");".self::$removeQuote["end"];
+    }
+
+    public static function addGlobalObservable(string $varName, array $object){
+        self::$global[]=self::$removeQuote["start"]."const ".$varName." = Vue.observable(". JavascriptUtils::arrayToJsObject($object) .");".self::$removeQuote["end"];
     }
 
 	public function getData():array {
@@ -137,7 +143,7 @@ class AbstractVueJS {
 		$this->hooks = $hooks;
 	}
 
-	static function generateFunction(string $body, array $params = []):string {
+	public static function generateFunction(string $body, array $params = []):string {
         return self::$removeQuote["start"]."function(".implode(",",$params)."){".$body."}".self::$removeQuote["end"];
     }
 }
