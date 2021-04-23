@@ -29,7 +29,7 @@ class AbstractVueJS {
 	}
 	
 	public function addHook(string $name,string $body):void {
-	    $this->hooks[$name] = AbstractVueJS::generateFunction($body);
+	    $this->hooks[$name] = self::generateFunction($body);
 	}
 	
 	public function onBeforeCreate(string $body):void {
@@ -57,7 +57,7 @@ class AbstractVueJS {
 	}
 	
 	public function onUpdatedNextTick(string $body):void {
-		$this->addHook("updated", "this.\$nextTick(".AbstractVueJS::generateFunction($body).")");
+		$this->addHook("updated", "this.\$nextTick(".self::generateFunction($body).")");
 	}
 	
 	public function onBeforeDestroy(string $body):void {
@@ -73,28 +73,28 @@ class AbstractVueJS {
 	}
 
 	public function addDataRaw(string $name,string $value):void {
-        $this->data["data"][$name]=AbstractVueJS::$removeQuote["start"].$value.AbstractVueJS::$removeQuote["end"];
+        $this->data["data"][$name]=self::$removeQuote["start"].$value.self::$removeQuote["end"];
 	}
 	
 	public function addMethod(string $name,string $body, array $params = []):void {
-        $this->methods["methods"][$name]=AbstractVueJS::generateFunction($body,$params);
+        $this->methods["methods"][$name]=self::generateFunction($body,$params);
 	}
 	
 	public function addComputed(string $name,string $get,string $set=null):void {
-	    $vc=(is_null($set)) ? AbstractVueJS::generateFunction($get) : AbstractVueJS::$removeQuote["start"]."{ get: ".AbstractVueJS::generateFunction($get).", set: ".AbstractVueJS::generateFunction($set,["v"])." }".AbstractVueJS::$removeQuote["end"];
-	    $this->computeds["computeds"][AbstractVueJS::$removeQuote["start"].$name.AbstractVueJS::$removeQuote["end"]]=$vc;
+	    $vc=(is_null($set)) ? self::generateFunction($get) : self::$removeQuote["start"]."{ get: ".self::generateFunction($get).", set: ".self::generateFunction($set,["v"])." }".self::$removeQuote["end"];
+	    $this->computeds["computeds"][self::$removeQuote["start"].$name.self::$removeQuote["end"]]=$vc;
 	}
 	
 	public function addWatcher(string $var,string $body,array $params=[]):void {
-	    $this->watchers["watch"][$var]=AbstractVueJS::generateFunction($body,$params);
+	    $this->watchers["watch"][$var]=self::generateFunction($body,$params);
 	}
 
 	public function addFilter(string $name,string $body, array $params = []):void {
-        $this->methods["filters"][AbstractVueJS::$removeQuote["start"].$name.AbstractVueJS::$removeQuote["end"]]=AbstractVueJS::generateFunction($body,$params);
+        $this->methods["filters"][self::$removeQuote["start"].$name.self::$removeQuote["end"]]=self::generateFunction($body,$params);
     }
 
     static function addGlobalFilter(string $name,string $body, array $params = []):void {
-        AbstractVueJS::$global[]=AbstractVueJS::$removeQuote["start"]."Vue.filter('".$name."',".AbstractVueJS::generateFunction($body,$params).");".AbstractVueJS::$removeQuote["end"];
+        self::$global[]=self::$removeQuote["start"]."Vue.filter('".$name."',".self::generateFunction($body,$params).");".self::$removeQuote["end"];
     }
 
 	public function getData():array {
@@ -138,6 +138,6 @@ class AbstractVueJS {
 	}
 
 	static function generateFunction(string $body, array $params = []):string {
-        return AbstractVueJS::$removeQuote["start"]."function(".implode(",",$params)."){".$body."}".AbstractVueJS::$removeQuote["end"];
+        return self::$removeQuote["start"]."function(".implode(",",$params)."){".$body."}".self::$removeQuote["end"];
     }
 }

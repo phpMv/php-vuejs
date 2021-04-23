@@ -50,7 +50,7 @@ if (! class_exists('\\VueJS')) {
         public function testAddComputed(){
             $this->vue->addComputed("testComputed","console.log('testComputed')");
             $this->vue->addComputed("testComputedSet","console.log('testComputed')","var data=v");
-            $script=["computeds"=>["testComputed"=>"!!%function(){console.log('testComputed')}%!!","testComputedSet"=>"!!%function(){console.log('testComputed')}, set: function(v){var data=v}%!!"]];
+            $script=["computeds"=>["!!%testComputed%!!"=>"!!%function(){console.log('testComputed')}%!!","!!%testComputedSet%!!"=>"!!%{ get: !!%function(){console.log('testComputed')}%!!, set: !!%function(v){var data=v}%!! }%!!"]];
             $this->assertEquals($script,$this->vue->getComputeds());
         }
         
@@ -65,14 +65,14 @@ if (! class_exists('\\VueJS')) {
             $this->vue->onBeforeDestroy("alert('The page is created')");
             $this->vue->onDestroyed("alert('The page is created')");
             $script=[
-                "beforeMount"=>"%!!function(){ alert('The page is created') }!!%",
-                "mounted"=>"%!!function(){ alert('The page is created') }!!%",
-                "beforeCreate"=>"%!!function(){ alert('The page is created') }!!%",
-                "created"=>"%!!function(){ alert('The page is created') }!!%",
-                "beforeUpdate"=>"%!!function(){ alert('The page is created') }!!%",
-                "updated"=>"%!!function(){ this.\$nextTick(function () {alert('The page is created')}) }!!%",
-                "beforeDestroy"=>"%!!function(){ alert('The page is created') }!!%",
-                "destroyed"=>"%!!function(){ alert('The page is created') }!!%"
+                "beforeMount"=>"!!%function(){alert('The page is created')}%!!",
+                "mounted"=>"!!%function(){alert('The page is created')}%!!",
+                "beforeCreate"=>"!!%function(){alert('The page is created')}%!!",
+                "created"=>"!!%function(){alert('The page is created')}%!!",
+                "beforeUpdate"=>"!!%function(){alert('The page is created')}%!!",
+                "updated"=>"!!%function(){this.\$nextTick(function () {alert('The page is created')})}%!!",
+                "beforeDestroy"=>"!!%function(){alert('The page is created')}%!!",
+                "destroyed"=>"!!%function(){alert('The page is created')}%!!"
             ];
             $this->assertEquals($script,$this->vue->getHooks());
         }
@@ -93,11 +93,7 @@ if (! class_exists('\\VueJS')) {
             $this->vue->addWatcher("name","if(this.name=='MyName'){console.log('watcher succeed')}");
             $this->vue->addComputed("testComputed","console.log('ok')");
             $this->vue->onMounted("alert('The page is created');");
-            $script='<script>Vue.prototype.$http = axios;const app=new Vue({el: "v-app",vuetify: new Vuetify(),data:{"email": "","select": null},
-            methods: {"validate": function(){this.$refs.form.validate()}},
-            watch: {"name": function(){if(this.name=="MyName"){console.log("watcher succeed")}}},
-            computeds: {"testComputed": function(){console.log("ok")}},
-            mounted:  function(){ alert("The page is created"); } })</script>';
+            $script='<script>Vue.prototype.$http=axios;constapp=newVue({el:"v-app",vuetify:newVuetify(),data:{"email":"","select":null},methods:{"validate":function(){this.$refs.form.validate()}},watch:{"name":function(){if(this.name=="MyName"){console.log("watchersucceed")}}},computeds:{testComputed:function(){console.log("ok")}},mounted:function(){alert("Thepageiscreated");}})</script>';
             $this->assertEqualsIgnoreNewLines($script,$this->vue->__toString());
         }
         
@@ -108,7 +104,7 @@ if (! class_exists('\\VueJS')) {
             $this->vue->addWatcher("name","if(this.name=='MyName'){console.log('watcher succeed')}");
             $this->assertEquals(["data"=>["select"=>NULL]],$this->vue->getData());
             $this->assertEquals(["methods"=>["validate"=>"!!%function(){this.\$refs.form.validate()}%!!"]],$this->vue->getMethods());
-            $this->assertEquals(["computeds"=>["testComputed"=>"!!%function(){console.log('ok')}%!!"]],$this->vue->getComputeds());
+            $this->assertEquals(["computeds"=>["!!%testComputed%!!"=>"!!%function(){console.log('ok')}%!!"]],$this->vue->getComputeds());
             $this->assertEquals(["watch"=>["name"=>"!!%function(){if(this.name=='MyName'){console.log('watcher succeed')}}%!!"]],$this->vue->getWatchers());     
         }
         
@@ -127,8 +123,6 @@ if (! class_exists('\\VueJS')) {
             $this->assertEqualsIgnoreNewLines($script,$this->component->create());
             $this->assertEqualsIgnoreNewLines($script,$this->component->createGlobal());
             $this->assertEqualsIgnoreNewLines($script,$this->component->createGlobal());
-            unlink("test.js");
-            unlink("test.html");
         }
         
         public function testAbstractVueJSSetters(){
