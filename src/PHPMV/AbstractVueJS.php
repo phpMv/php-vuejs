@@ -57,7 +57,7 @@ class AbstractVueJS {
 	}
 	
 	public function onUpdatedNextTick(string $body):void {
-		$this->addHook("updated", "this.\$nextTick(".self::generateFunction($body).")");
+		$this->addHook("updated", "this.\$nextTick(function () {".$body."})");
 	}
 	
 	public function onBeforeDestroy(string $body):void {
