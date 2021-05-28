@@ -61,6 +61,12 @@ if (! class_exists('\\VueJS')) {
             $this->assertEquals($script,$this->vue->getDirectives());
         }
 
+        public function testAddFilter(){
+            $this->vue->addFilter('capitalize',"if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);",["value"]);
+            $script=["filters"=>["!!%capitalize%!!"=>"!!%function(value){if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);}%!!"]];
+            $this->assertEquals($script,$this->vue->getFilter());
+        }
+
         public function testAddHook(){
             $this->vue->onBeforeMount("alert('The page is created')");
             $this->vue->onMounted("alert('The page is created')");
@@ -157,11 +163,15 @@ if (! class_exists('\\VueJS')) {
             $abstract->setComputeds(['test']);
             $abstract->setHooks(['test']);
             $abstract->setWatchers(['test']);
+            $abstract->setDirectives(['test']);
+            $abstract->setFilters(['test']);
             $this->assertEquals(['test'],$abstract->getData());
             $this->assertEquals(['test'],$abstract->getMethods());
             $this->assertEquals(['test'],$abstract->getComputeds());
             $this->assertEquals(['test'],$abstract->getHooks());
             $this->assertEquals(['test'],$abstract->getWatchers());
+            $this->assertEquals(['test'],$abstract->getDirectives());
+            $this->assertEquals(['test'],$abstract->getFilters());
         }
     }
 }

@@ -21,7 +21,7 @@ class VueJSComponent extends AbstractVueJS{
     
     public function create(bool $global=false):string {
         $script="Vue.component('".$this->name."',";
-        $script.=JavascriptUtils::arrayToJsObject($this->props + $this->data + $this->methods + $this->computeds + $this->watchers + $this->hooks + $this->template);
+        $script.=JavascriptUtils::arrayToJsObject($this->props + $this->data + $this->methods + $this->computeds + $this->watchers + $this->filters + $this->hooks + $this->template);
         $script=JsUtils::cleanJSONFunctions($script);
         $script.=")";
         if(!$global){

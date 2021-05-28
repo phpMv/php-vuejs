@@ -94,7 +94,7 @@ class AbstractVueJS {
 
 	public function addFilter(string $name,string $body, array $params = []):void {
 	    $name=self::removeQuotes($name);
-        $this->methods["filters"][$name]=self::generateFunction($body,$params);
+        $this->filters["filters"][$name]=self::generateFunction($body,$params);
     }
 
     public function addDirective(string $name,array $hookFunction):void {
@@ -158,6 +158,14 @@ class AbstractVueJS {
 
     public function setDirectives(array $directives):void {
         $this->directives = $directives;
+    }
+
+    public function getFilters():array {
+        return $this->filters;
+    }
+
+    public function setFilters(array $filters):void {
+        $this->filters = $filters;
     }
 	
 	public function getHooks():array {
