@@ -57,7 +57,7 @@ if (! class_exists('\\VueJS')) {
 
         public function testAddDirective(){
             $this->vue->addDirective('focus',['inserted'=>'el.focus();']);
-            $script=["directives"=>["!!%focus%!!" => "!!%{inserted: !!%function(el,binding,vnode,oldVnode){el.focus();}%!!}%!!"]];
+            $script=["directives"=>["!!%focus%!!"=>["!!%inserted%!!"=>"!!%function(el,binding,vnode,oldVnode){el.focus();}%!!"]]];
             $this->assertEquals($script,$this->vue->getDirectives());
         }
 
