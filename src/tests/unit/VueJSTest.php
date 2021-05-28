@@ -64,7 +64,7 @@ if (! class_exists('\\VueJS')) {
         public function testAddFilter(){
             $this->vue->addFilter('capitalize',"if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);",["value"]);
             $script=["filters"=>["!!%capitalize%!!"=>"!!%function(value){if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);}%!!"]];
-            $this->assertEquals($script,$this->vue->getFilter());
+            $this->assertEquals($script,$this->vue->getFilters());
         }
 
         public function testAddHook(){
