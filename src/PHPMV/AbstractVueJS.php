@@ -75,7 +75,7 @@ class AbstractVueJS {
 	}
 
 	public function addDataRaw(string $name,string $value):void {
-        $this->data["data"][$name]=self::$removeQuote["start"].$value.self::$removeQuote["end"];
+        $this->data["data"][$name]=self::removeQuotes($value);
 	}
 	
 	public function addMethod(string $name,string $body, array $params = []):void {
@@ -83,8 +83,9 @@ class AbstractVueJS {
 	}
 	
 	public function addComputed(string $name,string $get,string $set=null):void {
-	    $vc=(is_null($set)) ? self::generateFunction($get) : self::$removeQuote["start"]."{ get: ".self::generateFunction($get).", set: ".self::generateFunction($set,["v"])." }".self::$removeQuote["end"];
-	    $this->computeds["computeds"][self::$removeQuote["start"].$name.self::$removeQuote["end"]]=$vc;
+        $name=self::removeQuotes($name);
+	    $vc=(is_null($set)) ? self::generateFunction($get) : self::removeQuotes("{ get: ".self::generateFunction($get).", set: ".self::generateFunction($set,["v"])." }");
+	    $this->computeds["computeds"][$name]=$vc;
 	}
 	
 	public function addWatcher(string $var,string $body,array $params=[]):void {
@@ -92,7 +93,8 @@ class AbstractVueJS {
 	}
 
 	public function addFilter(string $name,string $body, array $params = []):void {
-        $this->methods["filters"][self::$removeQuote["start"].$name.self::$removeQuote["end"]]=self::generateFunction($body,$params);
+	    $name=self::removeQuotes($name);
+        $this->methods["filters"][$name]=self::generateFunction($body,$params);
     }
 
     public function addDirective(string $name,array $hookFunction):void {
@@ -103,12 +105,14 @@ class AbstractVueJS {
 	    $this->directives["directives"][$name] = self::removeQuotes(JavascriptUtils::arrayToJsObject($hookFunction));
     }
 
+    public static function addGlobalDirective(){}
+
     public static function addGlobalFilter(string $name,string $body, array $params = []):void {
-        self::$global[]=self::$removeQuote["start"]."Vue.filter('".$name."',".self::generateFunction($body,$params).");".self::$removeQuote["end"];
+        self::$global[]=self::removeQuotes("Vue.filter('".$name."',".self::generateFunction($body,$params).");");
     }
 
     public static function addGlobalObservable(string $varName, array $object){
-        self::$global[]=self::$removeQuote["start"]."const ".$varName." = Vue.observable(". JavascriptUtils::arrayToJsObject($object) .");".self::$removeQuote["end"];
+        self::$global[]=self::removeQuotes("const ".$varName." = Vue.observable(". JavascriptUtils::arrayToJsObject($object) .");")
     }
 
 	public function getData():array {
