@@ -112,7 +112,7 @@ class AbstractVueJS {
     }
 
     public static function addGlobalObservable(string $varName, array $object){
-        self::$global[]=self::removeQuotes("const ".$varName." = Vue.observable(". JavascriptUtils::arrayToJsObject($object) .");")
+        self::$global[]=self::removeQuotes("const ".$varName." = Vue.observable(". JavascriptUtils::arrayToJsObject($object) .");");
     }
 
 	public function getData():array {
