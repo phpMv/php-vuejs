@@ -14,10 +14,17 @@ require "src/PHPMV/VueJS.php";
 </head>
 <body>
 <div id="app" style="width:80%;margin:50px auto;">
-<test hello="Salut thierry"></test>
+    <p>ok</p>
+    <input v-focus>
 </div>
 <?php
-echo $vue;
+$test = new PHPMV\VueJS();
+\PHPMV\AbstractVueJS::addGlobalObservable("state",["count"=>0]);
+$test->addComputed("testComputed","console.log('testComputed')");
+$test->addComputed("testComputedSet","console.log('testComputed')","var data=v");
+$test->addDirective('focus',['inserted'=>'el.focus();']);
+var_dump($test->getDirectives());
+print $test;
 ?>
 </body>
 </html>

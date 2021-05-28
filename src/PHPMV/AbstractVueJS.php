@@ -95,6 +95,14 @@ class AbstractVueJS {
         $this->methods["filters"][self::$removeQuote["start"].$name.self::$removeQuote["end"]]=self::generateFunction($body,$params);
     }
 
+    public function addDirective(string $name,array $hookFunction):void {
+	    $name = self::removeQuotes($name);
+	    foreach ($hookFunction as $key=>$value){
+	        $hookFunction[$key] = self::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode']);
+        }
+	    $this->directives["directives"][$name] = self::removeQuotes(JavascriptUtils::arrayToJsObject($hookFunction));
+    }
+
     public static function addGlobalFilter(string $name,string $body, array $params = []):void {
         self::$global[]=self::$removeQuote["start"]."Vue.filter('".$name."',".self::generateFunction($body,$params).");".self::$removeQuote["end"];
     }
@@ -134,6 +142,14 @@ class AbstractVueJS {
 	public function setWatchers(array $watchers):void {
 		$this->watchers = $watchers;
 	}
+
+    public function getDirectives():array {
+        return $this->directives;
+    }
+
+    public function setDirectives(array $directives):void {
+        $this->directives = $directives;
+    }
 	
 	public function getHooks():array {
 		return $this->hooks;
@@ -143,7 +159,11 @@ class AbstractVueJS {
 		$this->hooks = $hooks;
 	}
 
+	public static function removeQuotes(string $body):string{
+        return self::$removeQuote["start"].$body.self::$removeQuote["end"];
+    }
+
 	public static function generateFunction(string $body, array $params = []):string {
-        return self::$removeQuote["start"]."function(".implode(",",$params)."){".$body."}".self::$removeQuote["end"];
+        return self::removeQuotes("function(".implode(",",$params)."){".$body."}");
     }
 }

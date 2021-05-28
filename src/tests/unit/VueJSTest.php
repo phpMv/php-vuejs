@@ -53,7 +53,13 @@ if (! class_exists('\\VueJS')) {
             $script=["computeds"=>["!!%testComputed%!!"=>"!!%function(){console.log('testComputed')}%!!","!!%testComputedSet%!!"=>"!!%{ get: !!%function(){console.log('testComputed')}%!!, set: !!%function(v){var data=v}%!! }%!!"]];
             $this->assertEquals($script,$this->vue->getComputeds());
         }
-        
+
+        public function testAddDirective(){
+            $this->vue->addDirective('focus',['inserted'=>'el.focus();']);
+            $script=["directives"=>["!!%focus%!!"=>"!!%{inserted:!!%function(el,binding,vnode,oldVnode){el.focus();}%!!}%!!"]];
+            $this->assertEqualsIgnoreNewLines($script,$this->vue->getDirectives());
+        }
+
         public function testAddHook(){
             $this->vue->onBeforeMount("alert('The page is created')");
             $this->vue->onMounted("alert('The page is created')");
