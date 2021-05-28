@@ -21,6 +21,7 @@ if (! class_exists('\\VueJS')) {
 
         protected function _after(){
             $this->vue=null;
+            PHPMV\AbstractVueJS::$global=[];
         }
         
         public function testVueLibrary(){
@@ -82,7 +83,25 @@ if (! class_exists('\\VueJS')) {
             ];
             $this->assertEquals($script,$this->vue->getHooks());
         }
-       
+
+        public function testAddGlobalObservable(){
+            \PHPMV\AbstractVueJS::addGlobalObservable("state",["count"=>0]);
+            $script=["!!%const state = Vue.observable({count: 0});%!!"];
+            $this->assertEquals($script,\PHPMV\AbstractVueJS::$global);
+        }
+
+        public function testAddGlobalFilter(){
+            \PHPMV\AbstractVueJS::addGlobalFilter('capitalize',"if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);",["value"]);
+            $script=["!!%Vue.filter('capitalize',!!%function(value){if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);}%!!);%!!"];
+            $this->assertEquals($script,\PHPMV\AbstractVueJS::$global);
+        }
+
+        public function testAddGlobalDirective(){
+            \PHPMV\AbstractVueJS::addGlobalDirective('focus',['inserted'=>'el.focus();']);
+            $script=["!!%Vue.directive('focus',!!%{inserted: !!%function(el,binding,vnode,oldVnode){el.focus();}%!!}%!!);%!!"];
+            $this->assertEquals($script,\PHPMV\AbstractVueJS::$global);
+        }
+
         public function testVueJSGetters(){
             $newVue=new VueJS();
             $newVue->setUseAxios(true);

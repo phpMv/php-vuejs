@@ -11,7 +11,7 @@ use PHPMV\js\JavascriptUtils;
  */
 class AbstractVueJS {
     static private $removeQuote = ["start"=>"!!%","end"=>"%!!"];
-    static protected $global;
+    static public $global;
 	protected $data;
 	protected $methods;
 	protected $computeds;
@@ -100,12 +100,17 @@ class AbstractVueJS {
     public function addDirective(string $name,array $hookFunction):void {
 	    $name = self::removeQuotes($name);
 	    foreach ($hookFunction as $key=>$value){
-	        $hookFunction[$key] = self::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode']);
+            $key = self::removeQuotes($key);
+            $this->directives["directives"][$name][$key] = self::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode']);
         }
-	    $this->directives["directives"][$name] = self::removeQuotes(JavascriptUtils::arrayToJsObject($hookFunction));
     }
 
-    public static function addGlobalDirective(){}
+    public static function addGlobalDirective(string $name,array $hookFunction):void {
+        foreach ($hookFunction as $key=>$value){
+            $hookFunction[$key] = self::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode']);
+        }
+	    self::$global[]=self::removeQuotes("Vue.directive('".$name."',".self::removeQuotes(JavascriptUtils::arrayToJsObject($hookFunction)).");");
+    }
 
     public static function addGlobalFilter(string $name,string $body, array $params = []):void {
         self::$global[]=self::removeQuotes("Vue.filter('".$name."',".self::generateFunction($body,$params).");");
