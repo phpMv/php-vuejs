@@ -28,7 +28,7 @@ class AbstractVueJS {
 	    $this->hooks=[];
 	}
 	
-	public function addHook(string $name,string $body):void {
+	private function addHook(string $name,string $body):void {
 	    $this->hooks[$name] = JsUtils::generateFunction($body,[],false);
 	}
 	
