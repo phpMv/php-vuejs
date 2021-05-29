@@ -14,9 +14,9 @@ use PHPMV\utils\JsUtils;
  */
 class VueJS extends AbstractVueJS {
 
-	protected $useAxios;
+	protected bool $useAxios;
 
-	protected $configuration;
+	protected array $configuration;
 
 	public function __construct(string $app = "#app", bool $vuetify = false, bool $useAxios = false) {
 		parent::__construct();
@@ -24,17 +24,11 @@ class VueJS extends AbstractVueJS {
 		if ($vuetify) {
 			$this->configuration['vuetify'] = "new Vuetify()";
 		}
-		;
 		$this->useAxios = $useAxios;
 	}
 
 	public function __toString(): string {
         $script = "";
-	    if(!empty(AbstractVueJS::$global)){
-	        foreach(AbstractVueJS::$global as $global){
-                $script .= $global."\n";
-            }
-        }
 		if ($this->useAxios) {
 			$script .= "Vue.prototype.\$http = axios;\n";
 		}

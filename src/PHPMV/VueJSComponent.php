@@ -5,9 +5,9 @@ use PHPMV\js\JavascriptUtils;
 use PHPMV\utils\JsUtils;
 
 class VueJSComponent extends AbstractVueJS{
-    protected $name;
-    protected $props=["props"=>[]];
-    protected $template;
+    protected string $name;
+    protected array $props=["props"=>[]];
+    protected array $template;
     
     public function __construct(string $template) {
         parent::__construct();

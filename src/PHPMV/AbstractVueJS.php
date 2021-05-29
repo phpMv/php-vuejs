@@ -1,7 +1,7 @@
 <?php
 namespace PHPMV;
 
-use PHPMV\js\JavascriptUtils;
+use PHPMV\utils\JsUtils;
 
 /**
  * Created by PhpStorm.
@@ -10,15 +10,13 @@ use PHPMV\js\JavascriptUtils;
  * Time: 14:20
  */
 class AbstractVueJS {
-    static private $removeQuote = ["start"=>"!!%","end"=>"%!!"];
-    static public $global;
-	protected $data;
-	protected $methods;
-	protected $computeds;
-	protected $watchers;
-	protected $directives;
-	protected $filters;
-	protected $hooks;
+	protected array $data;
+	protected array $methods;
+	protected array $computeds;
+	protected array $watchers;
+	protected array $directives;
+	protected array $filters;
+	protected array $hooks;
 	
 	public function __construct() {
 	    $this->data=[];
@@ -31,7 +29,7 @@ class AbstractVueJS {
 	}
 	
 	public function addHook(string $name,string $body):void {
-	    $this->hooks[$name] = self::generateFunction($body);
+	    $this->hooks[$name] = JsUtils::generateFunction($body);
 	}
 	
 	public function onBeforeCreate(string $body):void {
@@ -75,49 +73,34 @@ class AbstractVueJS {
 	}
 
 	public function addDataRaw(string $name,string $value):void {
-        $this->data["data"][$name]=self::removeQuotes($value);
+        $this->data["data"][$name]=JsUtils::removeQuotes($value);
 	}
 	
 	public function addMethod(string $name,string $body, array $params = []):void {
-        $this->methods["methods"][$name]=self::generateFunction($body,$params);
+        $this->methods["methods"][$name]=JsUtils::generateFunction($body,$params);
 	}
 	
 	public function addComputed(string $name,string $get,string $set=null):void {
-        $name=self::removeQuotes($name);
-	    $vc=(is_null($set)) ? self::generateFunction($get) : self::removeQuotes("{ get: ".self::generateFunction($get).", set: ".self::generateFunction($set,["v"])." }");
+        $name=JsUtils::removeQuotes($name);
+	    $vc=(is_null($set)) ? JsUtils::generateFunction($get) : JsUtils::removeQuotes("{ get: ".JsUtils::generateFunction($get,[],false).", set: ".JsUtils::generateFunction($set,["v"],false)." }");
 	    $this->computeds["computeds"][$name]=$vc;
 	}
 	
 	public function addWatcher(string $var,string $body,array $params=[]):void {
-	    $this->watchers["watch"][$var]=self::generateFunction($body,$params);
+	    $this->watchers["watch"][$var]=JsUtils::generateFunction($body,$params);
 	}
 
 	public function addFilter(string $name,string $body, array $params = []):void {
-	    $name=self::removeQuotes($name);
-        $this->filters["filters"][$name]=self::generateFunction($body,$params);
+	    $name=JsUtils::removeQuotes($name);
+        $this->filters["filters"][$name]=JsUtils::generateFunction($body,$params);
     }
 
     public function addDirective(string $name,array $hookFunction):void {
-	    $name = self::removeQuotes($name);
+	    $name = JsUtils::removeQuotes($name);
 	    foreach ($hookFunction as $key=>$value){
-            $key = self::removeQuotes($key);
-            $this->directives["directives"][$name][$key] = self::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode']);
+            $key = JsUtils::removeQuotes($key);
+            $this->directives["directives"][$name][$key] = JsUtils::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode']);
         }
-    }
-
-    public static function addGlobalDirective(string $name,array $hookFunction):void {
-        foreach ($hookFunction as $key=>$value){
-            $hookFunction[$key] = self::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode']);
-        }
-	    self::$global[]=self::removeQuotes("Vue.directive('".$name."',".self::removeQuotes(JavascriptUtils::arrayToJsObject($hookFunction)).");");
-    }
-
-    public static function addGlobalFilter(string $name,string $body, array $params = []):void {
-        self::$global[]=self::removeQuotes("Vue.filter('".$name."',".self::generateFunction($body,$params).");");
-    }
-
-    public static function addGlobalObservable(string $varName, array $object){
-        self::$global[]=self::removeQuotes("const ".$varName." = Vue.observable(". JavascriptUtils::arrayToJsObject($object) .");");
     }
 
 	public function getData():array {
@@ -175,12 +158,4 @@ class AbstractVueJS {
 	public function setHooks(array $hooks):void {
 		$this->hooks = $hooks;
 	}
-
-	public static function removeQuotes(string $body):string{
-        return self::$removeQuote["start"].$body.self::$removeQuote["end"];
-    }
-
-	public static function generateFunction(string $body, array $params = []):string {
-        return self::removeQuotes("function(".implode(",",$params)."){".$body."}");
-    }
 }
