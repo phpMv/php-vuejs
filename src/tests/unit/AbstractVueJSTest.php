@@ -65,14 +65,14 @@ if (! class_exists('\\AbstractVueJS')) {
             $this->vue->onBeforeDestroy("alert('The page is created')");
             $this->vue->onDestroyed("alert('The page is created')");
             $script=[
-                "beforeMount"=>"!!%function(){alert('The page is created')}%!!",
-                "mounted"=>"!!%function(){alert('The page is created')}%!!",
-                "beforeCreate"=>"!!%function(){alert('The page is created')}%!!",
-                "created"=>"!!%function(){alert('The page is created')}%!!",
-                "beforeUpdate"=>"!!%function(){alert('The page is created')}%!!",
-                "updated"=>"!!%function(){this.\$nextTick(function () {alert('The page is created')})}%!!",
-                "beforeDestroy"=>"!!%function(){alert('The page is created')}%!!",
-                "destroyed"=>"!!%function(){alert('The page is created')}%!!"
+                "beforeMount"=>"function(){alert('The page is created')}",
+                "mounted"=>"function(){alert('The page is created')}",
+                "beforeCreate"=>"function(){alert('The page is created')}",
+                "created"=>"function(){alert('The page is created')}",
+                "beforeUpdate"=>"function(){alert('The page is created')}",
+                "updated"=>"function(){this.\$nextTick(function () {alert('The page is created')})}",
+                "beforeDestroy"=>"function(){alert('The page is created')}",
+                "destroyed"=>"function(){alert('The page is created')}"
             ];
             $this->assertEquals($script,$this->vue->getHooks());
         }

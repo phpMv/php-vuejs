@@ -30,7 +30,7 @@ if (! class_exists('\\GlobalVueJS')) {
 
         public function testAddGlobalDirective(){
             $this->global->addGlobalDirective('focus',['inserted'=>'el.focus();']);
-            $script=["Vue.directive('focus',{inserted: function(el,binding,vnode,oldVnode){el.focus();console.log(el);}});"];
+            $script=["Vue.directive('focus',{inserted: function(el,binding,vnode,oldVnode){el.focus();}});"];
             $this->assertEquals($script,$this->global->getGlobal());
         }
     }
