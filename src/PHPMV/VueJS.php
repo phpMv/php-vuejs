@@ -33,7 +33,7 @@ class VueJS extends AbstractVueJS {
 			$script .= "Vue.prototype.\$http = axios;\n";
 		}
 		$script .= "const app=new Vue(";
-		$script .= JavascriptUtils::arrayToJsObject($this->configuration + $this->data + $this->methods + $this->directives + $this->watchers + $this->filters + $this->computeds + $this->hooks);
+		$script .= JavascriptUtils::arrayToJsObject($this->configuration + $this->directives + $this->filters + $this->data + $this->computeds + $this->watchers + $this->hooks + $this->methods);
 		$script = JsUtils::cleanJSONFunctions($script);
 		$script .= ")";
 		$script = JavascriptUtils::wrapScript($script);

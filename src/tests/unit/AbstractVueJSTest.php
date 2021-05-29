@@ -19,19 +19,19 @@ if (! class_exists('\\AbstractVueJS')) {
 
         public function testAddData(){
             $this->vue->addData("testData",[0,1,2]);
-            $script=["data"=>["testData"=>[0,1,2]]];
+            $script=["data"=>["!!%testData%!!"=>[0,1,2]]];
             $this->assertEquals($script,$this->vue->getData());
         }
 
         public function testAddDataRaw(){
             $this->vue->addDataRaw("testData","''");
-            $script=["data"=>["testData"=>"!!%''%!!"]];
+            $script=["data"=>["!!%testData%!!"=>"!!%''%!!"]];
             $this->assertEquals($script,$this->vue->getData());
         }
 
         public function testAddMethod(){
             $this->vue->addMethod("testMethod","console.log('testMethod')");
-            $script=["methods"=>["testMethod"=>"!!%function(){console.log('testMethod')}%!!"]];
+            $script=["methods"=>["!!%testMethod%!!"=>"!!%function(){console.log('testMethod')}%!!"]];
             $this->assertEquals($script,$this->vue->getMethods());
         }
 
@@ -82,8 +82,8 @@ if (! class_exists('\\AbstractVueJS')) {
             $this->vue->addMethod("validate","this.\$refs.form.validate()");
             $this->vue->addComputed("testComputed","console.log('ok')");
             $this->vue->addWatcher("name","if(this.name=='MyName'){console.log('watcher succeed')}");
-            $this->assertEquals(["data"=>["select"=>NULL]],$this->vue->getData());
-            $this->assertEquals(["methods"=>["validate"=>"!!%function(){this.\$refs.form.validate()}%!!"]],$this->vue->getMethods());
+            $this->assertEquals(["data"=>["!!%select%!!"=>NULL]],$this->vue->getData());
+            $this->assertEquals(["methods"=>["!!%validate%!!"=>"!!%function(){this.\$refs.form.validate()}%!!"]],$this->vue->getMethods());
             $this->assertEquals(["computeds"=>["!!%testComputed%!!"=>"!!%function(){console.log('ok')}%!!"]],$this->vue->getComputeds());
             $this->assertEquals(["watch"=>["name"=>"!!%function(){if(this.name=='MyName'){console.log('watcher succeed')}}%!!"]],$this->vue->getWatchers());
         }

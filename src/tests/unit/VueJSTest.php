@@ -44,7 +44,7 @@ if (! class_exists('\\VueJS')) {
             $this->vue->addWatcher("name","if(this.name==='MyName'){console.log('watcher succeed')}");
             $this->vue->addComputed("testComputed","console.log('ok')");
             $this->vue->onMounted("alert('The page is created');");
-            $script='<script>Vue.prototype.$http=axios;constapp=newVue({el:"v-app",vuetify:newVuetify(),data:{"email":"","select":null},methods:{"validate":function(){this.$refs.form.validate()}},watch:{"name":function(){if(this.name==="MyName"){console.log("watchersucceed")}}},computeds:{testComputed:function(){console.log("ok")}},mounted:function(){alert("Thepageiscreated");}})</script>';
+            $script='<script>Vue.prototype.$http=axios;constapp=newVue({el:"v-app",vuetify:newVuetify(),data:{email:"",select:null},methods:{validate:function(){this.$refs.form.validate()}},watch:{"name":function(){if(this.name==="MyName"){console.log("watchersucceed")}}},computeds:{testComputed:function(){console.log("ok")}},mounted:function(){alert("Thepageiscreated");}})</script>';
             $this->assertEqualsIgnoreNewLines($script,$this->vue->__toString());
         }
     }

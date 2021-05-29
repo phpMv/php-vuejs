@@ -29,7 +29,7 @@ if (! class_exists('\\VueJS')) {
             $this->component->setProps('test','test1');
             $this->component->addMethod("methodTest","console.log('ok')");
             $script="Vue.component('test',{props: ['test','test1'],methods: {
-            'methodTest': function(){console.log('ok')}
+            methodTest: function(){console.log('ok')}
             },template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
             $this->assertEqualsIgnoreNewLines($script,$this->component->create());
             $this->assertEqualsIgnoreNewLines($script,$this->component->createGlobal());
