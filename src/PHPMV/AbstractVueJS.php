@@ -69,14 +69,17 @@ class AbstractVueJS {
 	}
 
 	public function addData(string $name,$value):void {
+	    $name=JsUtils::removeQuotes($name);
         $this->data["data"][$name]=$value;
 	}
 
 	public function addDataRaw(string $name,string $value):void {
+        $name=JsUtils::removeQuotes($name);
         $this->data["data"][$name]=JsUtils::removeQuotes($value);
 	}
 	
 	public function addMethod(string $name,string $body, array $params = []):void {
+        $name=JsUtils::removeQuotes($name);
         $this->methods["methods"][$name]=JsUtils::generateFunction($body,$params);
 	}
 	
