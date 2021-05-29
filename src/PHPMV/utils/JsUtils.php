@@ -5,7 +5,7 @@ class JsUtils{
     static private array $removeQuote = ["start"=>"!!%","end"=>"%!!"];
 
     public static function cleanJSONFunctions(string $json):string {
-        $pattern='/(("|\')!!%)|(%!!("|\'))/';
+        $pattern='/(("|\')'.self::$removeQuote['start'].')|('.self::$removeQuote['end'].'("|\'))/';
         return \preg_replace($pattern, '', $json);
     }
 
