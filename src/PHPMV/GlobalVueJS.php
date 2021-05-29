@@ -51,4 +51,12 @@ class GlobalVueJS{
         $script = JavascriptUtils::wrapScript($script);
         return $script;
     }
+
+    public function getGlobal():array {
+        return $this->global;
+    }
+
+    public function setGlobal(array $global):void {
+        $this->global = $global;
+    }
 }

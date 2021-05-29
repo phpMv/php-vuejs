@@ -29,7 +29,7 @@ class AbstractVueJS {
 	}
 	
 	public function addHook(string $name,string $body):void {
-	    $this->hooks[$name] = JsUtils::generateFunction($body);
+	    $this->hooks[$name] = JsUtils::generateFunction($body,[],false);
 	}
 	
 	public function onBeforeCreate(string $body):void {

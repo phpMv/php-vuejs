@@ -38,7 +38,7 @@ if (! class_exists('\\AbstractVueJS')) {
         public function testAddComputed(){
             $this->vue->addComputed("testComputed","console.log('testComputed')");
             $this->vue->addComputed("testComputedSet","console.log('testComputed')","var data=v");
-            $script=["computeds"=>["!!%testComputed%!!"=>"!!%function(){console.log('testComputed')}%!!","!!%testComputedSet%!!"=>"!!%{ get: !!%function(){console.log('testComputed')}%!!, set: !!%function(v){var data=v}%!! }%!!"]];
+            $script=["computeds"=>["!!%testComputed%!!"=>"!!%function(){console.log('testComputed')}%!!","!!%testComputedSet%!!"=>"!!%{ get: function(){console.log('testComputed')}, set: function(v){var data=v} }%!!"]];
             $this->assertEquals($script,$this->vue->getComputeds());
         }
 
