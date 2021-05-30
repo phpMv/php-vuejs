@@ -10,7 +10,7 @@ if (! class_exists('\\AbstractVueJS')) {
         private ?VueJS $vue;
 
         protected function _before(){
-            $this->vue=new VueJS('v-app',true,false);
+            $this->vue=new VueJS(['el'=>'v-app'],true,false);
         }
 
         protected function _after(){

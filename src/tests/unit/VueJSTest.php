@@ -15,7 +15,7 @@ if (! class_exists('\\VueJS')) {
         }
         
         protected function _before(){
-            $this->vue=new VueJS('v-app',true,false);
+            $this->vue=new VueJS(['el'=>'v-app'],true,false);
         }
 
         protected function _after(){
@@ -32,7 +32,7 @@ if (! class_exists('\\VueJS')) {
             $newVue=new VueJS();
             $newVue->setUseAxios(true);
             $newVue->setConfiguration(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"]);
-            $this->assertEquals(["el"=>'"v-app"',"vuetify"=>"new Vuetify()"],$newVue->getConfiguration());
+            $this->assertEquals(["el"=>"v-app","vuetify"=>"new Vuetify()"],$newVue->getConfiguration());
             $this->assertEquals(true,$newVue->getUseAxios());
         }
         

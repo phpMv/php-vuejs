@@ -18,13 +18,14 @@ class VueJS extends AbstractVueJS {
 
 	protected array $configuration;
 
-	public function __construct(string $app = "#app", bool $vuetify = false, bool $useAxios = false) {
+	public function __construct(array $configuration = ['el'=>'#app'], bool $useVuetify=false, bool $useAxios=false) {
 		parent::__construct();
-		$this->configuration['el'] = '"' . $app . '"';
-		if ($vuetify) {
-			$this->configuration['vuetify'] = "new Vuetify()";
-		}
-		$this->useAxios = $useAxios;
+		$configuration['el'] = '"'. $configuration['el'] .'"';
+		$this->configuration = $configuration;
+        if ($useVuetify){
+            $this->configuration['vuetify'] = "new Vuetify()";
+        }
+        $this->useAxios = $useAxios;
 	}
 
 	public function __toString(): string {
