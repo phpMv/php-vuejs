@@ -149,8 +149,9 @@ $vue->addFilter(
 	'capitalize',   
 	"if(!value){"
 		."return '';"
-		."value = value.toString();"  
-		."return value.charAt(0).toUpperCase() + value.slice(1);}",  
+	."}"
+	."value = value.toString();"  
+	."return value.charAt(0).toUpperCase() + value.slice(1);",  
 	["value"]);
 ```
 addFilter has 2 required arguments, and an optionnal one
@@ -165,9 +166,9 @@ filters: {
 		function(value){
 			if(!value){
 				return '';
+			}
 				value = value.toString();
 				return value.charAt(0).toUpperCase() + value.slice(1);
-			}
 		}
 }
 ```
