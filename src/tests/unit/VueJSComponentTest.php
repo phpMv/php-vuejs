@@ -29,7 +29,7 @@ if (! class_exists('\\VueJS')) {
             $this->testVueJSComponent();
             $this->component->onActivated("console.log('component activated');");
             $this->component->onDeactivated("console.log('component deactivated')");
-            $script="Vue.component('test',{props: ['test,'test1'],methods: {
+            $script="Vue.component('test',{props: ['test','test1'],methods: {
             methodTest: function(){console.log('ok')}
             },activated: function(){console.log('component activated');},deactivated: function(){console.log('component deactivated')},
             template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
