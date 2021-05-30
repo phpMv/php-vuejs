@@ -13,16 +13,27 @@ if (! class_exists('\\VueJS')) {
         }
 
         protected function _before(){
-            $template='<form method="post">
-            <input type="text" placeholder="test"/>
-            <input type="submit" value="Send"/>
-            </form>';
+            $template="<form method='post'>
+            <input type='text' placeholder='test'/>
+            <input type='submit' value='Send'/>
+            </form>";
             file_put_contents("test.html",$template);
             $this->component=new VueJSComponent('test');
         }
 
         protected function _after(){
             $this->component=null;
+        }
+
+        public function testAddHook(){
+            $this->testVueJSComponent();
+            $this->component->onActivated("console.log('component activated');");
+            $this->component->onDeactivated("console.log('component deactivated')");
+            $script="Vue.component('test',{props: ['test,'test1'],methods: {
+            methodTest: function(){console.log('ok')}
+            },activated: function(){console.log('component activated');},deactivated: function(){console.log('component deactivated')},
+            template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
+            $this->assertEqualsIgnoreNewLines($script,$this->component->create());
         }
 
         public function testVueJSComponent(){
@@ -32,7 +43,6 @@ if (! class_exists('\\VueJS')) {
             methodTest: function(){console.log('ok')}
             },template: '<form method='post'>  <input type='text' placeholder='test'/>  <input type='submit' value='Send'/>  </form>'})";
             $this->assertEqualsIgnoreNewLines($script,$this->component->create());
-            $this->assertEqualsIgnoreNewLines($script,$this->component->createGlobal());
             $this->assertEqualsIgnoreNewLines($script,$this->component->createGlobal());
         }
     }

@@ -18,7 +18,15 @@ class VueJSComponent extends AbstractVueJS{
     public function setProps(string ...$name):void {
         $this->props["props"]=$name;
     }
-    
+
+    public function onActivated(string $body):void {
+        $this->addHook("activated", $body);
+    }
+
+    public function onDeactivated(string $body):void {
+        $this->addHook("deactivated", $body);
+    }
+
     public function create(bool $global=false):string {
         $script="Vue.component('".$this->name."',";
         $script.=JavascriptUtils::arrayToJsObject($this->props + $this->data + $this->methods + $this->computeds + $this->watchers + $this->filters + $this->hooks + $this->template);
