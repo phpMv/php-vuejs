@@ -19,5 +19,19 @@ class JsUtils{
         }
         return "function(".implode(",",$params)."){".$body."}";
     }
+
+    public static function declareVariable(string $type, string $name, $value):string {
+        return $type." ".$name." = ".$value.";\n";
+    }
+
+    public static function kebabToPascal(string $string){
+        $string[0] = \strtoupper($string[0]);
+        $pattern='/(-\w{1})/';
+        return \preg_replace_callback($pattern,
+            function ($matches) use ($string){
+                return \strtoupper($matches[1][1]);
+
+        },$string);
+    }
 }
 

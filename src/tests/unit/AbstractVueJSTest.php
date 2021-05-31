@@ -10,7 +10,7 @@ if (! class_exists('\\AbstractVueJS')) {
         private ?VueJS $vue;
 
         protected function _before(){
-            $this->vue=new VueJS(['el'=>'v-app'],true,false);
+            $this->vue=new VueJS();
         }
 
         protected function _after(){
@@ -54,6 +54,12 @@ if (! class_exists('\\AbstractVueJS')) {
             $this->assertEquals($script,$this->vue->getFilters());
         }
 
+        public function testAddWatcher(){
+            $this->vue->addWatcher("name","if(this.name==='MyName'){console.log('watcher succeed')}");
+            $script = ["watch"=>["!!%name%!!"=>"!!%function(){if(this.name==='MyName'){console.log('watcher succeed')}}%!!"]];
+            $this->assertEquals($script,$this->vue->getWatchers());
+        }
+
         public function testAddHook(){
             $this->vue->onBeforeMount("alert('The page is created')");
             $this->vue->onMounted("alert('The page is created')");
@@ -75,35 +81,6 @@ if (! class_exists('\\AbstractVueJS')) {
                 "destroyed"=>"function(){alert('The page is created')}"
             ];
             $this->assertEquals($script,$this->vue->getHooks());
-        }
-
-        public function testAbstractVueJSGetters(){
-            $this->vue->addData("select",null);
-            $this->vue->addMethod("validate","this.\$refs.form.validate()");
-            $this->vue->addComputed("testComputed","console.log('ok')");
-            $this->vue->addWatcher("name","if(this.name=='MyName'){console.log('watcher succeed')}");
-            $this->assertEquals(["data"=>["!!%select%!!"=>NULL]],$this->vue->getData());
-            $this->assertEquals(["methods"=>["!!%validate%!!"=>"!!%function(){this.\$refs.form.validate()}%!!"]],$this->vue->getMethods());
-            $this->assertEquals(["computeds"=>["!!%testComputed%!!"=>"!!%function(){console.log('ok')}%!!"]],$this->vue->getComputeds());
-            $this->assertEquals(["watch"=>["name"=>"!!%function(){if(this.name=='MyName'){console.log('watcher succeed')}}%!!"]],$this->vue->getWatchers());
-        }
-
-        public function testAbstractVueJSSetters(){
-            $abstract=new AbstractVueJS();
-            $abstract->setData(['test']);
-            $abstract->setMethods(['test']);
-            $abstract->setComputeds(['test']);
-            $abstract->setHooks(['test']);
-            $abstract->setWatchers(['test']);
-            $abstract->setDirectives(['test']);
-            $abstract->setFilters(['test']);
-            $this->assertEquals(['test'],$abstract->getData());
-            $this->assertEquals(['test'],$abstract->getMethods());
-            $this->assertEquals(['test'],$abstract->getComputeds());
-            $this->assertEquals(['test'],$abstract->getHooks());
-            $this->assertEquals(['test'],$abstract->getWatchers());
-            $this->assertEquals(['test'],$abstract->getDirectives());
-            $this->assertEquals(['test'],$abstract->getFilters());
         }
     }
 }

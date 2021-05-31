@@ -11,10 +11,10 @@ class GlobalVueJS{
     protected array $global;
 
     protected function __construct() {
-        $this->global=[];
+        $this->global = [];
     }
 
-    public static function getInstance(): GlobalVueJS{
+    public static function getInstance():GlobalVueJS {
         if (!isset(self::$instance)) {
             self::$instance = new GlobalVueJS();
         }
@@ -26,18 +26,22 @@ class GlobalVueJS{
     }
 
     public function addGlobalDirective(string $name,array $hookFunction):void {
-        foreach ($hookFunction as $key=>$value){
+        foreach ($hookFunction as $key => $value){
             $hookFunction[$key] = JsUtils::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode'],false);
         }
-        $this->global[]="Vue.directive('".$name."',".JavascriptUtils::arrayToJsObject($hookFunction).");";
+        $this->global[] = "Vue.directive('".$name."',".JavascriptUtils::arrayToJsObject($hookFunction).");";
     }
 
     public function addGlobalFilter(string $name,string $body, array $params = []):void {
-        $this->global[]="Vue.filter('".$name."',".JsUtils::generateFunction($body,$params,false).");";
+        $this->global[] = "Vue.filter('".$name."',".JsUtils::generateFunction($body,$params,false).");";
     }
 
-    public function addGlobalObservable(string $varName, array $object){
-        $this->global[]="const ".$varName." = Vue.observable(". JavascriptUtils::arrayToJsObject($object) .");";
+    public function addGlobalObservable(string $varName, array $object):void {
+        $this->global[] = JsUtils::declareVariable('const',$varName,"Vue.observable(". JavascriptUtils::arrayToJsObject($object) .")");
+    }
+
+    public function addGlobalComponent(VueJSComponent $component):void {
+        $this->global[] = $component->generateGlobalScript();
     }
 
     public function __toString():string {
@@ -54,9 +58,5 @@ class GlobalVueJS{
 
     public function getGlobal():array {
         return $this->global;
-    }
-
-    public function setGlobal(array $global):void {
-        $this->global = $global;
     }
 }

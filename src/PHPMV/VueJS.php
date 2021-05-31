@@ -14,46 +14,30 @@ use PHPMV\utils\JsUtils;
  */
 class VueJS extends AbstractVueJS {
 
-	protected bool $useAxios;
-
 	protected array $configuration;
+	protected bool $useAxios;
+	protected string $varName;
 
-	public function __construct(array $configuration = ['el'=>'#app'], bool $useVuetify=false, bool $useAxios=false) {
+	public function __construct(array $configuration = ['el'=>'#app'], string $varName = "app", bool $useAxios = false, bool $useVuetify = false) {
 		parent::__construct();
-		$configuration['el'] = '"'. $configuration['el'] .'"';
+		$this->useAxios = $useAxios;
+		$this->varName = $varName;
+		$configuration['el'] = "'". $configuration['el'] ."'";
 		$this->configuration = $configuration;
         if ($useVuetify){
             $this->configuration['vuetify'] = "new Vuetify()";
         }
-        $this->useAxios = $useAxios;
 	}
 
-	public function __toString(): string {
-        $script = "";
-		if ($this->useAxios) {
-			$script .= "Vue.prototype.\$http = axios;\n";
-		}
-		$script .= "const app=new Vue(";
-		$script .= JavascriptUtils::arrayToJsObject($this->configuration + $this->directives + $this->filters + $this->data + $this->computeds + $this->watchers + $this->hooks + $this->methods);
-		$script = JsUtils::cleanJSONFunctions($script);
-		$script .= ")";
-		$script = JavascriptUtils::wrapScript($script);
+    protected function generateVueObject(string $object):string {
+        $vueObject = "new Vue(".$object.")";
+        return JsUtils::cleanJSONFunctions($vueObject);
+    }
+
+	public function __toString():string {
+        $script = $this->generateVueObject(JavascriptUtils::arrayToJsObject($this->configuration + $this->components + $this->directives + $this->filters + $this->data + $this->computeds + $this->watchers + $this->hooks + $this->methods));
+        $script = JsUtils::declareVariable('const',$this->varName,$script);
+        $script .= ($this->useAxios) ? $this->varName.".prototype.\$http = axios;\n" : "";
 		return $script;
-	}
-
-	public function getUseAxios(): bool {
-		return $this->useAxios;
-	}
-
-	public function setUseAxios(bool $useAxios): void {
-		$this->useAxios = $useAxios;
-	}
-
-	public function getConfiguration(): array {
-		return $this->configuration;
-	}
-
-	public function setConfiguration(array $configuration): void {
-		$this->configuration = $configuration;
 	}
 }

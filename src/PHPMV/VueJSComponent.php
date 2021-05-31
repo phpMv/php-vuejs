@@ -6,32 +6,31 @@ use PHPMV\utils\JsUtils;
 
 class VueJSComponent extends AbstractVueJS{
     protected string $name;
-    protected array $props=["props"=>[]];
+    protected array $props;
     protected array $template;
-    
-    public function __construct(string $template) {
+
+    public function __construct(string $template, array $props = []) {
         parent::__construct();
-        $this->template["template"]="'".\str_replace(["\n","\r","\t"]," ",(\file_get_contents($template.'.html',true))."'");
-        $this->name=$template;
-    }
-    
-    public function setProps(string ...$name):void {
-        $this->props["props"]=$name;
+        $this->props["props"] = $props;
+        $this->template["template"] = "'".\str_replace(["\n","\r","\t"]," ",(\file_get_contents($template.'.html',true))."'");
+        $this->name = $template;
     }
 
-    public function onActivated(string $body):void {
-        $this->addHook("activated", $body);
+    public function generateLocalScript():string {
+        $script = JavascriptUtils::arrayToJsObject($this->props + $this->components + $this->filters +$this->data + $this->computeds + $this->watchers = $this->hooks + $this->methods + $this->template);
+        $script = JsUtils::cleanJSONFunctions($script);
+        return $script;
     }
 
-    public function onDeactivated(string $body):void {
-        $this->addHook("deactivated", $body);
+    public function generateGlobalScript():string {
+        $script = "Vue.component('".$this->name."',";
+        $script .= $this->generateLocalScript();
+        $script .= ");\n";
+        return $script;
     }
 
-    public function create(bool $global=false):string {
-        $script="Vue.component('".$this->name."',";
-        $script.=JavascriptUtils::arrayToJsObject($this->props + $this->data + $this->methods + $this->computeds + $this->watchers + $this->filters + $this->hooks + $this->template);
-        $script=JsUtils::cleanJSONFunctions($script);
-        $script.=")";
+    public function generateFile($global = false):void {
+        $script = $this->generateGlobalScript();
         if(!$global){
             \file_put_contents($this->name.".js",$script);
         }
@@ -42,12 +41,18 @@ class VueJSComponent extends AbstractVueJS{
             else{
                 \file_put_contents("components.js",$script);
             }
-            
         }
-        return $script;
     }
-    
-    public function createGlobal():string{
-        return $this->create(true);   
+
+    public function onActivated(string $body):void {
+        $this->addHook("activated", $body);
+    }
+
+    public function onDeactivated(string $body):void {
+        $this->addHook("deactivated", $body);
+    }
+
+    public function getName():string {
+        return $this->name;
     }
 }
