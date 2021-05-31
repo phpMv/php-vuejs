@@ -14,7 +14,7 @@ class GlobalVueJS{
         $this->global = [];
     }
 
-    public static function getInstance():GlobalVueJS {
+    public static function getInstance():?GlobalVueJS {
         if (!isset(self::$instance)) {
             self::$instance = new GlobalVueJS();
         }

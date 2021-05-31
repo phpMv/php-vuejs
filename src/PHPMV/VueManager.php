@@ -14,7 +14,7 @@ class VueManager{
         $this->vues = [];
     }
 
-    public static function getInstance():VueManager {
+    public static function getInstance():?VueManager {
         if (!isset(self::$instance)) {
             self::$instance = new VueManager();
         }

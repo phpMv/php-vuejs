@@ -28,7 +28,7 @@ class JsUtils{
         $string[0] = \strtoupper($string[0]);
         $pattern='/(-\w{1})/';
         return \preg_replace_callback($pattern,
-            function ($matches) use ($string){
+            function ($matches){
                 return \strtoupper($matches[1][1]);
 
         },$string);
