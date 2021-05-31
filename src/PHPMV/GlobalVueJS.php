@@ -29,11 +29,11 @@ class GlobalVueJS{
         foreach ($hookFunction as $key => $value){
             $hookFunction[$key] = JsUtils::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode'],false);
         }
-        $this->global[] = "Vue.directive('".$name."',".JavascriptUtils::arrayToJsObject($hookFunction).");";
+        $this->global[] = "Vue.directive('".$name."',".JavascriptUtils::arrayToJsObject($hookFunction).");\n";
     }
 
     public function addGlobalFilter(string $name,string $body, array $params = []):void {
-        $this->global[] = "Vue.filter('".$name."',".JsUtils::generateFunction($body,$params,false).");";
+        $this->global[] = "Vue.filter('".$name."',".JsUtils::generateFunction($body,$params,false).");\n";
     }
 
     public function addGlobalObservable(string $varName, array $object):void {
