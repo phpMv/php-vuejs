@@ -2,6 +2,7 @@
 namespace PHPMV;
 
 use PHPMV\js\JavascriptUtils;
+use PHPMV\utils\JsUtils;
 
 class VueManager{
 
@@ -21,8 +22,20 @@ class VueManager{
         return self::$instance;
     }
 
+    public static function deleteInstance():void {
+        VueManager::$instance = null;
+    }
+
     public function addImport($import):void {
         $this->imports[] = $import;
+    }
+
+    public function importLocalComponent(VueJSComponent $component):void {
+        $varName = $component->getVarName();
+        if(!$varName){
+            $varName = JsUtils::kebabToPascal($component->getName());
+        }
+        $this->addImport(JsUtils::declareVariable('const', $varName, $component->generateLocalScript()));
     }
 
     public function addVue(VueJS $vue):void {
@@ -33,5 +46,9 @@ class VueManager{
         $script = implode("\n",$this->imports);
         $script .= implode("\n",$this->vues);
         return JavascriptUtils::wrapScript($script);
+    }
+
+    public function getImports():array {
+        return $this->imports;
     }
 }

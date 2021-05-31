@@ -8,6 +8,7 @@ class VueJSComponent extends AbstractVueJS{
     protected string $name;
     protected array $props;
     protected array $template;
+    protected ?string $varName = null;
 
     public function __construct(string $template, array $props = []) {
         parent::__construct();
@@ -42,6 +43,14 @@ class VueJSComponent extends AbstractVueJS{
                 \file_put_contents("components.js",$script);
             }
         }
+    }
+
+    public function getVarName():?string {
+        return $this->varName;
+    }
+
+    public function setVarName(string $varName):void {
+        $this->varName = $varName;
     }
 
     public function onActivated(string $body):void {

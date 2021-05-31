@@ -91,16 +91,13 @@ abstract class AbstractVueJS {
 	    $this->computeds["computeds"][$name] = $vc;
 	}
 
-    public function addLocalComponent(VueJSComponent $component, $varName = false, bool $import = true):void {
+    public function addLocalComponent(VueJSComponent $component):void {
         $name = $component->getName();
+        $varName = $component->getVarName();
         if(!$varName){
             $varName = JsUtils::kebabToPascal($name);
         }
         $this->components['components'][$name] = JsUtils::removeQuotes($varName);
-        $vueManager = VueManager::getInstance();
-        if($import){
-            $vueManager->addImport(JsUtils::declareVariable('const',$varName,$component->generateLocalScript()));
-        }
     }
 
 	public function addWatcher(string $var, string $body, array $params=[]):void {
