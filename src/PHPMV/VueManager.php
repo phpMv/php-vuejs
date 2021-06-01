@@ -50,14 +50,22 @@ class VueManager{
         $this->addImport("Vue.".$type."('".$name."',".$body.");");
     }
 
-    public function addGlobalDirective(string $name,array $hookFunction, array $configuration = []):void {
+    protected function addDirective(string $name, array $hookFunction, string $type, array $configuration = []){
         foreach($configuration as $key => $value){
             $configuration[$key] = $value;
         }
         foreach ($hookFunction as $key => $value){
             $hookFunction[$key] = JsUtils::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode'],false);
         }
-        $this->addGlobal('directive', $name, JavascriptUtils::arrayToJsObject($configuration + $hookFunction));
+        $this->addGlobal($type, $name, JavascriptUtils::arrayToJsObject($configuration + $hookFunction));
+    }
+
+    public function addGlobalDirective(string $name, array $hookFunction, array $configuration = []):void {
+        $this->addDirective($name, $hookFunction, 'directive', $configuration);
+    }
+
+    public function addGlobalElementDirective(string $name, array $hookFunction, array $configuration = []):void {
+        $this->addDirective($name, $hookFunction, 'elementDirective', $configuration);
     }
 
     public function addGlobalFilter(string $name,string $body, array $params = []):void {
