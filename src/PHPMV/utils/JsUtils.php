@@ -26,7 +26,7 @@ class JsUtils{
         return $declaration;
     }
 
-    public static function kebabToPascal(string $string){
+    public static function kebabToPascal(string $string):string {
         $string[0] = \strtoupper($string[0]);
         $pattern='/(-\w{1})/';
         return \preg_replace_callback($pattern,

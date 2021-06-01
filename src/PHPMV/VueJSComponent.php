@@ -58,7 +58,7 @@ class VueJSComponent extends AbstractVueJS {
         return $this->name;
     }
 
-    public function getVarName():?string {
+    public function getVarName():string {
         return $this->varName;
     }
 }
