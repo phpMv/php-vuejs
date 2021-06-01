@@ -73,7 +73,7 @@ class VueManager{
         $this->addImport(JsUtils::declareVariable('const',$varName,"Vue.observable(". JavascriptUtils::arrayToJsObject($object) .")", false));
     }
 
-    public function addGlobalComponent(VueJSGlobalComponent $component):void {
+    public function addGlobalComponent(VueJSComponent $component):void {
         $this->addImport($component->generateGlobalScript());
     }
 

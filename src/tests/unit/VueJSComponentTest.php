@@ -1,12 +1,12 @@
 <?php
 
 use Codeception\Test\Unit;
-use PHPMV\VueJSGlobalComponent;
+use PHPMV\VueJSComponent;
 use function PHPUnit\Framework\assertEquals;
 
-if (! class_exists('\\VueJS')) {
+if (! class_exists('\\VueJSComponent')) {
     class VueJSComponentTest extends Unit{
-        private ?VueJSGlobalComponent $component;
+        private ?VueJSComponent $component;
 
         protected function assertEqualsIgnoreNewLines($expected, $actual):void {
             $this->assertEquals(\str_replace("'",'"',\preg_replace('/\s+/', '',\trim(\preg_replace('/\R+/', '', $expected)))),\str_replace("'",'"',\preg_replace('/\s+/', '',\trim(\preg_replace('/\R+/', '', $actual)))));
@@ -18,7 +18,7 @@ if (! class_exists('\\VueJS')) {
             <input type='submit' value='Send'/>
             </form>";
             file_put_contents("test.html", $template);
-            $this->component = new VueJSGlobalComponent('test', ['test','test1']);
+            $this->component = new VueJSComponent('test', ['test','test1']);
         }
 
         protected function _after():void {
