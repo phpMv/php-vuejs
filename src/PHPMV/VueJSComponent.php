@@ -37,12 +37,12 @@ class VueJSComponent extends AbstractVueJS {
     public function generateGlobalScript():string {
         $script = "Vue.component('".$this->name."',";
         $script .= $this->generateObject();
-        $script .= ")";
+        $script .= ");";
         return $script;
     }
 
     public function generateFile(bool $inVariable = false, bool $global = false):void {
-        $script = ($inVariable) ? JsUtils::declareVariable("const", $this->varName, $this->generateGlobalScript(), false) : $this->generateGlobalScript().";";
+        $script = ($inVariable) ? JsUtils::declareVariable("const", $this->varName, $this->generateGlobalScript(), false) : $this->generateGlobalScript();
         if (!$global){
             \file_put_contents($this->name.".js",$script);
         }
