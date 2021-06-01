@@ -85,8 +85,8 @@ class VueManager{
     }
 
     public function __toString():string {
-        $script = implode("\n",$this->imports);
-        $script .= implode("\n",$this->vues);
+        $script = implode(PHP_EOL, $this->imports);
+        $script .= PHP_EOL . implode(PHP_EOL, $this->vues);
         return JavascriptUtils::wrapScript($script);
     }
 

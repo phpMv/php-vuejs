@@ -37,7 +37,7 @@ class VueJS extends AbstractVueJS {
 	public function __toString():string {
         $script = $this->generateVueObject(JavascriptUtils::arrayToJsObject($this->configuration + $this->components + $this->directives + $this->filters + $this->mixins + $this->data + $this->computeds + $this->watchers + $this->hooks + $this->methods));
         $script = JsUtils::declareVariable('const',$this->varName,$script);
-        $script .= ($this->useAxios) ? $this->varName.".prototype.\$http = axios;\n" : "";
+        $script .= ($this->useAxios) ? $this->varName.".prototype.\$http = axios;" . PHP_EOL : "";
 		return $script;
 	}
 }

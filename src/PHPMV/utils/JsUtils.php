@@ -22,7 +22,7 @@ class JsUtils{
 
     public static function declareVariable(string $type, string $name, $value,bool $lineBreak = true):string {
         $declaration = $type." ".$name." = ".$value.";";
-        if ($lineBreak) $declaration.="\n";
+        if ($lineBreak) $declaration .= PHP_EOL;
         return $declaration;
     }
 
