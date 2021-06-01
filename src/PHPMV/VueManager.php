@@ -30,12 +30,12 @@ class VueManager{
         $this->imports[] = $import;
     }
 
-    public function importLocalComponent(VueJSComponent $component):void {
+    public function importComponent(VueJSComponent $component):void {
         $varName = $component->getVarName();
         if(!$varName){
             $varName = JsUtils::kebabToPascal($component->getName());
         }
-        $this->addImport(JsUtils::declareVariable('const', $varName, $component->generateLocalScript()));
+        $this->addImport(JsUtils::declareVariable('const', $varName, $component->generateObject(), false));
     }
 
     public function addVue(VueJS $vue):void {

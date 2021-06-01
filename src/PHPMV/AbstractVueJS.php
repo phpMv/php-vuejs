@@ -18,6 +18,7 @@ abstract class AbstractVueJS {
 	protected array $directives;
 	protected array $filters;
 	protected array $hooks;
+	protected array $mixins;
 	
 	protected function __construct() {
 	    $this->data = [];
@@ -28,6 +29,7 @@ abstract class AbstractVueJS {
 	    $this->directives = [];
 	    $this->filters = [];
 	    $this->hooks = [];
+	    $this->mixins = [];
 	}
 	
 	protected function addHook(string $name, string $body):void {
@@ -91,19 +93,19 @@ abstract class AbstractVueJS {
 	    $this->computeds["computeds"][$name] = $vc;
 	}
 
-    public function addLocalComponent(VueJSComponent $component):void {
-        $name = $component->getName();
-        $varName = $component->getVarName();
-        if(!$varName){
-            $varName = JsUtils::kebabToPascal($name);
-        }
-        $this->components['components'][$name] = JsUtils::removeQuotes($varName);
+    public function addComponent(VueJSComponent $component):void {
+        $this->components['components'][$component->getName()] = JsUtils::removeQuotes($component->getVarName());
     }
 
 	public function addWatcher(string $var, string $body, array $params=[]):void {
         $var = JsUtils::removeQuotes($var);
 	    $this->watchers["watch"][$var] = JsUtils::generateFunction($body,$params);
 	}
+
+	public function addMixin(VueJSComponent $mixin):void {
+        $varName = JsUtils::removeQuotes($mixin->getVarName());
+	    $this->mixins["mixins"][] = $varName;
+    }
 
 	public function addFilter(string $name, string $body, array $params = []):void {
 	    $name = JsUtils::removeQuotes($name);

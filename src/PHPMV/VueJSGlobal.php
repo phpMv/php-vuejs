@@ -5,7 +5,7 @@ namespace PHPMV;
 use PHPMV\js\JavascriptUtils;
 use PHPMV\utils\JsUtils;
 
-class GlobalVueJS{
+class VueJSGlobal{
 
     protected static function addImport($import):void {
         $vueManager = VueManager::getInstance();
@@ -16,18 +16,18 @@ class GlobalVueJS{
         foreach ($hookFunction as $key => $value){
             $hookFunction[$key] = JsUtils::generateFunction($value,['el', 'binding', 'vnode', 'oldVnode'],false);
         }
-        GlobalVueJS::addImport("Vue.directive('".$name."',".JavascriptUtils::arrayToJsObject($hookFunction).");\n");
+        VueJSGlobal::addImport("Vue.directive('".$name."',".JavascriptUtils::arrayToJsObject($hookFunction).");");
     }
 
     public static function addGlobalFilter(string $name,string $body, array $params = []):void {
-        GlobalVueJS::addImport("Vue.filter('".$name."',".JsUtils::generateFunction($body,$params,false).");\n");
+        VueJSGlobal::addImport("Vue.filter('".$name."',".JsUtils::generateFunction($body,$params,false).");");
     }
 
     public static function addGlobalObservable(string $varName, array $object):void {
-        GlobalVueJS::addImport(JsUtils::declareVariable('const',$varName,"Vue.observable(". JavascriptUtils::arrayToJsObject($object) .")"));
+        VueJSGlobal::addImport(JsUtils::declareVariable('const',$varName,"Vue.observable(". JavascriptUtils::arrayToJsObject($object) .")", false));
     }
 
-    public static function addGlobalComponent(VueJSComponent $component):void {
-        GlobalVueJS::addImport($component->generateGlobalScript());
+    public static function addGlobalComponent(VueJSGlobalComponent $component):void {
+        VueJSGlobal::addImport($component->generateGlobalScript());
     }
 }
