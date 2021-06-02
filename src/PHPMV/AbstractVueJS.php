@@ -124,32 +124,4 @@ abstract class AbstractVueJS {
 			$this->directives["directives"][$name][$key] = JsUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode']);
 		}
 	}
-
-	public function getData(): array {
-		return $this->data;
-	}
-
-	public function getMethods(): array {
-		return $this->methods;
-	}
-
-	public function getComputeds(): array {
-		return $this->computeds;
-	}
-
-	public function getDirectives(): array {
-		return $this->directives;
-	}
-
-	public function getFilters(): array {
-		return $this->filters;
-	}
-
-	public function getWatchers(): array {
-		return $this->watchers;
-	}
-
-	public function getHooks(): array {
-		return $this->hooks;
-	}
 }

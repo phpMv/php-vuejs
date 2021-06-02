@@ -67,11 +67,7 @@ class VueJSComponent extends AbstractVueJS {
 	}
 
 	public function addTemplate(string $template): void {
-		$this->template["template"] = $template;
-	}
-
-	public function importTemplate(string $template): void {
-		$this->template["template"] = "'" . \str_replace(["\n", "\r", "\t"], " ", (\file_get_contents($template . '.html', true)) . "'");
+		$this->template["template"] = "'" . $template . "'";
 	}
 
 	public function onActivated(string $body): void {

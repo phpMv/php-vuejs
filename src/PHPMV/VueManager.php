@@ -29,7 +29,7 @@ class VueManager {
 		VueManager::$instance = null;
 	}
 
-	public function addImport($import): void {
+	protected function addImport($import): void {
 		$this->imports[] = $import;
 	}
 
