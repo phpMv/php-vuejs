@@ -11,7 +11,7 @@ if (! class_exists('\\VueJSCest')) {
 		public function tryToHelloMessage(AcceptanceTester $I) {
 			$I->amOnPage('/HelloMessage');
 			$I->wait(10);
-			//$I->canSee('Hello World !', 'body');
+			$I->canSee('Hello World !', 'body');
 		}
 	}
 }

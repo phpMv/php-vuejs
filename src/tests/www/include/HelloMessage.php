@@ -1,4 +1,9 @@
 <?php
+
 use PHPMV\VueJS;
-$vueAcceptance=new VueJS("#app",false,false);
-$vueAcceptance->addData('hello','Salut Thierry');
+use PHPMV\VueManager;
+
+$vueAcceptance = new VueJS();
+$vueAcceptance->addData('hello', 'Hello World !');
+$vueManager = VueManager::getInstance();
+$vueManager->addVue($vueAcceptance);
