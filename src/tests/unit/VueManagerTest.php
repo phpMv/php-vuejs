@@ -4,14 +4,9 @@ use Codeception\Test\Unit;
 use PHPMV\VueManager;
 use PHPMV\VueJS;
 use PHPMV\VueJSComponent;
-use PHPMV\core\VueLibrary;
 
 class VueManagerTest extends Unit {
 	private ?VueManager $vueManager;
-
-	protected function assertEqualsIgnoreNewLines($expected, $actual) {
-		$this->assertEquals(\str_replace("'", '"', \preg_replace('/\s+/', '', \trim(\preg_replace('/\R+/', '', $expected)))), \str_replace("'", '"', \preg_replace('/\s+/', '', \trim(\preg_replace('/\R+/', '', $actual)))));
-	}
 
 	protected function _before() {
 		$this->vueManager = VueManager::getInstance();
@@ -83,12 +78,6 @@ class VueManagerTest extends Unit {
 		$this->vueManager->addVue($vue);
 
 		$script = "Vue.prototype.\$http = axios; const state = Vue.observable({count: 0});Vue.directive('focus',{inserted: function(el,binding,vnode,oldVnode){el.focus();}}); Vue.filter('capitalize',function(value){if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);}); Vue.component('component-one',{inheritAttrs: true, model: { prop: 'checked', event: 'change' }, props: [ 'first', 'second' ], activated: function(){console.log('ok');}, deactivated: function(){console.log('ok');}}); Vue.mixin('mixin-one',{}); Vue.extend('extend-one',{mixins: [ mixin-one ]}); const ComponentOne = {inheritAttrs: true, model: { prop: 'checked', event: 'change' }, props: [ 'first', 'second' ], activated: function(){console.log('ok');}, deactivated: function(){console.log('ok');}}; const ComponentTwo = {extends: ComponentOne, data: { message: 'Hello World !' }, template: '<p>{{ message }}</p>'}; const MixinOne = {}; const ExtendOne = {mixins: [ mixin-one ]}; const app = new Vue({el: '#app', components: { 'component-two': ComponentTwo }, directives: { focus: { deep: true, inserted: function(el,binding,vnode,oldVnode){el.focus();} } }, filters: { capitalize: function(value){if(!value) returnvalue = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);} }, data: { raw: true }, computeds: { fullName: { get: function(){return this.firstName+' '+this.lastName}, set: function(v){this.firstName=v[0];this.lastName=v[1]} } }, watch: { title: function(newTitle,oldTitle){console.log('Title change from '+ oldTitle +' to '+ newTitle)} }, mounted: function(){console.log('hook');}, beforeMount: function(){console.log('hook');}, beforeCreate: function(){console.log('hook');}, created: function(){console.log('hook');}, beforeDestroy: function(){console.log('hook');}, beforeUpdate: function(){console.log('hook');}, destroyed: function(){console.log('hook');}, updated: function(){this.\$nextTick(function () {console.log('hook');})}, methods: { alertUser: function(user){alert('Welcome ' + user);} }});";
-		$this->assertEqualsIgnoreNewLines($script, $this->vueManager->__toString());
-	}
-
-	public function testVueLibrary() {
-		$library = new VueLibrary();
-		$library = explode('\\', $library->getTemplateFolder());
-		$this->assertEquals('/home/scrutinizer/build/src/PHPMV/core/templates/rev1', end($library));
+		$this->assertEquals($script, $this->vueManager->__toString());
 	}
 }
