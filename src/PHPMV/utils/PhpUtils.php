@@ -14,7 +14,8 @@ class PhpUtils {
 		$pattern = '/' . self::$delimiter . '(.+?)' . self::$delimiter . '(.+?)' . self::$delimiter . 'end' . self::$delimiter . '/s';
 		$templateString = self::importFromFile($filename, $extension);
 		\preg_match_all($pattern, $templateString, $templateArray);
-		for ($i = 0; $i < count($templateArray[0]); $i++) {
+		$iterationNumber = count($templateArray[0]);
+		for ($i = 0; $i < $iterationNumber; $i++) {
 			self::$parsedJs[$templateArray[1][$i]] = $templateArray[2][$i];
 		}
 		return $templateArray;

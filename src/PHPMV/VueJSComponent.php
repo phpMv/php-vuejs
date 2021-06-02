@@ -11,7 +11,7 @@ class VueJSComponent extends AbstractVueJS {
 	protected array $props;
 	protected array $template;
 	protected array $extends;
-	protected ?string $varName;
+	protected string $varName;
 
 	public function __construct(string $name, string $varName = null) {
 		parent::__construct();
