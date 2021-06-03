@@ -3,7 +3,6 @@
 namespace PHPMV;
 
 use PHPMV\js\JavascriptUtils;
-use PHPMV\utils\JsUtils;
 
 class VueManager {
 
@@ -34,7 +33,7 @@ class VueManager {
 	}
 
 	protected function importComponentObject(VueJSComponent $component): void {
-		$this->addImport(JsUtils::declareVariable('const', $component->getVarName(), $component->generateObject(), false));
+		$this->addImport(JavascriptUtils::declareVariable('const', $component->getVarName(), $component->generateObject(), false));
 	}
 
 	public function importComponent(VueJSComponent $component): void {
@@ -50,23 +49,22 @@ class VueManager {
 	}
 
 	protected function addGlobal(string $type, string $body, string $name = null): void {
-		if($name){
+		if ($name) {
 			$this->addImport("Vue." . $type . "('" . $name . "'," . $body . ");");
-		}
-		else{
+		} else {
 			$this->addImport("Vue." . $type . "(" . $body . ");");
 		}
 	}
 
 	public function addGlobalDirective(string $name, array $hookFunction) {
 		foreach ($hookFunction as $key => $value) {
-			$hookFunction[$key] = JsUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode'], false);
+			$hookFunction[$key] = JavascriptUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode']);
 		}
 		$this->addGlobal('directive', JavascriptUtils::arrayToJsObject($hookFunction), $name);
 	}
 
 	public function addGlobalFilter(string $name, string $body, array $params = []): void {
-		$this->addGlobal('filter', JsUtils::generateFunction($body, $params, false), $name);
+		$this->addGlobal('filter', JavascriptUtils::generateFunction($body, $params, false), $name);
 	}
 
 	public function addGlobalExtend(VueJSComponent $extend): void {
@@ -78,7 +76,7 @@ class VueManager {
 	}
 
 	public function addGlobalObservable(string $varName, array $object): void {
-		$this->addImport(JsUtils::declareVariable('const', $varName, "Vue.observable(" . JavascriptUtils::arrayToJsObject($object) . ")", false));
+		$this->addImport(JavascriptUtils::declareVariable('const', $varName, "Vue.observable(" . JavascriptUtils::arrayToJsObject($object) . ")", false));
 	}
 
 	public function addGlobalComponent(VueJSComponent $component): void {
@@ -91,9 +89,10 @@ class VueManager {
 
 	public function __toString(): string {
 		$script = "";
-		if ($this->useAxios) $script = "Vue.prototype.\$http = axios;\n";
+		if ($this->useAxios) $script = "Vue.prototype.\$http = axios;" . PHP_EOL;
 		$script .= implode(PHP_EOL, $this->imports);
 		$script .= PHP_EOL . implode(PHP_EOL, $this->vues);
+		$script = JavascriptUtils::cleanJSONFunctions($script);
 		return JavascriptUtils::wrapScript($script);
 	}
 

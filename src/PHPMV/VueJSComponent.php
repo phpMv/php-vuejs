@@ -3,7 +3,6 @@
 namespace PHPMV;
 
 use PHPMV\js\JavascriptUtils;
-use PHPMV\utils\JsUtils;
 
 class VueJSComponent extends AbstractVueJS {
 	protected string $name;
@@ -21,9 +20,17 @@ class VueJSComponent extends AbstractVueJS {
 		$this->extends = [];
 		$this->template = [];
 		if (!$varName) {
-			$varName = JsUtils::kebabToPascal($name);
+			$varName = JavascriptUtils::kebabToPascal($name);
 		}
 		$this->varName = $varName;
+	}
+
+	public function addData(string $name, $value): void {
+		$this->data["data"][$name] = $value;
+	}
+
+	public function addDataRaw(string $name, string $value): void {
+		$this->data["data"][$name] = JavascriptUtils::removeQuotes($value);
 	}
 
 	public function extends(VueJSComponent $component): void {
@@ -31,8 +38,11 @@ class VueJSComponent extends AbstractVueJS {
 	}
 
 	public function generateObject(): string {
-		$script = JavascriptUtils::arrayToJsObject($this->components + $this->filters + $this->extends + $this->mixins + $this->configuration + $this->props + $this->data + $this->computeds + $this->watchers + $this->hooks + $this->methods + $this->template);
-		$script = JsUtils::cleanJSONFunctions($script);
+		$data = [];
+		if (isset($this->data["data"])) {
+			$data["data"] = JavascriptUtils::generateFunction("return " . JavascriptUtils::arrayToJsObject($this->data["data"]));
+		}
+		$script = JavascriptUtils::arrayToJsObject( $this->components + $this->filters + $this->extends + $this->mixins + $this->configuration + $this->props + $data + $this->computeds + $this->watchers + $this->hooks + $this->methods + $this->template);
 		return $script;
 	}
 
@@ -44,7 +54,7 @@ class VueJSComponent extends AbstractVueJS {
 	}
 
 	public function generateFile(bool $inVariable = false, bool $global = false): void {
-		$script = ($inVariable) ? JsUtils::declareVariable("const", $this->varName, $this->generateGlobalScript(), false) : $this->generateGlobalScript();
+		$script = ($inVariable) ? JavascriptUtils::declareVariable("const", $this->varName, $this->generateGlobalScript(), false) : $this->generateGlobalScript();
 		if (!$global) {
 			\file_put_contents($this->name . ".js", $script);
 		} elseif (file_exists("components.js")) {
@@ -63,11 +73,11 @@ class VueJSComponent extends AbstractVueJS {
 	}
 
 	public function setModel(string $prop, string $event): void {
-		$this->configuration['model'] = "{ prop: '" . $prop . "', event: '" . $event . "' }";
+		$this->configuration['model'] = JavascriptUtils::removeQuotes("{ prop: '" . $prop . "', event: '" . $event . "' }");
 	}
 
 	public function addTemplate(string $template): void {
-		$this->template["template"] = "'" . $template . "'";
+		$this->template["template"] = $template;
 	}
 
 	public function onActivated(string $body): void {

@@ -2,7 +2,7 @@
 
 namespace PHPMV;
 
-use PHPMV\utils\JsUtils;
+use PHPMV\js\JavascriptUtils;
 
 /**
  * Created by PhpStorm.
@@ -34,7 +34,7 @@ abstract class AbstractVueJS {
 	}
 
 	protected function addHook(string $name, string $body): void {
-		$this->hooks[$name] = JsUtils::generateFunction($body, [], false);
+		$this->hooks[$name] = JavascriptUtils::generateFunction($body);
 	}
 
 	public function onBeforeCreate(string $body): void {
@@ -74,50 +74,50 @@ abstract class AbstractVueJS {
 	}
 
 	public function addData(string $name, $value): void {
-		$name = JsUtils::removeQuotes($name);
+		$name = JavascriptUtils::removeQuotes($name);
 		$this->data["data"][$name] = $value;
 	}
 
 	public function addDataRaw(string $name, string $value): void {
-		$name = JsUtils::removeQuotes($name);
-		$this->data["data"][$name] = JsUtils::removeQuotes($value);
+		$name = JavascriptUtils::removeQuotes($name);
+		$this->data["data"][$name] = JavascriptUtils::removeQuotes($value);
 	}
 
 	public function addMethod(string $name, string $body, array $params = []): void {
-		$name = JsUtils::removeQuotes($name);
-		$this->methods["methods"][$name] = JsUtils::generateFunction($body, $params);
+		$name = JavascriptUtils::removeQuotes($name);
+		$this->methods["methods"][$name] = JavascriptUtils::generateFunction($body, $params);
 	}
 
 	public function addComputed(string $name, string $get, string $set = null): void {
-		$name = JsUtils::removeQuotes($name);
-		$vc = (is_null($set)) ? JsUtils::generateFunction($get) : JsUtils::removeQuotes("{ get: " . JsUtils::generateFunction($get, [], false) . ", set: " . JsUtils::generateFunction($set, ["v"], false) . " }");
+		$name = JavascriptUtils::removeQuotes($name);
+		$vc = (is_null($set)) ? JavascriptUtils::generateFunction($get) : JavascriptUtils::removeQuotes("{ get: " . JavascriptUtils::generateFunction($get, [], false) . ", set: " . JavascriptUtils::generateFunction($set, ["v"], false) . " }");
 		$this->computeds["computeds"][$name] = $vc;
 	}
 
 	public function addComponent(VueJSComponent $component): void {
-		$this->components['components'][$component->getName()] = JsUtils::removeQuotes($component->getVarName());
+		$this->components['components'][$component->getName()] = JavascriptUtils::removeQuotes($component->getVarName());
 	}
 
 	public function addWatcher(string $var, string $body, array $params = []): void {
-		$var = JsUtils::removeQuotes($var);
-		$this->watchers["watch"][$var] = JsUtils::generateFunction($body, $params);
+		$var = JavascriptUtils::removeQuotes($var);
+		$this->watchers["watch"][$var] = JavascriptUtils::generateFunction($body, $params);
 	}
 
 	public function addMixin(VueJSComponent $mixin): void {
-		$varName = JsUtils::removeQuotes($mixin->getVarName());
+		$varName = JavascriptUtils::removeQuotes($mixin->getVarName());
 		$this->mixins["mixins"][] = $varName;
 	}
 
 	public function addFilter(string $name, string $body, array $params = []): void {
-		$name = JsUtils::removeQuotes($name);
-		$this->filters["filters"][$name] = JsUtils::generateFunction($body, $params);
+		$name = JavascriptUtils::removeQuotes($name);
+		$this->filters["filters"][$name] = JavascriptUtils::generateFunction($body, $params);
 	}
 
 	public function addDirective(string $name, array $hookFunction): void {
-		$name = JsUtils::removeQuotes($name);
+		$name = JavascriptUtils::removeQuotes($name);
 		foreach ($hookFunction as $key => $value) {
-			$key = JsUtils::removeQuotes($key);
-			$this->directives["directives"][$name][$key] = JsUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode']);
+			$key = JavascriptUtils::removeQuotes($key);
+			$this->directives["directives"][$name][$key] = JavascriptUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode']);
 		}
 	}
 }
