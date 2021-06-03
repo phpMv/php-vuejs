@@ -113,12 +113,8 @@ abstract class AbstractVueJS {
 		$this->filters["filters"][$name] = JsUtils::generateFunction($body, $params);
 	}
 
-	public function addDirective(string $name, array $hookFunction, array $configuration = []): void {
+	public function addDirective(string $name, array $hookFunction): void {
 		$name = JsUtils::removeQuotes($name);
-		foreach ($configuration as $key => $value) {
-			$key = JsUtils::removeQuotes($key);
-			$this->directives["directives"][$name][$key] = $value;
-		}
 		foreach ($hookFunction as $key => $value) {
 			$key = JsUtils::removeQuotes($key);
 			$this->directives["directives"][$name][$key] = JsUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode']);

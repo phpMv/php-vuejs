@@ -49,30 +49,32 @@ class VueManager {
 		$this->importComponentObject($extend);
 	}
 
-	protected function addGlobal(string $type, string $name, string $body): void {
-		$this->addImport("Vue." . $type . "('" . $name . "'," . $body . ");");
+	protected function addGlobal(string $type, string $body, string $name = null): void {
+		if($name){
+			$this->addImport("Vue." . $type . "('" . $name . "'," . $body . ");");
+		}
+		else{
+			$this->addImport("Vue." . $type . "(" . $body . ");");
+		}
 	}
 
-	public function addGlobalDirective(string $name, array $hookFunction, array $configuration = []) {
-		foreach ($configuration as $key => $value) {
-			$configuration[$key] = $value;
-		}
+	public function addGlobalDirective(string $name, array $hookFunction) {
 		foreach ($hookFunction as $key => $value) {
 			$hookFunction[$key] = JsUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode'], false);
 		}
-		$this->addGlobal('directive', $name, JavascriptUtils::arrayToJsObject($configuration + $hookFunction));
+		$this->addGlobal('directive', JavascriptUtils::arrayToJsObject($hookFunction), $name);
 	}
 
 	public function addGlobalFilter(string $name, string $body, array $params = []): void {
-		$this->addGlobal('filter', $name, JsUtils::generateFunction($body, $params, false));
+		$this->addGlobal('filter', JsUtils::generateFunction($body, $params, false), $name);
 	}
 
 	public function addGlobalExtend(VueJSComponent $extend): void {
-		$this->addGlobal('extend', $extend->getName(), $extend->generateObject());
+		$this->addGlobal('extend', $extend->generateObject());
 	}
 
 	public function addGlobalMixin(VueJSComponent $mixin): void {
-		$this->addGlobal('mixin', $mixin->getName(), $mixin->generateObject());
+		$this->addGlobal('mixin', $mixin->generateObject());
 	}
 
 	public function addGlobalObservable(string $varName, array $object): void {
