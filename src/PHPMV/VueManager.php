@@ -32,20 +32,8 @@ class VueManager {
 		$this->imports[] = $import;
 	}
 
-	protected function importComponentObject(VueJSComponent $component): void {
+	public function importComponentObject(VueJSComponent $component): void { //component, mixin, or extend
 		$this->addImport(JavascriptUtils::declareVariable('const', $component->getVarName(), $component->generateObject(), false));
-	}
-
-	public function importComponent(VueJSComponent $component): void {
-		$this->importComponentObject($component);
-	}
-
-	public function importMixin(VueJSComponent $mixin): void {
-		$this->importComponentObject($mixin);
-	}
-
-	public function importExtend(VueJSComponent $extend): void {
-		$this->importComponentObject($extend);
 	}
 
 	protected function addGlobal(string $type, string $body, string $name = null): void {

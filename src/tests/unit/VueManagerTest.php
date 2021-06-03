@@ -85,10 +85,10 @@ if (! class_exists('\\VueManager')) {
 			$this->vueManager->addGlobalComponent($component);
 			$this->vueManager->addGlobalMixin($mixinOne);
 			$this->vueManager->addGlobalExtend($extendOne);
-			$this->vueManager->importComponent($component);
-			$this->vueManager->importComponent($componentOne);
-			$this->vueManager->importMixin($mixinOne);
-			$this->vueManager->importExtend($extendOne);
+			$this->vueManager->importComponentObject($component);
+			$this->vueManager->importComponentObject($componentOne);
+			$this->vueManager->importComponentObject($mixinOne);
+			$this->vueManager->importComponentObject($extendOne);
 			$this->vueManager->addVue($vue);
 
 			$script = "<script>Vue.prototype.\$http = axios; const state = Vue.observable({count: 0}); Vue.directive('focus',{inserted: function(el,binding,vnode,oldVnode){el.focus();}}); Vue.filter('capitalize',function(value){if(!value) return '';value = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);}); Vue.component('component-one',{inheritAttrs: true,model: { prop: 'checked', event: 'change' },props: [ 'first', 'second' ],activated: function(){console.log('ok');},deactivated: function(){console.log('ok');}}); Vue.mixin({}); Vue.extend({mixins: [ MixinOne ]}); const ComponentOne = {inheritAttrs: true,model: { prop: 'checked', event: 'change' },props: [ 'first', 'second' ],activated: function(){console.log('ok');},deactivated: function(){console.log('ok');}}; const ComponentTwo = {extends: 'ComponentOne',data: function(){return {message: 'Hello World !'}},template: '<p>{{ message }}</p>'}; const MixinOne = {}; const ExtendOne = {mixins: [ MixinOne ]}; const app = new Vue({el: '#app',components: { 'component-two': ComponentTwo },directives: { focus: { inserted: function(el,binding,vnode,oldVnode){el.focus();} } },filters: { capitalize: function(value){if(!value) returnvalue = value.toString();return value.charAt(0).toUpperCase() + value.slice(1);} },data: { raw: true },computeds: { fullName: { get: function(){return this.firstName+' '+this.lastName}, set: function(v){this.firstName=v[0];this.lastName=v[1]} } },watch: { title: function(newTitle,oldTitle){console.log('Title change from '+ oldTitle +' to '+ newTitle)} },mounted: function(){console.log('hook');},beforeMount: function(){console.log('hook');},beforeCreate: function(){console.log('hook');},created: function(){console.log('hook');},beforeDestroy: function(){console.log('hook');},beforeUpdate: function(){console.log('hook');},destroyed: function(){console.log('hook');},updated: function(){this.\$nextTick(function () {console.log('hook');})},methods: { alertUser: function(user){alert('Welcome ' + user);} }});</script>";
