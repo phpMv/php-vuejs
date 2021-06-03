@@ -7,7 +7,7 @@ class PhpUtils {
 	static private array $parsedJs = [];
 
 	public static function importFromFile(string $filename, string $extension): string {
-		return \file_get_contents($filename . '.' . $extension, true);
+		return \file_get_contents("$filename.$extension", true);
 	}
 
 	public static function parseFile(string $filename, string $extension): array {

@@ -27,7 +27,7 @@ class VueJS extends AbstractVueJS {
 	}
 
 	protected function generateVueObject(string $object): string {
-		return "new Vue(" . $object . ")";
+		return "new Vue($object)";
 	}
 
 	public function __toString(): string {

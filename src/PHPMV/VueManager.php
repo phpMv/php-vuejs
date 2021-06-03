@@ -38,9 +38,9 @@ class VueManager {
 
 	protected function addGlobal(string $type, string $body, string $name = null): void {
 		if ($name) {
-			$this->addImport("Vue." . $type . "('" . $name . "'," . $body . ");");
+			$this->addImport("Vue.$type('$name',$body);");
 		} else {
-			$this->addImport("Vue." . $type . "(" . $body . ");");
+			$this->addImport("Vue.$type($body);");
 		}
 	}
 
