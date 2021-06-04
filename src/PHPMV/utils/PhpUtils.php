@@ -22,7 +22,12 @@ class PhpUtils {
 		return $templateArray;
 	}
 
-	public static function getParsedJs(string $name): string {
+	public static function getParsedJs(string $name,array $variables = []): string {
+		if(isset($variables)){
+			foreach($variables as $key => $value){
+				self::$parsedJs[$name] = \str_replace("{{ $key }}",$value, self::$parsedJs[$name]);
+			}
+		}
 		return self::$parsedJs[$name];
 	}
 }
