@@ -1,5 +1,3 @@
-
-
 # PHP-VueJS
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phpMv/php-vuejs/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/phpMv/php-vuejs/?branch=main) [![Code Coverage](https://scrutinizer-ci.com/g/phpMv/php-vuejs/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/phpMv/php-vuejs/?branch=main) [![Build Status](https://scrutinizer-ci.com/g/phpMv/php-vuejs/badges/build.png?b=main)](https://scrutinizer-ci.com/g/phpMv/php-vuejs/build-status/main) [![Code Intelligence Status](https://scrutinizer-ci.com/g/phpMv/php-vuejs/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)  
 VueJS integration for PHP frameworks
@@ -26,7 +24,7 @@ VueManager methods
  - [addGlobalObservable](#global-observables)
  - [addGlobalComponent](#global-components)
  - [importComponentObject](#local-components)
- - [setAxios](#)
+ - [setAxios](#axios)
  - [addVue](#)
 
 ## Creation of Vue object
@@ -48,6 +46,8 @@ VueJS methods
  - [addWatcher](#object-watchers)
  - [addDirective](#object-directives)
  - [addFilter](#object-filters)
+ - [addComponent](#vue-components)
+ - [addMixin](#object-mixins)
  - [addHook](#object-hooks)
 
 ## Creation of Component Object
@@ -64,8 +64,8 @@ VueJSComponent argument's
 VueJSComponent methods
 
  - [addProps](#add-props)
- - [setInheritAttrs](#)
- - [setModel](#)
+ - [setInheritAttrs](#set-inherit-attributes)
+ - [setModel](#set-model)
  - [addData](#object-data)
  - [extends](#extends)
  - [addDataRaw](#object-data)
@@ -74,6 +74,8 @@ VueJSComponent methods
  - [addWatcher](#object-watchers)
  - [addDirective](#object-directives)
  - [addFilter](#object-filters)
+ - [addComponent](#vue-components)
+ - [addMixin](#object-mixins)
  - [addTemplate](#add-template)
  - [generateFile](#generate-file)
  - [addHook](#object-hooks)
@@ -336,22 +338,21 @@ Vue.component('component-one',{
 		}
 	});
 ```
-### Global Observables
-addGlobalObservable arguments
- 1. (string) variable name
- 2. (array) object
+### Mixins
+addMixin, addGlobalMixin argument
+
+ 1. (VueJSComponent) mixin object
+#### Object Mixins
 ```php
-$vueManager->addGlobalObservable("state", ["count" => 0]);
+$mixin = new VueJSComponent('mixin-one');
+$mixin->addData('framework','ubiquity');
+$vue->addMixin($mixin);
 ```
 This generates the content below
 ```js
-const state = Vue.observable({count: 0});
+mixins: [ MixinOne ]
 ```
-
-### Global Mixins
-addGlobalMixin argument
-
- 1. (VueJSComponent) mixin object
+#### Global Mixins
 ```php
 $mixin = new VueJSComponent('mixin-one');
 $mixin->addData('framework','ubiquity');
@@ -366,11 +367,25 @@ Vue.mixin({
 		}
 	});
 ```
-
-### Global Extends
-addGlobalExtend argument
-
+### Extends
+addGlobalExtend, extends argument
  1. (VueJSComponent) extend object
+
+#### Component extends
+
+```php
+$component = new VueJSComponent('component');
+$componentOne = new VueJSComponent('component-one');  
+$componentOne->addData('framework','ubiquity');
+$componentOne->extends($component);
+$vueManager->addGlobalComponent($componentOne);
+```
+This generates the content below
+```js
+extends: "Component"
+```
+
+#### Global Extends
 ```php
 $extend = new VueJSComponent('extend-one');
 $extend->addData('framework','ubiquity');
@@ -384,4 +399,46 @@ Vue.extend({
 			return {framework: "ubiquity"}
 		}
 	});
+```
+
+### Global Observables
+addGlobalObservable arguments
+ 1. (string) variable name
+ 2. (array) object
+```php
+$vueManager->addGlobalObservable("state", ["count" => 0]);
+```
+This generates the content below
+```js
+const state = Vue.observable({count: 0});
+```
+## Configuration
+
+### VueManager Configuration
+#### Axios
+To enable axios
+```php
+$vueManager->setAxios(true);
+```
+### Components Configuration
+#### Set Inherit Attributes
+To enable setInheritAttrs
+```php
+$component->setInheritAttrs(true);
+```
+#### Set Model
+setModel arguments
+
+ 1. (string) props
+ 2. (string) events
+ 
+```php
+$component->setModel('checked', 'change');
+```
+## Adding Vue Object
+addVue argument
+ 1. (VueJS) object vue
+
+```php
+$vueManager->addVue($vue);
 ```
