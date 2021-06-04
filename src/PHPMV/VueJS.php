@@ -14,13 +14,12 @@ use PHPMV\js\JavascriptUtils;
  */
 class VueJS extends AbstractVueJS {
 
-	protected array $configuration;
 	protected string $varName;
 
-	public function __construct(array $configuration = ['el' => '#app'], string $varName = "app", bool $useVuetify = false) {
+	public function __construct(string $el = '#app', string $varName = "app", bool $useVuetify = false) {
 		parent::__construct();
 		$this->varName = $varName;
-		$this->configuration = $configuration;
+		$this->addConfiguration('el', $el);
 		if ($useVuetify) {
 			$this->configuration['vuetify'] = "new Vuetify()";
 		}

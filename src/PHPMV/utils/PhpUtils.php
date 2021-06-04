@@ -7,7 +7,7 @@ class PhpUtils {
 	static private array $parsedJs = [];
 
 	public static function importFromFile(string $filename, string $extension): string {
-		return \file_get_contents("$filename.$extension", true);
+		return \str_replace(["\n","\r","\t"],"",\file_get_contents("$filename.$extension", true));
 	}
 
 	public static function parseFile(string $filename, string $extension): array {
@@ -17,7 +17,7 @@ class PhpUtils {
 		$iterationNumber = count($templateArray[0]);
 		for ($i = 0; $i < $iterationNumber; $i++) {
 
-			self::$parsedJs[$templateArray[1][$i]] = \str_replace(["\n","\r","\t"]," ",$templateArray[2][$i]);
+			self::$parsedJs[$templateArray[1][$i]] = $templateArray[2][$i];
 		}
 		return $templateArray;
 	}

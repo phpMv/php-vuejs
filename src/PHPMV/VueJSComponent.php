@@ -6,7 +6,6 @@ use PHPMV\js\JavascriptUtils;
 
 class VueJSComponent extends AbstractVueJS {
 	protected string $name;
-	protected array $configuration;
 	protected array $props;
 	protected array $template;
 	protected array $extends;
@@ -15,7 +14,6 @@ class VueJSComponent extends AbstractVueJS {
 	public function __construct(string $name, string $varName = null) {
 		parent::__construct();
 		$this->name = $name;
-		$this->configuration = [];
 		$this->props = [];
 		$this->extends = [];
 		$this->template = [];
@@ -69,11 +67,11 @@ class VueJSComponent extends AbstractVueJS {
 	}
 
 	public function setInheritAttrs(bool $inheritAttrs): void {
-		$this->configuration['inheritAttrs'] = $inheritAttrs;
+		$this->addConfiguration('inheritAttrs', $inheritAttrs);
 	}
 
 	public function setModel(string $prop, string $event): void {
-		$this->configuration['model'] = JavascriptUtils::removeQuotes("{ prop: '$prop', event: '$event ' }");
+		$this->addConfiguration('model', JavascriptUtils::removeQuotes("{ prop: '$prop', event: '$event ' }"));
 	}
 
 	public function addTemplate(string $template): void {

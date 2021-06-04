@@ -11,6 +11,7 @@ use PHPMV\js\JavascriptUtils;
  * Time: 14:20
  */
 abstract class AbstractVueJS {
+	protected array $configuration;
 	protected array $data;
 	protected array $methods;
 	protected array $computeds;
@@ -22,6 +23,7 @@ abstract class AbstractVueJS {
 	protected array $mixins;
 
 	protected function __construct() {
+		$this->configuration = [];
 		$this->data = [];
 		$this->methods = [];
 		$this->computeds = [];
@@ -71,6 +73,10 @@ abstract class AbstractVueJS {
 
 	public function onDestroyed(string $body): void {
 		$this->addHook("destroyed", $body);
+	}
+
+	public function addConfiguration(string $name, $value):void{
+		$this->configuration[$name] = $value;
 	}
 
 	public function addData(string $name, $value): void {

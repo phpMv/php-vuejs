@@ -52,7 +52,7 @@ if (!class_exists('\\VueManager')) {
 			$extendOne = new VueJSComponent('extend-one', 'ExtendOne');
 			$extendOne->addMixin($mixinOne);
 
-			$vue = new VueJS(['el' => '#app'], 'app');
+			$vue = new VueJS('#app', 'app');
 			$vue->addDataRaw('message', "'Hello World !'");
 			$vue->addMethod('alertUser', "alert('Welcome ' + user);", ['user']);
 			$vue->addDirective('focus', ['inserted' => 'el.focus();'], ['deep' => true]);
