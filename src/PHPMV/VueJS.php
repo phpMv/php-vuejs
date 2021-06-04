@@ -21,7 +21,7 @@ class VueJS extends AbstractVueJS {
 		$this->varName = $varName;
 		$this->addConfiguration('el', $el);
 		if ($useVuetify) {
-			$this->configuration['vuetify'] = "new Vuetify()";
+			$this->configuration['vuetify'] = JavascriptUtils::removeQuotes("new Vuetify()");
 		}
 	}
 
