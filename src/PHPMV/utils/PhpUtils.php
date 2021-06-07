@@ -16,7 +16,6 @@ class PhpUtils {
 		\preg_match_all($pattern, $templateString, $templateArray);
 		$iterationNumber = count($templateArray[0]);
 		for ($i = 0; $i < $iterationNumber; $i++) {
-
 			self::$parsedJs[$templateArray[1][$i]] = $templateArray[2][$i];
 		}
 		return $templateArray;

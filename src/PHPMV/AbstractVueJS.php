@@ -22,8 +22,8 @@ abstract class AbstractVueJS {
 	protected array $hooks;
 	protected array $mixins;
 
-	protected function __construct() {
-		$this->configuration = [];
+	protected function __construct(array $configuration) {
+		$this->configuration = $configuration;
 		$this->data = [];
 		$this->methods = [];
 		$this->computeds = [];
@@ -73,10 +73,6 @@ abstract class AbstractVueJS {
 
 	public function onDestroyed(string $body): void {
 		$this->addHook("destroyed", $body);
-	}
-
-	public function addConfiguration(string $name, $value):void{
-		$this->configuration[$name] = $value;
 	}
 
 	public function addData(string $name, $value): void {

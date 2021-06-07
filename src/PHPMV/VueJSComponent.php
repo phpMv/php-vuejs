@@ -12,7 +12,7 @@ class VueJSComponent extends AbstractVueJS {
 	protected string $varName;
 
 	public function __construct(string $name, string $varName = null) {
-		parent::__construct();
+		parent::__construct([]);
 		$this->name = $name;
 		$this->props = [];
 		$this->extends = [];
@@ -40,7 +40,7 @@ class VueJSComponent extends AbstractVueJS {
 		if (isset($this->data["data"])) {
 			$data["data"] = JavascriptUtils::generateFunction("return " . JavascriptUtils::arrayToJsObject($this->data["data"]));
 		}
-		$script = JavascriptUtils::arrayToJsObject( $this->components + $this->filters + $this->extends + $this->mixins + $this->configuration + $this->props + $data + $this->computeds + $this->watchers + $this->hooks + $this->methods + $this->template);
+		$script = JavascriptUtils::arrayToJsObject($this->components + $this->filters + $this->extends + $this->mixins + $this->configuration + $this->props + $data + $this->computeds + $this->watchers + $this->hooks + $this->methods + $this->template);
 		return $script;
 	}
 
@@ -67,11 +67,11 @@ class VueJSComponent extends AbstractVueJS {
 	}
 
 	public function setInheritAttrs(bool $inheritAttrs): void {
-		$this->addConfiguration('inheritAttrs', $inheritAttrs);
+		$this->configuration['inheritAttrs'] = $inheritAttrs;
 	}
 
 	public function setModel(string $prop, string $event): void {
-		$this->addConfiguration('model', JavascriptUtils::removeQuotes("{ prop: '$prop', event: '$event ' }"));
+		$this->configuration['model'] = JavascriptUtils::removeQuotes("{ prop: '$prop', event: '$event ' }");
 	}
 
 	public function addTemplate(string $template): void {

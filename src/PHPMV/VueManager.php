@@ -32,16 +32,16 @@ class VueManager {
 		$this->imports[] = $import;
 	}
 
-	public function importComponentObject(VueJSComponent $component): void { //component, mixin, or extend
-		$this->addImport(JavascriptUtils::declareVariable('const', $component->getVarName(), $component->generateObject(), false));
-	}
-
 	protected function addGlobal(string $type, string $body, string $name = null): void {
 		if ($name) {
 			$this->addImport("Vue.$type('$name',$body);");
 		} else {
 			$this->addImport("Vue.$type($body);");
 		}
+	}
+
+	public function importComponentObject(VueJSComponent $component): void { //component, mixin, or extend
+		$this->addImport(JavascriptUtils::declareVariable('const', $component->getVarName(), $component->generateObject(), false));
 	}
 
 	public function addGlobalDirective(string $name, array $hookFunction) {
