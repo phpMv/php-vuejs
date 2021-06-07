@@ -21,7 +21,7 @@ if (!class_exists('\\PhpUtils')) {
 			$this->assertEqualsIgnoreNewLines($script, PhpUtils::importFromFile('importTest', 'html'));
 		}
 
-		public function getParsed() {
+		public function testGetParsed() {
 			$variable = 'Hello World !';
 			$template = "---created---"
 						."console.log('{{ variable }}');"
