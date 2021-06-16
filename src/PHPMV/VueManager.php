@@ -4,9 +4,20 @@ namespace PHPMV;
 
 use PHPMV\js\JavascriptUtils;
 
+/**
+ * php-vueJS Manager class.
+ *
+ * PHPMV$VueManager
+ * This class is part of php-vuejs
+ *
+ * @author jguillaumesio
+ * @version 1.0.0
+ *
+ */
 class VueManager {
 
-	private static ?VueManager $instance = null;
+	protected static ?VueManager $instance = null;
+	protected ?object $container;
 	protected array $imports;
 	protected array $vues;
 	protected bool $useAxios;
@@ -17,9 +28,12 @@ class VueManager {
 		$this->useAxios = false;
 	}
 
-	public static function getInstance(): ?VueManager {
+	public static function getInstance(?object $container=null): ?VueManager {
 		if (!isset(self::$instance)) {
-			self::$instance = new VueManager();
+			self::$instance = new static();
+		}
+		if(isset($container)){
+			self::$instance->container=$container;
 		}
 		return self::$instance;
 	}
@@ -76,10 +90,10 @@ class VueManager {
 	}
 
 	public function __toString(): string {
-		$script = "";
-		if ($this->useAxios) $script = "Vue.prototype.\$http = axios;" . PHP_EOL;
-		$script .= implode(PHP_EOL, $this->imports);
-		$script .= PHP_EOL . implode(PHP_EOL, $this->vues);
+		$script = '';
+		if ($this->useAxios) $script = 'Vue.prototype.$http = axios;' . PHP_EOL;
+		$script .= \implode(PHP_EOL, $this->imports);
+		$script .= PHP_EOL . \implode(PHP_EOL, $this->vues);
 		$script = JavascriptUtils::cleanJSONFunctions($script);
 		return JavascriptUtils::wrapScript($script);
 	}
