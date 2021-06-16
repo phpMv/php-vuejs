@@ -15,12 +15,12 @@ use PHPMV\js\JavascriptUtils;
  *
  */
 class VueManager {
-
 	protected static ?VueManager $instance = null;
 	protected ?object $container;
 	protected array $imports;
 	protected array $vues;
 	protected bool $useAxios;
+	protected $config;
 
 	protected function __construct() {
 		$this->imports = [];
