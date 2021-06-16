@@ -89,6 +89,21 @@ class VueManager {
 		$this->vues[] = $vue;
 	}
 
+	/**
+	 * Creates and returns a new VueJS instance.
+	 *
+	 * @param string $element
+	 * @param string|null $varName
+	 * @param false $useVuetify
+	 * @return VueJS
+	 */
+	public function createVue(string $element,?string $varName=null,$useVuetify=false): VueJS {
+		$config=$this->config;
+		$config['el']=$element;
+		$varName??='app'.(\count($this->vues)+1);
+		return $this->vues[]=new VueJS($config,$varName,$useVuetify);
+	}
+
 	public function __toString(): string {
 		$script = '';
 		if ($this->useAxios) $script = 'Vue.prototype.$http = axios;' . PHP_EOL;

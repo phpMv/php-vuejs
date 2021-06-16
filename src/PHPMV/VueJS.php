@@ -16,7 +16,7 @@ class VueJS extends AbstractVueJS {
 
 	protected string $varName;
 
-	public function __construct(array $configuration = ['el' => '#app'], string $varName = "app", bool $useVuetify = false) {
+	public function __construct(array $configuration = ['el' => '#app'], string $varName = 'app', bool $useVuetify = false) {
 		parent::__construct($configuration);
 		$this->varName = $varName;
 		if ($useVuetify) {
