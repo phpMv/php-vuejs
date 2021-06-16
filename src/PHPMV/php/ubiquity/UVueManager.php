@@ -7,7 +7,7 @@ namespace PHPMV\php\ubiquity;
 use PHPMV\VueManager;
 
 class UVueManager extends VueManager {
-	public static function start(array &$config):UVueManager{
+	public static function start(array &$config):void{
 		$instance=self::getInstance();
 		$instance->config=$config['vuejs']??['delimiters'=>['${','}']];
 	}
