@@ -8,8 +8,7 @@ use PHPMV\VueManager;
 
 class UVueManager extends VueManager {
 	public static function start(array &$config):void{
-		$instance=self::getInstance();
-		$instance->config=$config['vuejs']??['delimiters'=>['${','}']];
+		self::getInstance()->setConfig($config['vuejs']??['delimiters'=>['${','}']]);
 	}
 	/**
 	 * Performs Javascript compilation and displays a view

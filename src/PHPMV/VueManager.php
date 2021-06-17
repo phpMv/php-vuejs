@@ -20,7 +20,7 @@ class VueManager {
 	protected array $imports;
 	protected array $vues;
 	protected bool $useAxios;
-	protected $config;
+	protected array $config;
 
 	protected function __construct() {
 		$this->imports = [];
@@ -115,5 +115,18 @@ class VueManager {
 
 	public function setAxios(bool $useAxios): void {
 		$this->useAxios = $useAxios;
+	}
+
+	/**
+	 * Sets the global VueJS configuration array with el, delimiters, useAxios.
+	 *
+	 * @param array $config
+	 */
+	public function setConfig(array $config): void {
+		if(isset($config['useAxios'])) {
+			$this->setAxios($config['useAxios']);
+			unset($config['useAxios']);
+		}
+		$this->config=$config;
 	}
 }
