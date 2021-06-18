@@ -42,8 +42,13 @@ class VueManager {
 		VueManager::$instance = null;
 	}
 
-	protected function addImport($import): void {
-		$this->imports[] = $import;
+	protected function addImport($import,bool $component = false, string $type = null): void {
+		if($component){
+			$this->imports['components'][$type][] = $import;
+		}
+		else{
+			$this->imports['imports'][] = $import;
+		}
 	}
 
 	protected function addGlobal(string $type, string $body, string $name = null): void {
@@ -55,7 +60,7 @@ class VueManager {
 	}
 
 	public function importComponentObject(VueJSComponent $component): void { //component, mixin, or extend
-		$this->addImport(JavascriptUtils::declareVariable('const', $component->getVarName(), $component->generateObject(), false));
+		$this->addImport($component, true, 'local');
 	}
 
 	public function addGlobalDirective(string $name, array $hookFunction) {
@@ -82,7 +87,7 @@ class VueManager {
 	}
 
 	public function addGlobalComponent(VueJSComponent $component): void {
-		$this->addImport($component->generateGlobalScript());
+		$this->addImport($component, true, 'global');
 	}
 
 	public function addVue(VueJS $vue): void {
@@ -105,9 +110,15 @@ class VueManager {
 	}
 
 	public function __toString(): string {
+		foreach($this->imports['components']['global'] as $localComponent){
+			$this->addImport($localComponent->generateGlobalScript());
+		}
+		foreach($this->imports['components']['local'] as $globalComponent){
+			$this->addImport(JavascriptUtils::declareVariable('const', $globalComponent->getVarName(), $globalComponent->generateObject(), false));
+		}
 		$script = '';
 		if ($this->useAxios) $script = 'Vue.prototype.$http = axios;' . PHP_EOL;
-		$script .= \implode(PHP_EOL, $this->imports);
+		$script .= \implode(PHP_EOL, $this->imports['imports']);
 		$script .= PHP_EOL . \implode(PHP_EOL, $this->vues);
 		$script = JavascriptUtils::cleanJSONFunctions($script);
 		return JavascriptUtils::wrapScript($script);
