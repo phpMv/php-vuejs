@@ -74,16 +74,16 @@ class VueManager {
 		$this->addGlobal('filter', JavascriptUtils::generateFunction($body, $params, false), $name);
 	}
 
-	public function addGlobalExtend(VueJSComponent $extend): void {
-		$this->addGlobal('extend', $extend->generateObject());
+	public function addGlobalObservable(string $varName, array $object): void {
+		$this->addImport(JavascriptUtils::declareVariable('const', $varName, "Vue.observable(" . JavascriptUtils::arrayToJsObject($object) . ")", false));
 	}
 
 	public function addGlobalMixin(VueJSComponent $mixin): void {
-		$this->addGlobal('mixin', $mixin->generateObject());
+		$this->addImport($mixin, true, 'mixin');
 	}
 
-	public function addGlobalObservable(string $varName, array $object): void {
-		$this->addImport(JavascriptUtils::declareVariable('const', $varName, "Vue.observable(" . JavascriptUtils::arrayToJsObject($object) . ")", false));
+	public function addGlobalExtend(VueJSComponent $extend): void {
+		$this->addImport($extend, true, 'extend');
 	}
 
 	public function addGlobalComponent(VueJSComponent $component): void {
@@ -111,10 +111,18 @@ class VueManager {
 
 	public function __toString(): string {
 		foreach($this->imports['components'] as $component) {
-			if ($component['type'] == 'global')
+			if ($component['type'] == 'global') {
 				$this->addImport($component['object']->generateGlobalScript());
-			else
+			}
+			else if($component['type'] == 'local'){
 				$this->addImport(JavascriptUtils::declareVariable('const', $component['object']->getVarName(), $component['object']->generateObject(), false));
+			}
+			else if($component['type'] == 'extend'){
+				$this->addGlobal('extend', $component['object']->generateObject());
+			}
+			else if($component['type'] == 'mixin'){
+				$this->addGlobal('mixin', $component['object']->generateObject());
+			}
 		}
 		$script = '';
 		if ($this->useAxios) $script = 'Vue.prototype.$http = axios;' . PHP_EOL;
