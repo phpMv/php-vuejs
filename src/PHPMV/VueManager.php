@@ -44,7 +44,7 @@ class VueManager {
 
 	protected function addImport($import,bool $component = false, string $type = null): void {
 		if($component){
-			$this->imports['components'][$type][] = $import;
+			$this->imports['components'][] = ['type' => $type, 'object' => $import];
 		}
 		else{
 			$this->imports['imports'][] = $import;
@@ -102,7 +102,7 @@ class VueManager {
 	 * @param false $useVuetify
 	 * @return VueJS
 	 */
-	public function createVue(string $element,?string $varName=null,$useVuetify=false): VueJS {
+	public function createVue(string $element,?string $varName=null,bool $useVuetify=false): VueJS {
 		$config=$this->config;
 		$config['el']=$element;
 		$varName??='app'.(\count($this->vues)+1);
@@ -110,11 +110,11 @@ class VueManager {
 	}
 
 	public function __toString(): string {
-		foreach($this->imports['components']['global'] as $localComponent){
-			$this->addImport($localComponent->generateGlobalScript());
-		}
-		foreach($this->imports['components']['local'] as $globalComponent){
-			$this->addImport(JavascriptUtils::declareVariable('const', $globalComponent->getVarName(), $globalComponent->generateObject(), false));
+		foreach($this->imports['components'] as $component) {
+			if ($component['type'] == 'global')
+				$this->addImport($component['object']->generateGlobalScript());
+			else
+				$this->addImport(JavascriptUtils::declareVariable('const', $component['object']->getVarName(), $component['object']->generateObject(), false));
 		}
 		$script = '';
 		if ($this->useAxios) $script = 'Vue.prototype.$http = axios;' . PHP_EOL;
