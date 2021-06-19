@@ -51,14 +51,6 @@ class VueManager {
 		}
 	}
 
-	protected function addGlobal(string $type, string $body, string $name = null): void {
-		if ($name) {
-			$this->addImport("Vue.$type('$name',$body);");
-		} else {
-			$this->addImport("Vue.$type($body);");
-		}
-	}
-
 	public function importComponentObject(VueJSComponent $component): void { //component, mixin, or extend
 		$this->addImport($component, true, 'local');
 	}
@@ -67,11 +59,11 @@ class VueManager {
 		foreach ($hookFunction as $key => $value) {
 			$hookFunction[$key] = JavascriptUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode']);
 		}
-		$this->addGlobal('directive', JavascriptUtils::arrayToJsObject($hookFunction), $name);
+		$this->addImport("Vue.directive('$name',".JavascriptUtils::arrayToJsObject($hookFunction).");");
 	}
 
 	public function addGlobalFilter(string $name, string $body, array $params = []): void {
-		$this->addGlobal('filter', JavascriptUtils::generateFunction($body, $params, false), $name);
+		$this->addImport("Vue.filter('$name',". JavascriptUtils::generateFunction($body, $params, false) .");");
 	}
 
 	public function addGlobalObservable(string $varName, array $object): void {
@@ -117,11 +109,13 @@ class VueManager {
 			else if($component['type'] == 'local'){
 				$this->addImport(JavascriptUtils::declareVariable('const', $component['object']->getVarName(), $component['object']->generateObject(), false));
 			}
-			else if($component['type'] == 'extend'){
-				$this->addGlobal('extend', $component['object']->generateObject());
-			}
-			else if($component['type'] == 'mixin'){
-				$this->addGlobal('mixin', $component['object']->generateObject());
+			else {
+				if ($component['type'] == 'extend') {
+					$this->addImport("Vue.extend(". $component['object']->generateObject() .");");
+				}
+				if ($component['type'] == 'mixin') {
+					$this->addImport("Vue.mixin(". $component['object']->generateObject() .");");
+				}
 			}
 		}
 		$script = '';
