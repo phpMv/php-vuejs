@@ -13,16 +13,14 @@ class VueJSComponent extends AbstractVueJS {
 	protected string $type;
 	protected bool $global;
 
-	public function __construct(string $name, string $varName = null,string $type='component') {
+	public function __construct(string $name, string $varName = null, string $type='component') {
 		parent::__construct([]);
 		$this->name = $name;
 		$this->props = [];
 		$this->extends = [];
 		$this->template = [];
-		if (!$varName) {
-			$varName = JavascriptUtils::kebabToPascal($name);
-		}
-		$this->varName = $varName;
+		$this->varName = $varName??JavascriptUtils::kebabToPascal($name);
+		$this->type=$type;
 		$this->global=false;
 	}
 
