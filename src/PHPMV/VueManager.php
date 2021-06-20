@@ -118,13 +118,9 @@ class VueManager {
 			$script = 'Vue.prototype.$http = axios;' . \PHP_EOL;
 		}
 
-		foreach ($this->imports as $import) {
-			$script .= \implode(\PHP_EOL, $import);
-		}
-		foreach ($this->vues as $vue) {
-			$script .= \implode(\PHP_EOL, $vue);
-		}
-
+		$script .= \implode(\PHP_EOL, $this->imports);
+		$script .= \PHP_EOL.\implode(\PHP_EOL, $this->vues);
+		
 		$script = JavascriptUtils::cleanJSONFunctions($script);
 		return JavascriptUtils::wrapScript($script);
 	}
