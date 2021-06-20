@@ -28,6 +28,10 @@ class VueManager {
 		$this->useAxios = false;
 	}
 
+	protected function getTemplateComponentDirectory(): string{
+		return $this->config['templateDir']??'vuejs/';
+	}
+
 	public static function getInstance(?object $container=null): ?VueManager {
 		if (!isset(self::$instance)) {
 			self::$instance = new static();
