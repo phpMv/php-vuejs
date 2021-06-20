@@ -29,8 +29,9 @@ class UVueManager extends VueManager implements VueManagerInterface {
 		if (isset($this->container)) {
 			$view = $this->container->getView();
 			$parameters['script_foot'] = $this->getInstance()->__toString();
-			if (isset($parameters))
+			if (isset($parameters)) {
 				$view->setVars($parameters);
+			}
 			return $view->render($viewName, $asString);
 		}
 		throw new \Exception(get_class() . " instance is not properly instancied : you omitted the second parameter \$controller!");
@@ -43,6 +44,11 @@ class UVueManager extends VueManager implements VueManagerInterface {
 	public function addTemplateFileComponent(string $filename, VueJSComponent $component, $parameters = null): void {
 		$filename = \rtrim($this->getTemplateComponentDirectory(), '/') . '/' . $filename;
 		$view = $this->container->getView();
-		$component->addTemplate($view->loadView($filename, $parameters, true));
+		if (isset($parameters)) {
+			$view->setVars($parameters);
+		}
+		$content=\str_replace(["\n","\t"],"",$view->render($filename, true));
+		$content=\str_replace('"','\"',$content);
+		$component->addTemplate($content);
 	}
 }

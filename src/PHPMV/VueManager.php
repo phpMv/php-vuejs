@@ -118,9 +118,13 @@ class VueManager {
 			$script = 'Vue.prototype.$http = axios;' . \PHP_EOL;
 		}
 
+		if(isset($this->config['delimiters'])){
+			$script.='Vue.options.delimiters = '.\json_encode($this->config['delimiters']).';'.\PHP_EOL;
+		}
+
 		$script .= \implode(\PHP_EOL, $this->imports);
 		$script .= \PHP_EOL.\implode(\PHP_EOL, $this->vues);
-		
+
 		$script = JavascriptUtils::cleanJSONFunctions($script);
 		return JavascriptUtils::wrapScript($script);
 	}
