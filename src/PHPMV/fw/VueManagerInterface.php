@@ -18,6 +18,8 @@ use PHPMV\VueJSComponent;
  */
 interface VueManagerInterface {
 	/**
+	 * Loads a template file and assigns its content to the component.
+	 *
 	 * @param string $filename
 	 * @param VueJSComponent $component
 	 * @param mixed|null $parameters
