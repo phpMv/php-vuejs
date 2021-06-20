@@ -2,6 +2,7 @@
 
 namespace PHPMV;
 
+use PHPMV\exceptions\TemplateFileNotFoundException;
 use PHPMV\js\JavascriptUtils;
 
 class VueJSComponent extends AbstractVueJS {
@@ -76,6 +77,14 @@ class VueJSComponent extends AbstractVueJS {
 		$this->template['template'] = $template;
 	}
 
+	public function addTemplateFile(string $templateFileName): void{
+		if(\file_exists($templateFileName)){
+			$this->template['template']=\file_get_contents($templateFileName);
+		}else{
+			throw new TemplateFileNotFoundException("The file $templateFileName does not exist!");
+		}
+	}
+
 	public function onActivated(string $body): void {
 		$this->addHook('activated', $body);
 	}
@@ -104,7 +113,7 @@ class VueJSComponent extends AbstractVueJS {
 	/**
 	 * @param bool $global
 	 */
-	public function setGlobal(bool $global): void {
+	public function setGlobal(bool $global=true): void {
 		$this->global = $global;
 	}
 

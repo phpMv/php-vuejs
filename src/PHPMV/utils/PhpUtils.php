@@ -30,4 +30,3 @@ class PhpUtils {
 		return self::$parsedJs[$name];
 	}
 }
-
