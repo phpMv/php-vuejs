@@ -45,7 +45,7 @@ class VueJSComponent extends AbstractVueJS {
 	}
 
 	public function generateGlobalScript(): string {
-		return "Vue.{$this->type}({$this->name},{$this->generateObject()});";
+		return "Vue.{$this->type}(\"{$this->name}\",{$this->generateObject()});";
 
 	}
 
