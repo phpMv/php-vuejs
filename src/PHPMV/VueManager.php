@@ -42,42 +42,38 @@ class VueManager {
 		VueManager::$instance = null;
 	}
 
-	protected function addImport($import): void{
-			$this->imports['imports'][] = $import;
-	}
-
 	public function importComponentObject(VueJSComponent $component): void { //component, mixin, or extend
-		$this->addImport($component);
+		$this->imports[] =$component;
 	}
 
 	public function addGlobalDirective(string $name, array $hookFunction) {
 		foreach ($hookFunction as $key => $value) {
 			$hookFunction[$key] = JavascriptUtils::generateFunction($value, ['el', 'binding', 'vnode', 'oldVnode']);
 		}
-		$this->addImport("Vue.directive('$name',".JavascriptUtils::arrayToJsObject($hookFunction).");");
+		$this->imports[] ="Vue.directive('$name',".JavascriptUtils::arrayToJsObject($hookFunction).");";
 	}
 
 	public function addGlobalFilter(string $name, string $body, array $params = []): void {
-		$this->addImport("Vue.filter('$name',". JavascriptUtils::generateFunction($body, $params, false) .");");
+		$this->imports[] ="Vue.filter('$name',". JavascriptUtils::generateFunction($body, $params, false) .");";
 	}
 
 	public function addGlobalObservable(string $varName, array $object): void {
-		$this->addImport(JavascriptUtils::declareVariable('const', $varName, "Vue.observable(" . JavascriptUtils::arrayToJsObject($object) . ")", false));
+		$this->imports[] =JavascriptUtils::declareVariable('const', $varName, "Vue.observable(" . JavascriptUtils::arrayToJsObject($object) . ")", false);
 	}
 
 	public function addGlobalMixin(VueJSComponent $mixin): void {
 		$mixin->setTypeAndGlobal('mixin');
-		$this->addImport($mixin);
+		$this->imports[] =$mixin;
 	}
 
 	public function addGlobalExtend(VueJSComponent $extend): void {
 		$extend->setTypeAndGlobal('extend');
-		$this->addImport($extend);
+		$this->imports[] =$extend;
 	}
 
 	public function addGlobalComponent(VueJSComponent $component): void {
 		$component->setGlobal(true);
-		$this->addImport($component);
+		$this->imports[] =$component;
 	}
 
 	public function addVue(VueJS $vue): void {
