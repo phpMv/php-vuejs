@@ -42,17 +42,12 @@ class VueManager {
 		VueManager::$instance = null;
 	}
 
-	protected function addImport($import,bool $component = false, string $type = null): void {
-		if($component){
-			$this->imports['components'][] = ['type' => $type, 'object' => $import];
-		}
-		else{
+	protected function addImport($import): void{
 			$this->imports['imports'][] = $import;
-		}
 	}
 
 	public function importComponentObject(VueJSComponent $component): void { //component, mixin, or extend
-		$this->addImport($component, true, 'local');
+		$this->addImport($component);
 	}
 
 	public function addGlobalDirective(string $name, array $hookFunction) {
@@ -71,15 +66,18 @@ class VueManager {
 	}
 
 	public function addGlobalMixin(VueJSComponent $mixin): void {
-		$this->addImport($mixin, true, 'mixin');
+		$mixin->setTypeAndGlobal('mixin');
+		$this->addImport($mixin);
 	}
 
 	public function addGlobalExtend(VueJSComponent $extend): void {
-		$this->addImport($extend, true, 'extend');
+		$extend->setTypeAndGlobal('extend');
+		$this->addImport($extend);
 	}
 
 	public function addGlobalComponent(VueJSComponent $component): void {
-		$this->addImport($component, true, 'global');
+		$component->setGlobal(true);
+		$this->addImport($component);
 	}
 
 	public function addVue(VueJS $vue): void {
@@ -102,26 +100,18 @@ class VueManager {
 	}
 
 	public function __toString(): string {
-		foreach($this->imports['components'] as $component) {
-			if ($component['type'] == 'global') {
-				$this->addImport($component['object']->generateGlobalScript());
-			}
-			else if($component['type'] == 'local'){
-				$this->addImport(JavascriptUtils::declareVariable('const', $component['object']->getVarName(), $component['object']->generateObject(), false));
-			}
-			else {
-				if ($component['type'] == 'extend') {
-					$this->addImport("Vue.extend(". $component['object']->generateObject() .");");
-				}
-				if ($component['type'] == 'mixin') {
-					$this->addImport("Vue.mixin(". $component['object']->generateObject() .");");
-				}
-			}
-		}
 		$script = '';
-		if ($this->useAxios) $script = 'Vue.prototype.$http = axios;' . PHP_EOL;
-		$script .= \implode(PHP_EOL, $this->imports['imports']);
-		$script .= PHP_EOL . \implode(PHP_EOL, $this->vues);
+		if ($this->useAxios){
+			$script = 'Vue.prototype.$http = axios;' . \PHP_EOL;
+		}
+
+		foreach($this->imports as $import) {
+			$script.=$import.\PHP_EOL;
+		}
+		foreach($this->vues as $vue) {
+			$script.=$vue.\PHP_EOL;
+		}
+
 		$script = JavascriptUtils::cleanJSONFunctions($script);
 		return JavascriptUtils::wrapScript($script);
 	}

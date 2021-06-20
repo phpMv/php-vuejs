@@ -10,8 +10,10 @@ class VueJSComponent extends AbstractVueJS {
 	protected array $template;
 	protected array $extends;
 	protected string $varName;
+	protected string $type;
+	protected bool $global;
 
-	public function __construct(string $name, string $varName = null) {
+	public function __construct(string $name, string $varName = null,string $type='component') {
 		parent::__construct([]);
 		$this->name = $name;
 		$this->props = [];
@@ -21,6 +23,7 @@ class VueJSComponent extends AbstractVueJS {
 			$varName = JavascriptUtils::kebabToPascal($name);
 		}
 		$this->varName = $varName;
+		$this->global=false;
 	}
 
 	public function addData(string $name, $value): void {
@@ -40,15 +43,12 @@ class VueJSComponent extends AbstractVueJS {
 		if (isset($this->data["data"])) {
 			$data["data"] = JavascriptUtils::generateFunction("return " . JavascriptUtils::arrayToJsObject($this->data["data"]));
 		}
-		$script = JavascriptUtils::arrayToJsObject($this->components + $this->filters + $this->extends + $this->mixins + $this->configuration + $this->props + $data + $this->computeds + $this->watchers + $this->hooks + $this->methods + $this->template);
-		return $script;
+		return JavascriptUtils::arrayToJsObject($this->components + $this->filters + $this->extends + $this->mixins + $this->configuration + $this->props + $data + $this->computeds + $this->watchers + $this->hooks + $this->methods + $this->template);
 	}
 
 	public function generateGlobalScript(): string {
-		$script = "Vue.component('$this->name',";
-		$script .= $this->generateObject();
-		$script .= ");";
-		return $script;
+		return "Vue.{$this->type}({$this->name},{$this->generateObject()});";
+
 	}
 
 	public function generateFile(bool $inVariable = false, bool $global = false): void {
@@ -93,4 +93,28 @@ class VueJSComponent extends AbstractVueJS {
 	public function getVarName(): string {
 		return $this->varName;
 	}
+
+	/**
+	 * @param string $type
+	 * @param bool $global
+	 */
+	public function setTypeAndGlobal(string $type='component',bool $global=true): void {
+		$this->type = $type;
+		$this->global=$global;
+	}
+
+	/**
+	 * @param bool $global
+	 */
+	public function setGlobal(bool $global): void {
+		$this->global = $global;
+	}
+
+	public function __toString(): string {
+		if($this->global){
+			return $this->generateGlobalScript();
+		}
+		return JavascriptUtils::declareVariable('const', $this->varName, $this->generateObject(), false);
+	}
+
 }
