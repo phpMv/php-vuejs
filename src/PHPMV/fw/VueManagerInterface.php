@@ -52,4 +52,7 @@ interface VueManagerInterface {
 	 * @throws \Exception
 	 */
 	public function renderDefaultView($parameters = [], bool $asString = false): ?string;
+
+	public function parseFile(string $fileName): void;
+
 }

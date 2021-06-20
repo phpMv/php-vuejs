@@ -5,6 +5,7 @@ namespace PHPMV\fw\ubiquity;
 
 
 use PHPMV\fw\VueManagerInterface;
+use PHPMV\utils\PhpUtils;
 use PHPMV\VueJSComponent;
 use PHPMV\VueManager;
 
@@ -50,5 +51,9 @@ class UVueManager extends VueManager implements VueManagerInterface {
 		$content=\str_replace(["\n","\t"],"",$view->render($filename, true));
 		$content=\str_replace('"','\"',$content);
 		$component->addTemplate($content);
+	}
+
+	public function parseFile(string $fileName): void {
+		PhpUtils::parseFile(\ROOT.'..'.\DS.'public'.\DS.'assets'.\DS.'js'.\DS.$fileName,'js');
 	}
 }
