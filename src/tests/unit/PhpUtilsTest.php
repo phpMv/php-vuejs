@@ -23,14 +23,14 @@ if (!class_exists('\\PhpUtils')) {
 
 		public function testGetParsed() {
 			$variable = 'Hello World !';
-			$template = "---created---"
+			$template = "//---------------------------------------created---------------------------------"
 						."console.log('{{ variable }}');"
 						."alert(this.message);"
 						."this.\$set(this, 'snackbar', true);"
 						."setTimeout(()=>{"
 						."this.\$set(this, 'snackbar', false);"
 						."},3000);"
-						."---end---";
+						."//---end---";
 			file_put_contents("jsToParse.js", $template);
 			PhpUtils::parseFile('jsToParse','js');
 			$script = "console.log('Hello World !');"
