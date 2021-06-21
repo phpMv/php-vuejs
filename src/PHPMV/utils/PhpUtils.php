@@ -2,8 +2,19 @@
 
 namespace PHPMV\utils;
 
+/**
+ * Some php utilities.
+ *
+ * PHPMV\utilsPhpUtils
+ * This class is part of php-vuejs
+ *
+ * @author jguillaumesio
+ * @version 1.0.0
+ * @package PHPMV\utils
+ */
+
 class PhpUtils {
-	static private string $delimiter = '---';
+	static private string $delimiter = '-';
 	static private array $parsedJs = [];
 
 	public static function importFromFile(string $filename, string $extension): string {
@@ -11,7 +22,7 @@ class PhpUtils {
 	}
 
 	public static function parseFile(string $filename, string $extension): array {
-		$pattern = '/\/\/' . self::$delimiter . '(.+?)' . self::$delimiter . '(.+?)\/\/' . self::$delimiter . 'end' . self::$delimiter . '/s';
+		$pattern = '/\/\/' . self::$delimiter . '{3,}(.+?)' . self::$delimiter . '{3,}(.+?)\/\/' . self::$delimiter . '{3,}end' . self::$delimiter . '{3,}/s';
 		$templateString = self::importFromFile($filename, $extension);
 		\preg_match_all($pattern, $templateString, $templateArray);
 		$iterationNumber = \count($templateArray[0]);
@@ -22,11 +33,11 @@ class PhpUtils {
 	}
 
 	public static function getParsedJs(string $name,array $variables = []): string {
-		if(isset($variables)){
-			foreach($variables as $key => $value){
-				self::$parsedJs[$name] = \str_replace("{{ $key }}",$value, self::$parsedJs[$name]);
-			}
+		$element=self::$parsedJs[$name];
+		foreach($variables as $key => $value){
+			$element = \str_replace("{{ $key }}",$value, $element);
 		}
-		return self::$parsedJs[$name];
+
+		return $element;
 	}
 }
